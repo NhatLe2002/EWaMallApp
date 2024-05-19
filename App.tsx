@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import 'react-native-gesture-handler'
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabNavigation from './src/navigator/BottomTabNavigation';
+import LoginScreen from './src/screens/customer/login/LoginScreen';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -12,12 +13,16 @@ const App = () => {
         initialRouteName="Home"
         screenOptions={{
           headerShown: false,
-        }}
-      >
+        }}>
         <Stack.Screen name="BottomNav" component={BottomTabNavigation} />
-      </Stack.Navigator>
-    </NavigationContainer>  
-  )
-}
+        <Stack.Screen name="Login" component={LoginScreen} />
 
-export default App
+
+
+
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;

@@ -1,5 +1,5 @@
-import {BackHandler, Text, TouchableOpacity, View} from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {BackHandler, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React from 'react';
 
 const Profile: React.FC = () => {
@@ -13,7 +13,7 @@ const Profile: React.FC = () => {
     console.log('Selection mode disabled');
   };
 
-useFocusEffect(
+  useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
         if (isSelectionModeEnabled()) {
@@ -26,20 +26,21 @@ useFocusEffect(
 
       const subscription = BackHandler.addEventListener(
         'hardwareBackPress',
-        onBackPress
+        onBackPress,
       );
 
       return () => subscription.remove();
-    }, [isSelectionModeEnabled, disableSelectionMode])
+    }, [isSelectionModeEnabled, disableSelectionMode]),
   );
   const navigation = useNavigation();
   return (
-    <View>
+    <SafeAreaView>
       <Text>Profile</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('SellerHome' as never)}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('SellerHome' as never)}>
         <Text>Kênh người bán</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
