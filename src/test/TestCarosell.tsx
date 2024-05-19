@@ -1,60 +1,90 @@
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { banner } from '../data/Banner'
-import { SIZES } from '../constant/theme'
-import { FlatList } from 'react-native-gesture-handler'
-import Carousel from 'react-native-reanimated-carousel'
-import { AutoScrollFlatList } from 'react-native-autoscroll-flatlist'
-import  Ionicons  from 'react-native-vector-icons/Ionicons';
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
+// import React, { LegacyRef, useEffect, useRef, useState } from 'react'
+// import { SIZES } from '../constant/theme'
+// import { FlatList } from 'react-native-gesture-handler'
+// import { NativeScrollEvent } from 'react-native'
+// import { NativeSyntheticEvent } from 'react-native'
 
-const { width, height } = Dimensions.get('window');
-const TestCarosell: React.FC = () => {
-  const renderItem = ({ item }: { item: { imgUrl: string } }) => (
-    <View
-      style={{
-        flex: 1,
-        borderWidth: 1,
-        justifyContent: 'center',
-      }}
-    >
-      <Image source={{ uri: item.imgUrl }} style={styles.image} />
-    </View>
-  );
+// interface input{
+//   data : {
+//     id: number,
+//     imgUrl : string,
+//     title : string
+//   }[],
+//   width : number,
+//   height : number,
+//   scale: number,
+// }
+// const TestCarosell: React.FC<{inputData: input }> = ({inputData}) => {
+//   const flatListRef = useRef<FlatList>(null);
   
-  const width = Dimensions.get('window').width;
+//   const width = Dimensions.get('window').width;
 
-  
+//   const HandleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) =>{
+//     const scrollPosition = event.nativeEvent.contentOffset.x;
 
-  return (
-    <View style={{ flex: 1 }}>
-            {/* <AutoScrollFlatList
-            data={banner}
-            threshold={20}
-            renderItem={({item}) => (
-              <View style={styles.container}>
-                <Image source={{ uri: item.imgUrl }} style={styles.image}/>
-              </View>
-            )}
-            horizontal
+//     const index = scrollPosition / width;
+//     setActicveIndex(index);
+//     console.log(index)
+//   }
+//   const [activeIndex, setActicveIndex] = useState(0)
+//   useEffect(()=>{
+//     let interval = setInterval(()=>{
+//       if(Math.round(activeIndex) == data.length -1){
+//         flatListRef.current?.scrollToIndex({
+//           index: 0,
+//           animated: true
+//         })
+//       }
+//       else{
+//         flatListRef.current?.scrollToIndex({
+//           index: Math.round(activeIndex) + 1,
+//           animated: true
+//         })
+//       }
+//     }, 1500);
+//     return () => clearInterval(interval);
+//   })
+//   const getItemLayout = (data: ArrayLike<any> | null | undefined, index: number) =>({
+//     length: width ,
+//     offset: (width)*index,
+//     index : index,
+//   })
+//   const [data, setData] = useState(inputData.data);
+//   const styles = StyleSheet.create({
+//     image: {
+//       width: width/ inputData.width * inputData.scale,
+//       height: SIZES.height / inputData.height,
+//       borderRadius: 25,
+//     },
+//     container:{
+//       width: width/ inputData.width,
+//       height : SIZES.height / inputData.height,
+//       alignItems: "center"
+//     }
+//   });
+//   return (
+//     <>
+//       <View style={styles.container}>
+//             <FlatList
+//             data={data}
+//             ref={flatListRef}
+//             keyExtractor={(item)=> item.id.toString()}
+//             onScroll={HandleScroll}
+//             getItemLayout={getItemLayout}
+//             showsHorizontalScrollIndicator={false}
+//             renderItem={({item}) => (
+//               <View style={styles.container}>
+//                 <Image source={{ uri: item.imgUrl }} style={styles.image}/>
+//               </View>
+//             )}
+//             horizontal        
+//             /> 
             
-            />   */}
-            <Icon name="rocket" size={30} color="#900" />
-            <Ionicons name='hand-right' color={'coral'} size={22}/>
-        </View>
-  )
-}
+//         </View>
+//         </> 
+        
+//   )
+// }
 
-export default TestCarosell
-const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: SIZES.height / 5,
-    borderRadius: 25,
-  },
-  container:{
-    width,
-    height,
-    alignItems: "center"
-  }
-});
+// export default TestCarosell

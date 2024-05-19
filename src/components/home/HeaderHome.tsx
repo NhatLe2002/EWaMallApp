@@ -51,7 +51,7 @@ const HeaderHome: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 20,
+
     paddingRight: 20,
 
     height: SIZES.height / 3,
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   },
 
   headerContent: {
+    paddingLeft: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
