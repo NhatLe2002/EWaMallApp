@@ -25,7 +25,6 @@ const Carosell: React.FC<{inputData: input }> = ({inputData}) => {
 
     const index = scrollPosition / width;
     setActicveIndex(index);
-    console.log(index)
   }
   const [activeIndex, setActicveIndex] = useState(0)
   useEffect(()=>{
@@ -42,7 +41,7 @@ const Carosell: React.FC<{inputData: input }> = ({inputData}) => {
           animated: true
         })
       }
-    }, 1500);
+    }, 2000);
     return () => clearInterval(interval);
   })
   const getItemLayout = (data: ArrayLike<any> | null | undefined, index: number) =>({
