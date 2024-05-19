@@ -1,16 +1,16 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View } from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {View} from 'react-native';
 import Home from '../screens/customer/home/Home';
-import { StyleSheet } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
+import {StyleSheet} from 'react-native';
+import {BlurView} from '@react-native-community/blur';
 // import TabButton from './TabButton';
 // import Profile from '../screens/profile/Profile';
 // import Cart from '../screens/cart/Cart';
 // import Category from '../screens/categories/Category';
 // import Voucher from '../screens/voucher/Voucher';
-import { useSelector } from 'react-redux';
-import { InterfaceAccountState } from '../constant/interface';
+import {useSelector} from 'react-redux';
+import {InterfaceAccountState} from '../constant/interface';
 import TabButton from './TabButton';
 import LoginScreen from '../screens/customer/login/LoginScreen';
 import Cart from '../screens/customer/cart/Cart';
@@ -83,7 +83,7 @@ const tabs = [
   },
 ];
 const BottomTabNavigation: React.FC = () => {
-  const { isLogin } = useSelector(
+  const {isLogin} = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
   );
 
@@ -104,17 +104,17 @@ const BottomTabNavigation: React.FC = () => {
             component={
               item.screen === 'Home'
                 ? item.Component
-                // Sửa lại isLogin --Nhật
-                : !isLogin
-                  ? item.Component
-                  : LoginScreen
+                : // Sửa lại isLogin --Nhật
+                !isLogin
+                ? item.Component
+                : LoginScreen
             }
             options={{
               tabBarButton: props => (
                 <TabButton
                   name={item.icon}
                   accessibilityState={props.accessibilityState}
-                  onPress={() => { }}
+                  onPress={() => {}}
                   {...props}
                 />
               ),
