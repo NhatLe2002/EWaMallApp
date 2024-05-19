@@ -9,7 +9,7 @@ import {COLORS, SIZES} from '../../../constant/theme';
 
 const Home: React.FC = () => (
   <ScrollView style={styles.scrollContainer}>
-    <HeaderHome/>
+    <HeaderHome />
     {/* <HeightSpacer height={SIZES.height / 18} />
     <CategoryHome />
     <FlashSaleHome />
