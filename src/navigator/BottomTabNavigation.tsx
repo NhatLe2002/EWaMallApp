@@ -4,11 +4,6 @@ import {View} from 'react-native';
 import Home from '../screens/customer/home/Home';
 import {StyleSheet} from 'react-native';
 import {BlurView} from '@react-native-community/blur';
-// import TabButton from './TabButton';
-// import Profile from '../screens/profile/Profile';
-// import Cart from '../screens/cart/Cart';
-// import Category from '../screens/categories/Category';
-// import Voucher from '../screens/voucher/Voucher';
 import {useSelector} from 'react-redux';
 import {InterfaceAccountState} from '../constant/interface';
 import TabButton from './TabButton';
@@ -17,7 +12,7 @@ import Cart from '../screens/customer/cart/Cart';
 import Category from '../screens/customer/categories/Category';
 import Voucher from '../screens/customer/voucher/Voucher';
 import Profile from '../screens/customer/profile/Profile';
-// import {InterfaceAccountState} from '../constant/interface';
+import TestCarosell from '../test/TestCarosell';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({

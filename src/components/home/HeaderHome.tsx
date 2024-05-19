@@ -1,30 +1,31 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {COLORS, FONTS, SIZES} from '../../../constant/theme';
-// import ReusableText from '../reusables/ReusableText';
+import {COLORS, FONTS, SIZES} from '../../constant/theme';
+import ReusableText from '../../reusables/Text/ReusableText';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Iconions from 'react-native-vector-icons/Ionicons';
 import {View} from 'react-native';
 // import SearchHome from './SearchHome';
-// import HeightSpacer from '../reusables/HeightSpacer';
 import {Badge} from 'react-native-elements';
-// import BannerAds from '../../components/home/BannerAds';
+import BannerAds from '../../reusables/banners/BannerAds';
+import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
+import SearchHome from '../../reusables/searchs/SearchHome';
+import Iconions from 'react-native-vector-icons/Ionicons';
 const HeaderHome: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>
-        {/* <ReusableText
+        <ReusableText
           text="Xin chào, Quang Vinh"
           size={23}
           color={COLORS.white}
           font={FONTS.inter_bold}
-        /> */}
+        />
 
         <Iconions name="notifications-outline" color="white" size={30} />
       </View>
-      {/* <HeightSpacer height={SIZES.height / 50} /> */}
+      <HeightSpacer height={SIZES.height / 50} />
       <View style={styles.headerContent}>
-        {/* <SearchHome /> */}
+        <SearchHome />
         <View>
           <Iconions
             name="chatbubble-ellipses-outline"
@@ -42,8 +43,8 @@ const HeaderHome: React.FC = () => {
           />
         </View>
       </View>
-      {/* <HeightSpacer height={SIZES.height / 50} /> */}
-      {/* <BannerAds /> */}
+      <HeightSpacer height={SIZES.height / 50} />
+      <BannerAds />
     </SafeAreaView>
   );
 };
