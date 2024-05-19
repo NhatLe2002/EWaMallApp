@@ -12,7 +12,6 @@ import Cart from '../screens/customer/cart/Cart';
 import Category from '../screens/customer/categories/Category';
 import Voucher from '../screens/customer/voucher/Voucher';
 import Profile from '../screens/customer/profile/Profile';
-import TestCarosell from '../test/TestCarosell';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({
@@ -76,6 +75,13 @@ const tabs = [
     icon: 'user',
     Component: Profile,
   },
+  // {
+  //   id: 6,
+  //   title: 'profile',
+  //   screen: 'Test',
+  //   icon: 'user',
+  //   Component: TestCarosell,
+  // },
 ];
 const BottomTabNavigation: React.FC = () => {
   const {isLogin} = useSelector(
