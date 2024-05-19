@@ -12,7 +12,7 @@ type Inputs = {
   email: string;
   password: string;
 };
-const LoginScreen: React.FC = () => {
+const RegisterScreen: React.FC = () => {
   const navigation = useNavigation();
   const {control, handleSubmit} = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = data => {
@@ -33,7 +33,7 @@ const LoginScreen: React.FC = () => {
         />
       </View>
       <View style={styles.content}>
-        <Text style={styles.textHeader}>Đăng nhập</Text>
+        <Text style={styles.textHeader}>Đăng ký</Text>
         <HeightSpacer height={SIZES.height / 20} />
         <View>
           <Controller
@@ -93,21 +93,24 @@ const LoginScreen: React.FC = () => {
         </View>
       </View>
       <View style={styles.registrationView}>
-        <Text style={styles.registrationText}>Bạn chưa có tài khoản? </Text>
-        <Text
-          onPress={() => navigation.navigate('Register' as never)}
-          style={styles.registrationLink}>
-          Đăng ký ngay
+        <Text style={styles.registrationText}>
+          Bạn đã có tài khoản?{' '}
+          <Text
+            onPress={() => navigation.navigate('Login' as never)}
+            style={styles.registrationLink}>
+            Đăng nhập ngay
+          </Text>
         </Text>
       </View>
     </View>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 const styles = StyleSheet.create({
   container: {
+    position: 'relative',
     flex: 1,
     flexDirection: 'column',
     width: SIZES.width,
