@@ -4,13 +4,16 @@ import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import ReusableText from '../../reusables/Text/ReusableText';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {View} from 'react-native';
-// import SearchHome from './SearchHome';
+import Feather from 'react-native-vector-icons/Feather';
 import {Badge} from 'react-native-elements';
 import BannerAds from '../../reusables/banners/BannerAds';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
 import SearchHome from '../../reusables/searchs/SearchHome';
 import Iconions from 'react-native-vector-icons/Ionicons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 const HeaderHome: React.FC = () => {
+  const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>
@@ -20,8 +23,6 @@ const HeaderHome: React.FC = () => {
           color={COLORS.white}
           font={FONTS.inter_bold}
         />
-
-        <Iconions name="notifications-outline" color="white" size={30} />
       </View>
       <HeightSpacer height={SIZES.height / 50} />
       <View style={styles.headerContent}>
@@ -30,11 +31,17 @@ const HeaderHome: React.FC = () => {
           <Iconions
             name="chatbubble-ellipses-outline"
             color="white"
-            size={32}
+            size={25}
           />
           <Badge
             value={10}
-            badgeStyle={{backgroundColor: COLORS.yellowMain, borderWidth: 1}}
+            textStyle={{fontSize: 9}}
+            badgeStyle={{
+              backgroundColor: COLORS.yellowMain,
+              borderWidth: 1,
+              width: 15,
+              height: 15,
+            }}
             containerStyle={{
               position: 'absolute',
               top: -5,
@@ -42,6 +49,24 @@ const HeaderHome: React.FC = () => {
             }}
           />
         </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Cart' as never)}>
+          <Feather name="shopping-cart" size={25} color="white" />
+          <Badge
+            value={10}
+            textStyle={{fontSize: 9}}
+            badgeStyle={{
+              backgroundColor: COLORS.yellowMain,
+              borderWidth: 1,
+              width: 15,
+              height: 15,
+            }}
+            containerStyle={{
+              position: 'absolute',
+              top: -5,
+              right: -5,
+            }}
+          />
+        </TouchableOpacity>
       </View>
       <HeightSpacer height={SIZES.height / 50} />
       <BannerAds />
@@ -51,7 +76,6 @@ const HeaderHome: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-
     paddingRight: 20,
 
     height: SIZES.height / 3,
