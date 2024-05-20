@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TextStyle} from 'react-native';
+import {StyleSheet, Text, TextStyle, View} from 'react-native';
 
 interface TextProps {
   text: string;
@@ -26,10 +26,17 @@ const ReusableText: React.FC<TextProps> = ({
   };
 
   return (
-    <Text style={textStyle} numberOfLines={numberOfLines}>
-      {text}
-    </Text>
+    <View style={styles.headerContainer}>
+      <Text style={textStyle} numberOfLines={numberOfLines}>
+        {text}
+      </Text>
+    </View>
   );
 };
 
 export default ReusableText;
+const styles = StyleSheet.create({
+  headerContainer: {
+    paddingHorizontal: '5%',
+  },
+});

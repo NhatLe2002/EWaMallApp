@@ -26,7 +26,7 @@ const formatPriceToVND = (price: string): string => {
 const productList: ProductTypes[] = [
   {
     id: 1,
-    name: 'Sản phẩm 1 Sản phẩm 1 Sản phẩm 1 Sản phẩm 1 Sản phẩm 1',
+    name: 'Sản phẩm 1',
     imgUrl: 'https://picsum.photos/200/300?random=1',
     price: '100000',
     address: 'TP. Hồ Chí Minh',
