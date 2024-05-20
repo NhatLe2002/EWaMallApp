@@ -1,16 +1,23 @@
-import React from 'react';
-import 'react-native-gesture-handler'
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import BottomTabNavigation from './src/navigator/BottomTabNavigation';
-import LoginScreen from './src/screens/customer/login/LoginScreen';
-import SellerHome from './src/screens/sellser/home/SellerHome';
 
+
+import {useSelector} from 'react-redux';
+
+import BottomTabNavigation from './src/navigator/BottomTabNavigation';
+import {InterfaceAccountState} from './src/constant/interface';
+import UnAuthNavigator from './src/navigator/UnAuthNavigator';
+import AuthNavigator from './src/navigator/AuthNavigator';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
-const App = () => {
+const App: React.FC = () => {
+  const {isLogin} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      {/* <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
           headerShown: false,
@@ -18,11 +25,10 @@ const App = () => {
         <Stack.Screen name="BottomNav" component={BottomTabNavigation} />
         <Stack.Screen name="Login" component={LoginScreen} />
 
-
-
-        {/* seller navigate */}
         <Stack.Screen name="SellerHome" component={SellerHome} />
-      </Stack.Navigator>
+      </Stack.Navigator> */}
+
+      {isLogin ? <UnAuthNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };
