@@ -8,9 +8,8 @@ import Body from '../../../components/home_seller/Body';
 
 const SellerHome = () => {
   return (
-    <View>
-
-      <View style={{ height: '30%' }}>
+    <View style = {{flex : 1}}>
+      <View >
         <HeaderSeller />
       </View >
       <View style={styles.body}>

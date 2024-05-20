@@ -22,7 +22,6 @@ const App = () => {
 
         {/* seller navigate */}
         <Stack.Screen name="SellerHome" component={SellerHome} />
-        <Stack.Screen name="SellerHome" component={SellerHome} />
       </Stack.Navigator>
     </NavigationContainer>
   );

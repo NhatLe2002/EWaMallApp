@@ -96,7 +96,7 @@ const BottomTabNavigation: React.FC = () => {
           tabBarShowLabel: false,
           headerShown: false,
           tabBarStyle: styles.container,
-          tabBarBackground: tabBarBackground,
+          // tabBarBackground: tabBarBackground,
         }}>
         {tabs.map(item => (
           <Tab.Screen
