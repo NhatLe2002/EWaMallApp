@@ -4,9 +4,8 @@ import {Icon} from 'react-native-elements';
 import {SIZES} from '../../constant/theme';
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 10,
-    marginBottom: 3,
-    marginTop: 3,
+    paddingHorizontal: '4%',
+    marginVertical: 3,
     width: '100%',
     height: SIZES.height / 8,
     backgroundColor: 'white',

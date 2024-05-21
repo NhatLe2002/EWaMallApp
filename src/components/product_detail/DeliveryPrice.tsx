@@ -34,9 +34,8 @@ export default DeliveryPrice;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingLeft: 10,
-    marginBottom: 3,
-    marginTop: 3,
+    paddingHorizontal: '4%',
+    marginVertical: 3,
     width: '100%',
     height: SIZES.height / 15,
   },

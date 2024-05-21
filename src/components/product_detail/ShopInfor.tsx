@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {COLORS, SIZES} from '../../constant/theme';
-import {Button, Icon} from 'react-native-elements';
+import {Icon} from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const ShopInfor = () => {
@@ -75,9 +75,8 @@ export default ShopInfor;
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 10,
-    marginBottom: 3,
-    marginTop: 3,
+    paddingHorizontal: '4%',
+    marginVertical: 3,
     width: '100%',
     height: SIZES.height / 8,
     backgroundColor: 'white',

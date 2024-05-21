@@ -2,7 +2,6 @@ import {StyleSheet, Text, View, VirtualizedList} from 'react-native';
 import React from 'react';
 import {SIZES} from '../../constant/theme';
 import {productsListFormatted} from '../../data/Product';
-import {ScrollView} from 'react-native-gesture-handler';
 import Product from './ProductSuggest';
 
 type ProductTypes = {
@@ -74,9 +73,8 @@ export default SuggestProduct;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingLeft: '2%',
-    marginBottom: 3,
-    marginTop: 3,
+    paddingHorizontal: '4%',
+    marginVertical: 3,
     height: SIZES.height / 3.5,
   },
 });

@@ -8,6 +8,8 @@ import ShopInfor from '../../../components/product_detail/ShopInfor';
 import {useNavigation} from '@react-navigation/native';
 import ProductList from '../../../reusables/list_item/ProductList';
 import SuggestProduct from '../../../components/product_detail/SuggestProduct';
+import Description from '../../../components/product_detail/Description';
+import RatingProduct from '../../../components/product_detail/RatingProduct';
 
 const ProductDetail = () => {
   const navigation = useNavigation();
@@ -25,6 +27,8 @@ const ProductDetail = () => {
         <DeliveryPrice />
         <ShopInfor />
         <SuggestProduct />
+        <Description description="Hom nay la mot nay dep troi nen la hay mua toi di! Chan thanh va cam on <3" />
+        <RatingProduct />
         <ProductList />
       </ScrollView>
     </>
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: SIZES.height / 3,
+    height: SIZES.height / 2.7,
     marginBottom: 3,
   },
 });
