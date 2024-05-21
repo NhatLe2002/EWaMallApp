@@ -2,23 +2,30 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+import BodyTitle from '../../reusables/Title/BodyTitle';
+import  Ionicons  from 'react-native-vector-icons/Ionicons';
 const Body = () => {
+  const navigation = useNavigation();
   return (
     <View>
-      <Text>
-        Tiện ích
-      </Text>
+      <BodyTitle titleLeft='Tiện ích' titleRight=''/>
       <View>
-        <TouchableOpacity style={styles.item}>
-          <View style={styles.subItem}>
-            <FontAwesomeIcon
-              name='product-hunt'
+        <TouchableOpacity 
+        style={styles.item}
+        onPress={() => navigation.navigate('Profile' as never)}
+        >
+          <TouchableOpacity 
+          style={styles.subItem}>
+            <MaterialIcons
+              name='production-quantity-limits'
               size={26}
-              color='black' />
-            <Text>
+              color='#D54A4A' />
+            <Text style = {styles.text}>
               Sản phẩm của tôi
             </Text>
-          </View>
+          </TouchableOpacity>
           <MaterialIcons
             name='navigate-next'
             size={26}
@@ -26,11 +33,11 @@ const Body = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.item}>
           <View style={styles.subItem}>
-            <FontAwesomeIcon
-              name='product-hunt'
+            <MaterialCommunityIcons
+              name='finance'
               size={26}
-              color='black' />
-            <Text>
+              color='#E9BB45' />
+            <Text style = {styles.text}>
               Tài chính
             </Text>
           </View>
@@ -42,10 +49,10 @@ const Body = () => {
         <TouchableOpacity style={styles.item}>
           <View style={styles.subItem}>
             <FontAwesomeIcon
-              name='product-hunt'
+              name='sellsy'
               size={26}
-              color='black' />
-            <Text>
+              color='#E28E40' />
+            <Text style = {styles.text}>
               Hiệu quản bán hàng
             </Text>
           </View>
@@ -59,8 +66,8 @@ const Body = () => {
             <FontAwesomeIcon
               name='product-hunt'
               size={26}
-              color='black' />
-            <Text>
+              color='#0E41C6' />
+            <Text style = {styles.text}>
               Marketing
             </Text>
           </View>
@@ -71,11 +78,11 @@ const Body = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.item}>
           <View style={styles.subItem}>
-            <FontAwesomeIcon
-              name='product-hunt'
+            <Ionicons
+              name='help-circle-sharp'
               size={26}
-              color='black' />
-            <Text>
+              color='#11936C' />
+            <Text style = {styles.text}>
               Trung tâm hỗ trợ
             </Text>
           </View>
@@ -102,5 +109,9 @@ const styles = StyleSheet.create({
   },
   subItem:{
     flexDirection: 'row',
+  },
+  text:{
+    color: '#000000',
+    marginLeft: 10,
   }
 })
