@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   },
   product: {
     flex: 1,
-    margin: 10,
+    margin: 5,
     backgroundColor: COLORS.white,
     shadowColor: COLORS.border_product,
     shadowOffset: {width: 4, height: 4},

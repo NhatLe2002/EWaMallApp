@@ -1,4 +1,4 @@
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {SIZES} from '../../../constant/theme';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -29,7 +29,22 @@ const ProductDetail = () => {
         <SuggestProduct />
         <Description description="Hom nay la mot nay dep troi nen la hay mua toi di! Chan thanh va cam on <3" />
         <RatingProduct />
-        <ProductList />
+        <View>
+          <Text
+            style={{
+              backgroundColor: 'white',
+              height: '4%',
+              fontSize: 16,
+              color: 'black',
+              paddingTop: 5,
+              fontWeight: '600',
+              paddingHorizontal: '4%',
+              marginTop: 5,
+            }}>
+            Có thể bạn cũng thích
+          </Text>
+          <ProductList />
+        </View>
       </ScrollView>
     </>
   );

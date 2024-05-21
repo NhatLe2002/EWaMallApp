@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {SIZES} from '../../constant/theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FeedbackProductList from './FeedbackProductList';
 
 const RatingProduct = () => {
   return (
@@ -30,7 +31,7 @@ const RatingProduct = () => {
           <Ionicons name="star-outline" color="#EAC452" size={12} />
           <View style={{marginLeft: 15, flexDirection: 'row'}}>
             <Text style={{fontSize: 12, color: 'red'}}>
-              <Text>5</Text>/5
+              <Text>3.7</Text>/5
             </Text>
             <Text style={{marginLeft: 3, fontSize: 12, color: 'black'}}>
               (<Text>100</Text> đánh giá)
@@ -38,7 +39,7 @@ const RatingProduct = () => {
           </View>
         </View>
       </View>
-      <View></View>
+      <FeedbackProductList />
     </View>
   );
 };
@@ -50,6 +51,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: '4%',
     marginVertical: 3,
-    height: SIZES.height / 4,
   },
 });
