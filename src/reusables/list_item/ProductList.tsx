@@ -1,11 +1,11 @@
 import {FlatList, StyleSheet, View, Image, Text} from 'react-native';
 import React from 'react';
-import {COLORS, FONTS} from '../../constant/theme';
+import {COLORS} from '../../constant/theme';
 import {SIZES} from '../../constant/theme';
 import Feather from 'react-native-vector-icons/Feather';
 import {productsListFormatted} from '../../data/Product';
-import HeightSpacer from '../height_spacer/HeightSpacer';
-import ReusableText from '../Text/ReusableText';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 type ProductTypes = {
   id: number;
   name: string;
@@ -16,37 +16,33 @@ type ProductTypes = {
   sales: number;
 };
 const ProductList = () => {
+  const navigation = useNavigation();
   const renderItem = ({item}: {item: ProductTypes}) => (
     <View style={styles.product}>
-      <Image style={styles.image} source={{uri: item.imgUrl}} />
-      <View style={styles.containter}>
-        <Text style={styles.nameProduct} numberOfLines={2}>
-          {item.name}
-        </Text>
-        <View style={styles.subContainer}>
-          <Text style={styles.price}>{item.price}</Text>
-          <Text style={styles.sold}> Đã bán {item.sold}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('ProductDetail' as never);
+        }}>
+        <Image style={styles.image} source={{uri: item.imgUrl}} />
+        <View style={styles.containter}>
+          <Text style={styles.nameProduct} numberOfLines={2}>
+            {item.name}
+          </Text>
+          <View style={styles.subContainer}>
+            <Text style={styles.price}>{item.price}</Text>
+            <Text style={styles.sold}> Đã bán {item.sold}</Text>
+          </View>
+          <View style={styles.subAddressContainer}>
+            <Feather name="map-pin" size={14} color="#B9B9B9" />
+            <Text style={styles.address}>{item.address}</Text>
+          </View>
         </View>
-        <View style={styles.subAddressContainer}>
-          <Feather name="map-pin" size={14} color="#B9B9B9" />
-          <Text style={styles.address}>{item.address}</Text>
-        </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 
   return (
     <>
-      <HeightSpacer height={SIZES.height / 70} />
-      <View style={styles.headerContainer}>
-        <ReusableText
-          text="Có thể bạn thích"
-          size={20}
-          color={COLORS.black}
-          font={FONTS.roboto_medium}
-        />
-      </View>
-      <HeightSpacer height={SIZES.height / 70} />
       <FlatList
         style={{backgroundColor: COLORS.background_list}}
         data={productsListFormatted}
