@@ -85,7 +85,7 @@ const GeneralProfile = () => {
             item.title === 'Bán hàng cùng Ewamall' ? (
               <TouchableOpacity
                 key={item.id}
-                onPress={() => navigation.navigate('Home' as never)}>
+                onPress={() => navigation.navigate('SellerHome' as never)}>
                 <LinearGradient
                   key={item.id}
                   style={styles.optionSeller}

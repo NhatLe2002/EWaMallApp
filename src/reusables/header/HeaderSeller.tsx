@@ -3,9 +3,16 @@ import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 const HeaderSeller = () => {
+    const navigation = useNavigation();
     return (
         <View>
-            <View>
+            <View style = {styles.title}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Profile' as never)}
+                >
+
+                <Ionicons name='arrow-back' size={25}/>
+                </TouchableOpacity>
                 <View>
                     <Text>shop cua toi</Text>
                 </View>
@@ -30,4 +37,9 @@ const HeaderSeller = () => {
 
 export default HeaderSeller
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    title:{
+
+        flexDirection: 'row'
+    }
+})
