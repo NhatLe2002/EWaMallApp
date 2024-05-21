@@ -1,7 +1,17 @@
+import {CartProductTypes} from '../constant/types';
+
 type ProductProps = {
   id: number;
   name: string;
   category: string;
+  imgUrl: string;
+  price: string; // Kiểu dữ liệu là string
+  description: string;
+};
+type ProductCartProps = {
+  id: number;
+  name: string;
+  category: string[];
   imgUrl: string;
   price: string; // Kiểu dữ liệu là string
   description: string;
@@ -16,6 +26,54 @@ type ProductTypes = {
   sold: number;
   sales: number;
 };
+
+const productInCart: CartProductTypes[] = [
+  {
+    id: 1,
+    nameShop: 'Shop A',
+    products: [
+      {
+        id: 101,
+        name: 'Product 1',
+        category: ['Category 1, Category2'],
+        imgUrl: 'https://picsum.photos/200/300?random=1',
+        price: '10.99',
+        description: 'Description of Product 1',
+      },
+      {
+        id: 102,
+        name: 'Product 2 Product 2 Product 2 Product 2 Product 2 Product 2',
+        category: ['Category 1, Category2'],
+        imgUrl: 'https://picsum.photos/200/300?random=2',
+        price: '15.49',
+        description: 'Description of Product 2',
+      },
+    ],
+  },
+  {
+    id: 2,
+    nameShop: 'Shop B',
+    products: [
+      {
+        id: 201,
+        name: 'Product 3',
+        category: ['Category 1, Category2'],
+        imgUrl: 'https://picsum.photos/200/300?random=3',
+        price: '20.99',
+        description: 'Description of Product 3',
+      },
+      {
+        id: 202,
+        name: 'Product 4',
+        category: ['Category 1, Category2'],
+        imgUrl: 'https://picsum.photos/200/300?random=4',
+        price: '25.79',
+        description: 'Description of Product 4',
+      },
+    ],
+  },
+];
+
 const formatPriceToVND = (price: string): string => {
   const numberPrice = parseInt(price); // Chuyển đổi giá từ string thành number
   return numberPrice.toLocaleString('vi-VN', {
@@ -136,5 +194,15 @@ export const productsListFormatted: ProductTypes[] = productList.map(
   product => ({
     ...product,
     price: formatPriceToVND(product.price), // Gọi hàm định dạng giá
+  }),
+);
+
+export const productListInCart: CartProductTypes[] = productInCart.map(
+  cartProduct => ({
+    ...cartProduct,
+    products: cartProduct.products.map(product => ({
+      ...product,
+      price: formatPriceToVND(product.price), // Gọi hàm định dạng giá
+    })),
   }),
 );

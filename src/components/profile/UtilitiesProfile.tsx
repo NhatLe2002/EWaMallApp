@@ -38,9 +38,16 @@ const UtilitiesProfile = () => {
         </View>
         <View style={styles.option3}>
           <Text style={styles.optionText}>Mã giảm giá</Text>
-          <Text style={{fontFamily: FONTS.inter_SemiBold, fontSize: 15}}>
-            20
-          </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 3}}>
+            <MaterialCommunityIcons
+              name="ticket-percent"
+              color={COLORS.yellowMain}
+              size={18}
+            />
+            <Text style={{fontFamily: FONTS.inter_SemiBold, fontSize: 15}}>
+              20
+            </Text>
+          </View>
         </View>
       </View>
     </>
