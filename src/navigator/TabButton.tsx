@@ -14,12 +14,13 @@ const TabButton: React.FC<ButtonProps> = ({
   accessibilityState,
   onPress,
 }) => {
-  const isWallet = name.includes('wallet');
+  const useIonicons = name.includes('wallet') || name.includes('notification');
+
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.button}>
-        {isWallet ? (
+        {useIonicons ? (
           <Ionicons
             name={name}
             size={26}

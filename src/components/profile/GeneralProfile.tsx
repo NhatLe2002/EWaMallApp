@@ -4,8 +4,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button,
-  TouchableHighlight,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TitleReusable from '../../reusables/Text/TitleReusable';
@@ -87,7 +85,7 @@ const GeneralProfile = () => {
             item.title === 'Bán hàng cùng Ewamall' ? (
               <TouchableOpacity
                 key={item.id}
-                onPress={() => navigation.navigate('Home' as never)}>
+                onPress={() => navigation.navigate('SellerHome' as never)}>
                 <LinearGradient
                   key={item.id}
                   style={styles.optionSeller}

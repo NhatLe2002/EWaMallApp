@@ -12,6 +12,7 @@ import Cart from '../screens/customer/cart/Cart';
 import Category from '../screens/customer/categories/Category';
 import Voucher from '../screens/customer/voucher/Voucher';
 import Profile from '../screens/customer/profile/Profile';
+import NotificationScreen from '../screens/customer/notifications/NotificationScreen';
 
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({
@@ -42,10 +43,10 @@ function tabBarBackground() {
 const tabs = [
   {
     id: 1,
-    title: 'cart',
-    screen: 'Cart',
-    icon: 'shopping-cart',
-    Component: Cart,
+    title: 'notification',
+    screen: 'Notifications',
+    icon: 'notifications-outline',
+    Component: NotificationScreen,
   },
   {
     id: 2,
