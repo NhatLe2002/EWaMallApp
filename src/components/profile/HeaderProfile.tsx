@@ -7,10 +7,11 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller';
 
 const HeaderProfile = () => {
+  const navigation = useNavigation();
   const route = useRoute();
   return (
     <View style={{ position: 'relative' }}>
@@ -28,7 +29,7 @@ const HeaderProfile = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View>
             {route.name === 'SellerHome' ? (
-              <HeaderTitleSeller />
+              <HeaderTitleSeller text={""}/>
             ) : ("")}
           </View>
           <View style={styles.containerProfile}>
@@ -73,7 +74,9 @@ const HeaderProfile = () => {
                   Đang theo dõi
                 </Text>
               </View >
-              <TouchableOpacity style={{ marginLeft: '20%', backgroundColor: '#9DB410', }}>
+              <TouchableOpacity 
+              onPress={() => navigation.navigate('Home' as never)}
+              style={{ marginLeft: '20%', backgroundColor: '#9DB410', }}>
                 <Text style = {styles.buttonText}>
                   Trang chủ
                 </Text>

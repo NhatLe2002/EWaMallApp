@@ -17,6 +17,7 @@ const Body = () => {
         onPress={() => navigation.navigate('Profile' as never)}
         >
           <TouchableOpacity 
+          onPress={() => navigation.navigate('ProductSeller' as never)}
           style={styles.subItem}>
             <MaterialIcons
               name='production-quantity-limits'
