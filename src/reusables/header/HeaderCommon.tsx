@@ -1,11 +1,16 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Iconions from 'react-native-vector-icons/Ionicons';
 import {Badge} from 'react-native-elements';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface Props {
   title: string;
@@ -56,15 +61,11 @@ const HeaderCommon: React.FC<Props> = ({
   });
 
   const navigation = useNavigation();
-  
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <FontAwesome6
-          name="arrow-left-long"
-          size={22}
-          color={colorBack}
-        />
+        <FontAwesome6 name="arrow-left-long" size={22} color={colorBack} />
       </TouchableOpacity>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title}</Text>

@@ -19,7 +19,7 @@ const RegisterScreen: React.FC = () => {
     console.log('Form submitted:', data);
   };
   const handleBack = () => {
-    navigation.navigate('Home' as never);
+    navigation.navigate('HomeGuest' as never);
   };
   return (
     <View style={styles.container}>

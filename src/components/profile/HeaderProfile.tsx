@@ -1,20 +1,27 @@
-import { StyleSheet, Text, SafeAreaView, View, Image, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  View,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
-import { COLORS, FONTS, SIZES } from '../../constant/theme';
-import { Badge } from 'react-native-elements';
+import {COLORS, FONTS, SIZES} from '../../constant/theme';
+import {Badge} from 'react-native-elements';
 import Iconions from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller';
 
 const HeaderProfile = () => {
   const navigation = useNavigation();
   const route = useRoute();
   return (
-    <View style={{ position: 'relative' }}>
+    <View style={{position: 'relative'}}>
       <Image
         style={styles.image}
         source={require('../../assets/images/BackGround.png')}
@@ -23,17 +30,14 @@ const HeaderProfile = () => {
         style={{
           position: 'absolute',
           width: SIZES.width,
-          top: '15%',
+          top: '25%',
           right: 0,
         }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View>
-            {route.name === 'SellerHome' ? (
-              <HeaderTitleSeller text={""}/>
-            ) : ("")}
+            {route.name === 'SellerHome' ? <HeaderTitleSeller text={''} /> : ''}
           </View>
           <View style={styles.containerProfile}>
-
             <Iconions name="settings-outline" color="white" size={25} />
             <View>
               <Iconions
@@ -49,7 +53,7 @@ const HeaderProfile = () => {
                   width: 15,
                   height: 15,
                 }}
-                textStyle={{ fontSize: 9 }}
+                textStyle={{fontSize: 9}}
                 containerStyle={{
                   position: 'absolute',
                   top: -5,
@@ -67,19 +71,20 @@ const HeaderProfile = () => {
             source={require('../../assets/images/Avatar.png')}
           />
           {route.name === 'SellerHome' ? (
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
               <View style={styles.infor}>
                 <Text style={styles.textName}>Shop Name</Text>
-                <Text style={styles.textFollow}>
-                  Đang theo dõi
-                </Text>
-              </View >
-              <TouchableOpacity 
-              onPress={() => navigation.navigate('Home' as never)}
-              style={{ marginLeft: '20%', backgroundColor: '#9DB410', }}>
-                <Text style = {styles.buttonText}>
-                  Trang chủ
-                </Text>
+                <Text style={styles.textFollow}>Đang theo dõi</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Home' as never)}
+                style={{marginLeft: '20%', backgroundColor: '#9DB410'}}>
+                <Text style={styles.buttonText}>Trang chủ</Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -93,13 +98,13 @@ const HeaderProfile = () => {
               </View>
               <Text style={styles.textFollow}>
                 Đang theo dõi
-                <Text style={{ fontFamily: FONTS.roboto_bold, fontWeight: '800' }}>
+                <Text
+                  style={{fontFamily: FONTS.roboto_bold, fontWeight: '800'}}>
                   20
                 </Text>
               </Text>
             </View>
           )}
-
         </View>
       </View>
     </View>
@@ -152,7 +157,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     gap: 5,
   },
-  memberText: { color: COLORS.white, fontSize: 10 },
+  memberText: {color: COLORS.white, fontSize: 10},
 
   textFollow: {
     fontSize: 11,
@@ -167,10 +172,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: '4%',
   },
-  buttonText:{
+  buttonText: {
     color: COLORS.white,
-    margin: 4, 
+    margin: 4,
     marginHorizontal: 10,
-    fontSize: 18
-  }
+    fontSize: 18,
+  },
 });
