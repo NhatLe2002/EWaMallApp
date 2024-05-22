@@ -18,7 +18,7 @@ const OrderStatusList = () => {
         <View style = {styles.oderStatus}>
           <TouchableOpacity 
           style = {[styles.item, { backgroundColor: '#C1BE72' }]}
-          onPress={() => navigation.navigate('' as never)}
+          onPress={() => navigation.navigate('OrderSeller' as never)}
           >
             <Text style = {styles.text}>7</Text>
             <Text style = {styles.text}>

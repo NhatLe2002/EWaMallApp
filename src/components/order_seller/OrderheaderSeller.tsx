@@ -1,14 +1,14 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
-import React, { useState } from 'react';
-import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller';
-import { color } from 'react-native-elements/dist/helpers';
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller'
+import { TouchableOpacity } from 'react-native'
 import { COLORS } from '../../constant/theme';
 
-const productStatuss = [
-    { id: 1, name: 'Còn hàng', quantity: 7 },
-    { id: 2, name: 'Hết hàng', quantity: 7 },
-    { id: 3, name: 'Chờ duyệt', quantity: 7 },
-    { id: 4, name: 'Vi phạm', quantity: 7 },
+const orderStatuss = [
+    { id: 1, name: 'Chờ lấy hàng', quantity: 7 },
+    { id: 2, name: 'Đơn hủy', quantity: 7 },
+    { id: 3, name: 'Trả hàng/Hoàn tiền', quantity: 7 },
+    { id: 4, name: 'Phản hồi đánh giá', quantity: 7 },
     { id: 5, name: 'Còn hàng', quantity: 7 },
     { id: 6, name: 'Còn hàng', quantity: 7 }
 ];
@@ -28,20 +28,19 @@ const renderRecentItems = (selectedId: any) => {
         return [];
     }
 };
-
-const HeaderProductSeller = () => {
+const OrderheaderSeller = () => {
     const [selectedId, setSelectedId] = useState(1);
     const [selectedRecentItemId, setSelectedRecentItemId] = useState(1);
 
     return (
-        <View  style={styles.container}>
+        <View>
             <View style={{ marginTop: 15 }}>
-                <HeaderTitleSeller text={'Sản phẩm của tôi'} />
+                <HeaderTitleSeller text={'Đơn hàng của tôi'} />
             </View>
             <View style={{ marginTop: 10 }}>
 
                 <ScrollView horizontal={true} contentContainerStyle={styles.scrollViewContent}>
-                    {productStatuss.map((product) => (
+                    {orderStatuss.map((product) => (
                         <TouchableOpacity
                             key={product.id}
                             style={[
@@ -67,7 +66,6 @@ const HeaderProductSeller = () => {
                     ))}
                 </ScrollView>
             </View>
-
             <View>
                 <View>
                     <ScrollView horizontal={true}>
@@ -86,20 +84,13 @@ const HeaderProductSeller = () => {
                     </ScrollView>
                 </View>
             </View>
-
         </View>
-    );
-};
+    )
+}
 
-export default HeaderProductSeller;
+export default OrderheaderSeller
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        flex: 1,
-    },
     scrollViewContent: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -132,8 +123,8 @@ const styles = StyleSheet.create({
     recentTouchable: {
         marginTop: 10,
         marginLeft: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 40,
+        paddingVertical: 3,
+        paddingHorizontal: 20,
         borderRadius: 5,
         alignItems: 'center',
         minWidth: 80,
@@ -142,4 +133,4 @@ const styles = StyleSheet.create({
         backgroundColor: '#CBBA63',
         color: 'white',
     },
-});
+})

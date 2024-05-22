@@ -2,6 +2,9 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Iconions from 'react-native-vector-icons/Ionicons';
 import { COLORS, SIZES } from '../../constant/theme';
+import RattingStart from '../../reusables/ratting/RattingStart';
+import { useNavigation } from '@react-navigation/native';
+import { useGetAllProductQuery } from '../../redux/api/ProductApi';
 
 const productsList = [
     { id: 1, name: 'Ghế công thái học', rating: 4.5, price: 100, quantity: 10, image: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' },
@@ -13,6 +16,11 @@ const productsList = [
 ];
 
 const ProductListSeller = () => {
+    const navigation = useNavigation();
+    // const { data, error, isLoading } = useGetAllProductQuery();
+    // if (isLoading) return <Text>Loading...</Text>;
+    // if (error) return <Text>Error loading data</Text>;
+
     return (
         <View style={styles.container}>
             {productsList.map(product => (
@@ -27,14 +35,18 @@ const ProductListSeller = () => {
                             <View>
                                 <Text style={styles.productName}>{product.name}</Text>
                             </View>
-                            <View>
+                            <TouchableOpacity
+                            // onPress={() => navigation.goBack()}
+                            >
                                 <Iconions name="trash" color={COLORS.black} size={25} />
-                            </View>
+                            </TouchableOpacity>
                         </View>
-                        <Text >Rating: {product.rating}</Text>
-
+                        <View style={{ flexDirection: 'row' }}>
+                            <RattingStart star={3.6} size={15} />
+                            <Text style={{ marginLeft: 5 }} >{product.rating}</Text>
+                        </View>
                         <View style={styles.botProductList}>
-                            <Text >Price: ${product.price}</Text>
+                            <Text style = {styles.prductPridce}>{product.price}đ</Text>
                             <Text >Quantity: {product.quantity}</Text>
                         </View>
                     </View>
@@ -53,7 +65,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         width: '100%',
     },
-    detailProductList:{
+    detailProductList: {
         flexDirection: 'column',
         justifyContent: 'space-around',
         width: '55%',
@@ -76,8 +88,8 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: 5
-        
+        marginBottom: 5,
+        color: COLORS.black
     },
     headerProductList: {
         height: 50,
@@ -85,10 +97,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    botProductList:{
+    botProductList: {
         marginTop: 15,
         justifyContent: 'space-between',
-        flexDirection:'row'
+        flexDirection: 'row'
+    },
+    prductPridce:{
+        color: '#CD0000',
+        fontWeight: 'bold'
     }
-
 })
