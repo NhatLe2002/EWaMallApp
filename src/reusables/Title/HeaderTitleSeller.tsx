@@ -5,6 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { COLORS, FONTS } from '../../constant/theme';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ProductSeller from './../../screens/sellser/product_seller/ProductSeller';
+import { SafeAreaView } from 'react-native';
 
 interface props {
   text: String
@@ -14,7 +15,7 @@ const HeaderTitleSeller: React.FC<props> = ({ text }) => {
   const navigation = useNavigation();
   const route = useRoute();
   return (
-    <View>
+    <SafeAreaView>
       {
         route.name === 'SellerHome' ? (
           <View style={styles.containerHome}>
@@ -44,7 +45,7 @@ const HeaderTitleSeller: React.FC<props> = ({ text }) => {
         )
       }
 
-    </View>
+    </SafeAreaView>
   )
 }
 

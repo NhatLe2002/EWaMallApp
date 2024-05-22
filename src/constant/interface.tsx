@@ -1,3 +1,5 @@
+import {Product} from './types';
+
 interface InterfaceAccountState {
   accountReducer?: any;
   currentUser: null | string;
@@ -6,11 +8,10 @@ interface InterfaceAccountState {
   role: string;
   username: string;
   loading: boolean;
-  error: null | Error;
+  error: string | null;
   success: boolean;
 }
 
-export type {InterfaceAccountState};
 // Giao diện cho Industry
 export interface IIndustry {
   industryName: string;
@@ -53,3 +54,11 @@ export interface IProduct {
   seller: ISeller;
   id: number;
 }
+interface InterfaceProductState {
+  productReducer?: any;
+  productList: Product[];
+  product: Product | null;
+  error: string | null;
+}
+
+export type {InterfaceAccountState, InterfaceProductState};

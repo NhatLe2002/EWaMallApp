@@ -1,29 +1,62 @@
-import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import { AppState, AppStateStatus, StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import {Input} from 'react-native-elements';
-import {useForm, SubmitHandler, Controller} from 'react-hook-form';
-
-import {useNavigation} from '@react-navigation/native';
+import { Input } from 'react-native-elements';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
 import HeightSpacer from '../../../reusables/height_spacer/HeightSpacer';
 import { COLORS, FONTS, SIZES } from '../../../constant/theme';
+import accountApi from '../../../api/accountApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsLogin, setRole } from '../../../redux/slice/accountSlice';
+import { InterfaceAccountState } from '../../../constant/interface';
+
 type Inputs = {
   email: string;
   password: string;
 };
+
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
-  const {control, handleSubmit} = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log('Form submitted:', data);
+  const dispatch = useDispatch();
+  const { control, handleSubmit } = useForm<Inputs>();
+  const { isLogin, role } = useSelector((state: InterfaceAccountState) => state.accountReducer);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const res = await accountApi.login(data);
+      if (res) {
+        console.log(res.data);
+        dispatch(setIsLogin(true));
+        dispatch(setRole(res.data.role.roleName));
+        if (role === 'User') {
+          navigation.navigate('BottomTab' as never);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   const handleBack = () => {
-    navigation.navigate('Home' as never);
+    navigation.navigate('HomeGuest' as never);
   };
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  const handleAppStateChange = (nextAppState: AppStateStatus) => {
+    console.log('AppState changed to', nextAppState);
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => handleBack()} style={styles.backButton}>
+      <TouchableOpacity onPress={handleBack} style={styles.backButton}>
         <Feather name="arrow-left" size={30} color={COLORS.black} />
       </TouchableOpacity>
       <View style={styles.imageContainer}>
@@ -39,11 +72,11 @@ const LoginScreen: React.FC = () => {
           <Controller
             control={control}
             name="email"
-            render={({field: {value, onChange, onBlur}}) => (
+            render={({ field: { value, onChange, onBlur } }) => (
               <Input
                 placeholder="Email"
                 value={value}
-                inputStyle={{fontSize: 15}}
+                inputStyle={{ fontSize: 15 }}
                 onChangeText={onChange}
                 onBlur={onBlur}
                 leftIcon={<Feather name="mail" size={20} color="#929292" />}
@@ -53,10 +86,10 @@ const LoginScreen: React.FC = () => {
           <Controller
             control={control}
             name="password"
-            render={({field: {value, onChange, onBlur}}) => (
+            render={({ field: { value, onChange, onBlur } }) => (
               <Input
                 placeholder="Mật khẩu"
-                inputStyle={{fontSize: 15}}
+                inputStyle={{ fontSize: 15 }}
                 secureTextEntry={true}
                 value={value}
                 onChangeText={onChange}
@@ -65,7 +98,6 @@ const LoginScreen: React.FC = () => {
               />
             )}
           />
-
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit(onSubmit)}>
@@ -199,7 +231,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#Eaeaea',
     borderTopWidth: 1,
     shadowColor: COLORS.border_product,
-    shadowOffset: {width: -4, height: -4},
+    shadowOffset: { width: -4, height: -4 },
     shadowOpacity: 0.6,
     shadowRadius: 6,
     paddingBottom: '2%',

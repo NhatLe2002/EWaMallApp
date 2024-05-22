@@ -1,11 +1,11 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View } from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {View} from 'react-native';
 import Home from '../screens/customer/home/Home';
-import { StyleSheet } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
-import { useSelector } from 'react-redux';
-import { InterfaceAccountState } from '../constant/interface';
+import {StyleSheet} from 'react-native';
+import {BlurView} from '@react-native-community/blur';
+import {useSelector} from 'react-redux';
+import {InterfaceAccountState} from '../constant/interface';
 import TabButton from './TabButton';
 import LoginScreen from '../screens/customer/login/LoginScreen';
 import Cart from '../screens/customer/cart/Cart';
@@ -17,7 +17,6 @@ import NotificationScreen from '../screens/customer/notifications/NotificationSc
 const Tab = createBottomTabNavigator();
 const styles = StyleSheet.create({
   container: {
-    // display: 'none',
     borderRadius: 50,
     bottom: 30,
     backgroundColor: 'transparent',
@@ -76,16 +75,9 @@ const tabs = [
     icon: 'user',
     Component: Profile,
   },
-  // {
-  //   id: 6,
-  //   title: 'profile',
-  //   screen: 'Test',
-  //   icon: 'user',
-  //   Component: TestCarosell,
-  // },
 ];
 const BottomTabNavigation: React.FC = () => {
-  const { isLogin } = useSelector(
+  const {isLogin} = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
   );
 
@@ -103,20 +95,13 @@ const BottomTabNavigation: React.FC = () => {
           <Tab.Screen
             key={item.id}
             name={item.screen}
-            component={
-              item.screen === 'Home'
-                ? item.Component
-                : // Sửa lại isLogin --Nhật
-                !isLogin
-                  ? item.Component
-                  : LoginScreen
-            }
+            component={item.Component}
             options={{
               tabBarButton: props => (
                 <TabButton
                   name={item.icon}
                   accessibilityState={props.accessibilityState}
-                  onPress={() => { }}
+                  onPress={() => {}}
                   {...props}
                 />
               ),

@@ -1,53 +1,61 @@
 import React, {Component} from 'react';
 import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {Icon} from 'react-native-elements';
-import {SIZES} from '../../constant/theme';
+import {COLORS, FONTS, SIZES} from '../../constant/theme';
+import {formatPriceToVND} from '../../config/FixPrice';
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 10,
-    marginBottom: 3,
-    marginTop: 3,
-    width: '100%',
-    height: SIZES.height / 8,
     backgroundColor: 'white',
+    paddingHorizontal: '3%',
+    paddingVertical: '3%',
+    flexDirection: 'column',
+    gap: 5,
+    marginBottom: '1%',
   },
-  productName: {
-    height: '35%',
-  },
+
   productPrice: {
-    height: '35%',
     display: 'flex',
   },
   rate: {
-    height: '30%',
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
 });
-
-class TitleProduct extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.productName}>
-          <Text style={{fontSize: 18, color: 'black', fontWeight: '500'}}>
-            Gậy chống
-          </Text>
-        </View>
-        <View style={styles.productPrice}>
-          <Text style={{fontSize: 23, color: 'red', fontWeight: '700'}}>
-            200.000 <Text style={{textDecorationLine: 'underline'}}>đ</Text>
-          </Text>
-          <Text></Text>
-        </View>
-        <View style={styles.rate}>
-          <Icon name="grade" color="#EAC452" size={23} />
-          <Text style={{paddingLeft: 2, color: 'black'}}>5</Text>
-          <Text style={{paddingLeft: 9, color: 'black'}}>| Đã bán 299</Text>
-        </View>
-      </View>
-    );
-  }
+interface TitleProductProps {
+  productName: string;
+  price: number;
 }
+const TitleProduct: React.FC<TitleProductProps> = ({productName, price}) => {
+  const formattedPrice = formatPriceToVND(price);
+  return (
+    <View style={styles.container}>
+      <Text
+        style={{fontFamily: FONTS.roboto_regular, fontSize: 16}}
+        numberOfLines={2}>
+        {productName}
+      </Text>
+
+      <View style={styles.productPrice}>
+        <Text
+          style={{
+            fontFamily: FONTS.poppins_Medium,
+            fontSize: 23,
+            color: COLORS.price_red,
+          }}>
+          {formattedPrice}
+        </Text>
+      </View>
+      <View style={styles.rate}>
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 2}}>
+          <Icon name="grade" color={COLORS.yellowMain} size={17} />
+          <Text style={{fontFamily: FONTS.inter_regular, fontSize: 13}}>5</Text>
+        </View>
+        <Text style={{color: 'rgba(216, 216, 216, 0.77)'}}>|</Text>
+        <Text>Đã bán 299</Text>
+      </View>
+    </View>
+  );
+};
 
 export default TitleProduct;

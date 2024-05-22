@@ -16,18 +16,8 @@ const App: React.FC = () => {
 
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen name="BottomNav" component={BottomTabNavigation} />
-        <Stack.Screen name="Login" component={LoginScreen} />
 
-        <Stack.Screen name="SellerHome" component={SellerHome} />
-      </Stack.Navigator> */}
-
-      {isLogin ? <UnAuthNavigator /> : <AuthNavigator />}
+      {!isLogin ? <UnAuthNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

@@ -1,11 +1,16 @@
 import {FlatList, StyleSheet, View, Image, Text} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {COLORS} from '../../constant/theme';
 import {SIZES} from '../../constant/theme';
 import Feather from 'react-native-vector-icons/Feather';
 import {productsListFormatted} from '../../data/Product';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAllProducts} from '../../redux/slice/productSlice';
+import {InterfaceProductState} from '../../constant/interface';
+import {Product} from '../../constant/types';
+
 type ProductTypes = {
   id: number;
   name: string;
@@ -16,25 +21,34 @@ type ProductTypes = {
   sales: number;
 };
 const ProductList = () => {
-  const navigation = useNavigation();
-  const renderItem = ({item}: {item: ProductTypes}) => (
+  const navigation = useNavigation<any>();
+  const dispatch = useDispatch<any>();
+  const {productList} = useSelector(
+    (state: InterfaceProductState) => state.productReducer,
+  );
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
+
+  const renderItem = ({item}: {item: Product}) => (
     <View style={styles.product}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ProductDetail' as never);
+          navigation.navigate('ProductDetail', {productId: item.id});
         }}>
-        <Image style={styles.image} source={{uri: item.imgUrl}} />
+        <Image style={styles.image} source={{uri: item.imagesId}} />
         <View style={styles.containter}>
           <Text style={styles.nameProduct} numberOfLines={2}>
-            {item.name}
+            {item.productName}
           </Text>
           <View style={styles.subContainer}>
-            <Text style={styles.price}>{item.price}</Text>
-            <Text style={styles.sold}> Đã bán {item.sold}</Text>
+            {/* Thêm Field */}
+            {/* <Text style={styles.price}>{item.price}</Text>
+            <Text style={styles.sold}> Đã bán {item.sold}</Text> */}
           </View>
           <View style={styles.subAddressContainer}>
             <Feather name="map-pin" size={14} color="#B9B9B9" />
-            <Text style={styles.address}>{item.address}</Text>
+            <Text style={styles.address}>{item.seller.address}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -45,7 +59,7 @@ const ProductList = () => {
     <>
       <FlatList
         style={{backgroundColor: COLORS.background_list}}
-        data={productsListFormatted}
+        data={productList}
         scrollEnabled={false}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
@@ -63,7 +77,7 @@ const styles = StyleSheet.create({
   },
   product: {
     flex: 1,
-    margin: 10,
+    margin: 5,
     backgroundColor: COLORS.white,
     shadowColor: COLORS.border_product,
     shadowOffset: {width: 4, height: 4},

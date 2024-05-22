@@ -12,13 +12,18 @@ import SearchHome from '../../reusables/searchs/SearchHome';
 import Iconions from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { InterfaceAccountState } from '../../constant/interface';
 const HeaderHome: React.FC = () => {
+  const {isLogin} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
   const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>
         <ReusableText
-          text="Xin chào, Quang Vinh"
+          text={isLogin ?  "Xin chào, Quang Vinh" : "Chào mừng bạn"}
           size={23}
           color={COLORS.white}
           font={FONTS.inter_bold}

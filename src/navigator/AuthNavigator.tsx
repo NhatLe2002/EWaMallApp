@@ -7,6 +7,7 @@ import Cart from '../screens/customer/cart/Cart';
 import PurchaseScreen from '../screens/customer/purchase/PurchaseScreen';
 import SellerHome from '../screens/sellser/home/SellerHome';
 import ProductSeller from '../screens/sellser/product_seller/ProductSeller';
+import AuthGuard from './Auth';
 import OrderSeller from '../screens/sellser/order_seller/OrderSeller';
 import AddProductSeller from '../screens/sellser/add_product_seller/AddProductSeller';
 const Stack = createNativeStackNavigator();
@@ -17,8 +18,12 @@ const AuthNavigator: React.FC = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="ProductDetail" component={ProductDetail} />
+      
       <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+      <Stack.Screen
+        name="ProductDetail"
+        component={ProductDetail}
+      />
       <Stack.Screen
         name="Cart"
         component={Cart}
