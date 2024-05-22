@@ -25,7 +25,7 @@ const ProductDetail = () => {
   useEffect(() => {
     dispatch(getProductById(productId));
   }, []);
-  const productFormat = product.length > 0 ? product[0] : null;
+  const productFormat = product && product.length > 0 ? product[0] : null;
   return (
     <View style={styles.container}>
       <HeaderSearch />
@@ -36,13 +36,13 @@ const ProductDetail = () => {
             style={styles.image}
           />
         </View>
-        <TitleProduct productName={productFormat.productName} price={productFormat.price} />
+        <TitleProduct productName={productFormat?.productName} price={productFormat?.price} />
         <DeliveryPrice />
         <ShopInfor />
         <SuggestProduct />
         <ProductList />
       </ScrollView>
-      <FooterProductDetail />
+      <FooterProductDetail/>
     </View>
   );
 };
