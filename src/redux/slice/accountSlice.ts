@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {InterfaceAccountState} from '../../constant/interface';
 const initialState: InterfaceAccountState = {
   currentUser: null,
@@ -10,7 +10,6 @@ const initialState: InterfaceAccountState = {
   error: null,
   success: false,
 };
-
 const accountSlice = createSlice({
   name: 'account',
   initialState,

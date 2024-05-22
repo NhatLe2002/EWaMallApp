@@ -1,15 +1,19 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {COLORS, SIZES} from '../../constant/theme';
-import {Icon} from 'react-native-elements';
+import {COLORS, FONTS, SIZES} from '../../constant/theme';
+import {Button, Icon} from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const ShopInfor = () => {
-  console.log('hihi');
+const ShopInfor: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text style={{fontSize: 16, fontWeight: '600', color: 'black'}}>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: FONTS.roboto_regular,
+            color: 'black',
+          }}>
           Thông tin nhà cung cấp
         </Text>
         <Feather name="chevron-right" size={18} color={COLORS.gray_2} />
@@ -20,26 +24,42 @@ const ShopInfor = () => {
             style={styles.avt_shop}
             source={{uri: 'https://picsum.photos/200/300?random=1'}}
           />
-          <View style={{paddingLeft: 15}}>
-            <Text style={{fontSize: 16, fontWeight: '600', color: 'black'}}>
+          <View style={{flexDirection: 'column', gap: 2}}>
+            <Text
+              style={{
+                fontSize: 15,
+                fontFamily: FONTS.inter_medium,
+                color: 'black',
+              }}>
               Ewamall Shop
             </Text>
-            <Text style={{fontSize: 13}}>
+            <Text
+              style={{
+                fontSize: 10,
+                fontFamily: FONTS.inter_regular,
+                color: '#735656',
+              }}>
               Online <Text>12 phút</Text> trước
             </Text>
             <View style={{flexDirection: 'row'}}>
-              <Icon name="room" size={16} color="#B7B7B7" />
-              <Text style={{fontSize: 12}}>TP. Hồ Chí Minh</Text>
+              <Icon name="room" size={12} color="#735656" />
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontFamily: FONTS.inter_regular,
+                  color: '#735656',
+                }}>
+                TP. Hồ Chí Minh
+              </Text>
             </View>
           </View>
         </View>
-        <View style={styles.body_right}>
-          <MaterialCommunityIcons
-            name="heart-plus-outline"
-            size={30}
-            color={COLORS.gray_2}
-          />
-        </View>
+
+        <MaterialCommunityIcons
+          name="heart-plus-outline"
+          size={25}
+          color="#959595"
+        />
       </View>
       <View style={styles.footer}>
         <View style={{flexDirection: 'row', marginRight: 20}}>
@@ -80,38 +100,31 @@ const styles = StyleSheet.create({
     width: '100%',
     height: SIZES.height / 8,
     backgroundColor: 'white',
+    marginBottom: '1%',
+    paddingVertical: '2%',
+    flexDirection: 'column',
+    gap: 10,
   },
   title: {
-    marginTop: 3,
-    marginBottom: 3,
-    marginRight: 5,
-    height: '20%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  body_left: {
-    height: '100%',
-    width: '80%',
-    flexDirection: 'row',
-  },
-  body_right: {
-    height: '100%',
-    width: '20%',
-    flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   body: {
-    height: '55%',
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  body_left: {
+    flexDirection: 'row',
+    gap: 15,
   },
   avt_shop: {
-    height: '90%',
-    width: '16%',
-    borderRadius: 40,
+    height: SIZES.width / 9,
+    width: SIZES.width / 9,
+    borderRadius: 50,
   },
   footer: {
-    height: '20%',
     flexDirection: 'row',
   },
 });

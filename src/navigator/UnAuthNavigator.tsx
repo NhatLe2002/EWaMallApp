@@ -6,17 +6,23 @@ import LoginScreen from '../screens/customer/login/LoginScreen';
 import RegisterScreen from '../screens/customer/regisger/RegisterScreen';
 import Home from '../screens/customer/home/Home';
 import ProductDetail from '../screens/customer/product_detail/ProductDetail';
+import { useSelector } from 'react-redux';
+import { InterfaceAccountState } from '../constant/interface';
+import HomeGuest from '../screens/guest/HomeGuest';
 
 const Stack = createNativeStackNavigator();
 const UnAuthNavigator: React.FC = () => {
+  const {isLogin} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="HomeGuest"
       screenOptions={{headerShown: false}}>
+      <Stack.Screen name="HomeGuest" component={HomeGuest} />
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Login1" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="ProductDetail" component={ProductDetail} />
     </Stack.Navigator>
   );
 };

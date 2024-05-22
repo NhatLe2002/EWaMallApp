@@ -33,7 +33,7 @@ const FlashSaleHome: React.FC = () => {
             <Text style={styles.text}>ASH SALE</Text>
           </View>
 
-          <CountDown
+          {/* <CountDown
             until={9 * 60 * 60}
             size={10}
             digitStyle={{backgroundColor: COLORS.black}}
@@ -46,7 +46,7 @@ const FlashSaleHome: React.FC = () => {
             showSeparator
             timeToShow={['H', 'M', 'S']}
             timeLabels={{h: undefined, m: undefined, s: undefined}}
-          />
+          /> */}
         </View>
 
         <View style={styles.content}>

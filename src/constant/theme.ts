@@ -14,6 +14,7 @@ const COLORS = {
   gray_2: '#848484',
   yellowMain: '#E9BB45',
   price: '#CDA000',
+  price_red:'#CD0000',
   backgroundButton:'#EA3535',
   transparence: 'rgba(233, 187, 69, 0)',
   border_1: 'rgba(234, 233, 233, 0.71)',

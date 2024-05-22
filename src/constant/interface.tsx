@@ -1,3 +1,5 @@
+import {Product} from './types';
+
 interface InterfaceAccountState {
   accountReducer?: any;
   currentUser: null | string;
@@ -6,8 +8,15 @@ interface InterfaceAccountState {
   role: string;
   username: string;
   loading: boolean;
-  error: null | Error;
+  error: string | null;
   success: boolean;
 }
 
-export type {InterfaceAccountState};
+interface InterfaceProductState {
+  productReducer?: any;
+  productList: Product[];
+  product: Product | null;
+  error: string | null;
+}
+
+export type {InterfaceAccountState, InterfaceProductState};
