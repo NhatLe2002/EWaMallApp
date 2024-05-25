@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
   },
   containerProduct: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginHorizontal: 10
   },
   textHome: {
     marginLeft: 20,
