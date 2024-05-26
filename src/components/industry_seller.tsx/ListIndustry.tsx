@@ -1,6 +1,12 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { InterfaceIndustryState } from '../../constant/interface/industryInterface';
+import { fetchAllIndustry } from '../../redux/slice/seller/industrySellerSlice';
+import { Industry } from '../../constant/types/industryType';
+
+
 
 const lv1List = [
     { id: 1, name: 'Còn hàng', quantity: 7 },
@@ -27,13 +33,19 @@ const lv3List = [
     { id: 6, name: 'Còn hàng', quantity: 7 }
 ];
 
+
+
 const ListIndustry = () => {
+    const dispatch = useDispatch<any>();
+    const { industryList } = useSelector(
+        (state: InterfaceIndustryState) => state.industrySellerReducer,
+    );
     const [industry, setIndustry] = useState([
         { id: 1, name: 'Vui lòng chọn' },
     ]);
     const [selectedId, setSelectedId] = useState(1);
     const [listIndustryResult, setListIndustryResult] = useState(lv1List);
-
+    
     const handleSelectIndustry = (selectedIndustry: any) => {
         const updatedIndustry = [...industry];
         if (updatedIndustry.length > 0) {
@@ -43,6 +55,21 @@ const ListIndustry = () => {
         updatedIndustry.push({ id: updatedIndustry.length + 1, name: 'Vui lòng chờ' });
         setIndustry(updatedIndustry);
     }
+    useEffect(() => {
+        dispatch(fetchAllIndustry());
+    }, [dispatch]);
+    console.log(industryList);
+
+
+    // const { industryList } = useSelector(
+    //     (state: InterfaceIndustryState) => state.industryReducer,
+    // );
+
+    // useEffect(() => {
+    //     dispatch(fetchAllIndustry());
+    // }, []);
+    // console.log(industryList);
+
     return (
         <View style={styles.container}>
             <View style={styles.headerList}>
@@ -68,14 +95,14 @@ const ListIndustry = () => {
                 </ScrollView>
             </View>
             <ScrollView style={styles.scrollViewList}>
-                {listIndustryResult.map((industry) => (
+                {industryList.map((industry : Industry) => (
                     <TouchableOpacity
                         style={styles.touchableDetail}
                         key={industry.id}
                         onPress={() => handleSelectIndustry(industry)}
                     >
                         <Text>
-                            {industry.name}
+                            {industry.industryName}
                         </Text>
                         <MaterialIcons name='navigate-next' size={20} />
                     </TouchableOpacity>

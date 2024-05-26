@@ -1,15 +1,15 @@
-import {FlatList, StyleSheet, View, Image, Text} from 'react-native';
-import React, {useEffect} from 'react';
-import {COLORS} from '../../constant/theme';
-import {SIZES} from '../../constant/theme';
+import { FlatList, StyleSheet, View, Image, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { COLORS } from '../../constant/theme';
+import { SIZES } from '../../constant/theme';
 import Feather from 'react-native-vector-icons/Feather';
-import {productsListFormatted} from '../../data/Product';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchAllProducts} from '../../redux/slice/productSlice';
-import {InterfaceProductState} from '../../constant/interface';
-import {Product} from '../../constant/types';
+import { productsListFormatted } from '../../data/Product';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllProducts } from '../../redux/slice/productSlice';
+import { InterfaceProductState } from '../../constant/interface';
+import { Product } from '../../constant/types';
 
 type ProductTypes = {
   id: number;
@@ -23,20 +23,20 @@ type ProductTypes = {
 const ProductList = () => {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch<any>();
-  const {productList} = useSelector(
+  const { productList } = useSelector(
     (state: InterfaceProductState) => state.productReducer,
   );
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
-  const renderItem = ({item}: {item: Product}) => (
+  const renderItem = ({ item }: { item: Product }) => (
     <View style={styles.product}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ProductDetail', {productId: item.id});
+          navigation.navigate('ProductDetail', { productId: item.id });
         }}>
-        <Image style={styles.image} source={{uri: item.imagesId}} />
+        <Image style={styles.image} source={{ uri: item.imagesId }} />
         <View style={styles.containter}>
           <Text style={styles.nameProduct} numberOfLines={2}>
             {item.productName}
@@ -58,7 +58,7 @@ const ProductList = () => {
   return (
     <>
       <FlatList
-        style={{backgroundColor: COLORS.background_list}}
+        style={{ backgroundColor: COLORS.background_list }}
         data={productList}
         scrollEnabled={false}
         renderItem={renderItem}
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     margin: 5,
     backgroundColor: COLORS.white,
     shadowColor: COLORS.border_product,
-    shadowOffset: {width: 4, height: 4},
+    shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 0.6,
     shadowRadius: 5,
   },
