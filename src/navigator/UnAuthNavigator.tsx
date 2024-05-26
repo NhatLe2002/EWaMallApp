@@ -9,6 +9,7 @@ import ProductDetail from '../screens/customer/product_detail/ProductDetail';
 import { useSelector } from 'react-redux';
 import { InterfaceAccountState } from '../constant/interface';
 import HomeGuest from '../screens/guest/HomeGuest';
+import FlashSaleScreen from '../screens/customer/flashsale/FlashSaleScreen';
 
 const Stack = createNativeStackNavigator();
 const UnAuthNavigator: React.FC = () => {
@@ -21,7 +22,7 @@ const UnAuthNavigator: React.FC = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="HomeGuest" component={HomeGuest} />
       <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Login1" component={LoginScreen} />
+      <Stack.Screen name="flashsale" component={FlashSaleScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
     </Stack.Navigator>
   );

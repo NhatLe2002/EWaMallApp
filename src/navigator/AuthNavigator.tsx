@@ -1,4 +1,4 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 
 import BottomTabNavigation from './BottomTabNavigation';
@@ -10,6 +10,7 @@ import ProductSeller from '../screens/sellser/product_seller/ProductSeller';
 import AuthGuard from './Auth';
 import OrderSeller from '../screens/sellser/order_seller/OrderSeller';
 import AddProductSeller from '../screens/sellser/add_product_seller/AddProductSeller';
+import FlashSaleScreen from '../screens/customer/flashsale/FlashSaleScreen';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -18,21 +19,11 @@ const AuthNavigator: React.FC = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      
       <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
-      <Stack.Screen
-        name="ProductDetail"
-        component={ProductDetail}
-      />
-      <Stack.Screen
-        name="Cart"
-        component={Cart}
-      />
-      <Stack.Screen
-        name="Purchase"
-        component={PurchaseScreen}
-      />
-
+      <Stack.Screen name="ProductDetail" component={ProductDetail} />
+      <Stack.Screen name="Cart" component={Cart} />
+      <Stack.Screen name="Purchase" component={PurchaseScreen} />
+      <Stack.Screen name="flashsale" component={FlashSaleScreen} />
 
       {/* Seller navigator */}
       <Stack.Screen name="SellerHome" component={SellerHome} />

@@ -7,19 +7,11 @@ import {productsListFormatted} from '../../data/Product';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchAllProducts} from '../../redux/slice/productSlice';
+
 import {InterfaceProductState} from '../../constant/interface';
 import {Product} from '../../constant/types';
+import { fetchAllProducts } from '../../redux/slice/ProductSlice';
 
-type ProductTypes = {
-  id: number;
-  name: string;
-  imgUrl: string;
-  price: string;
-  address: string;
-  sold: number;
-  sales: number;
-};
 const ProductList = () => {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch<any>();

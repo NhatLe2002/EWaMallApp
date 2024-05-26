@@ -1,4 +1,4 @@
-import {Product} from './types';
+import {Industry, Product} from './types';
 
 interface InterfaceAccountState {
   accountReducer?: any;
@@ -60,5 +60,9 @@ interface InterfaceProductState {
   product: Product | null;
   error: string | null;
 }
-
-export type {InterfaceAccountState, InterfaceProductState};
+interface InterfaceIndustryState {
+  industryReducer?: any;
+  industryList: Industry[];
+  error: string | null;
+}
+export type {InterfaceAccountState,InterfaceIndustryState, InterfaceProductState};
