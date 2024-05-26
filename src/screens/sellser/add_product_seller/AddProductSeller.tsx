@@ -1,32 +1,51 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import HeaderTitleSeller from '../../../reusables/Title/HeaderTitleSeller'
-import HeightSpacer from '../../../reusables/height_spacer/HeightSpacer'
 import AddImageProductSeller from '../../../components/add_product_seller/AddImageProductSeller'
+import { ScrollView } from 'react-native'
+import ProductName from '../../../components/add_product_seller/ProductName'
+import ProductDescription from '../../../components/add_product_seller/ProductDescription'
+import HeightSpacerSeller from '../../../reusables/height_spacer/HeightSpacerSeller'
+import ProductInfor from '../../../components/product_seller/ProductInfor'
+import { COLORS } from '../../../constant/theme'
 
 const AddProductSeller = () => {
     return (
-        <View style={styles.container}>
-            <ScrollView>
+        <View style = {{flex: 1, backgroundColor: COLORS.white}}>
+            <View style={styles.header}>
+                <HeaderTitleSeller text={'Thêm sản phẩm'} />
+            </View >
+            <ScrollView style={styles.container}>
 
-                <View style={styles.header}>
-                    <HeaderTitleSeller text={'Thêm sản phẩm'} />
-                </View >
                 <View style={styles.imageComponent}>
-                    <AddImageProductSeller/>
+                    <AddImageProductSeller />
                 </View>
+                <HeightSpacerSeller height={10} color='#F6F5F2' />
                 <View style={styles.productName}>
-                    <Text>
-                        Tên sản phẩm
-                    </Text>
+                    <ProductName />
                 </View>
+                <HeightSpacerSeller height={10} color='#F6F5F2' />
+                <View style={styles.productDescription}>
+                    <ProductDescription />
+                </View>
+                <HeightSpacerSeller height={10} color='#F6F5F2' />
                 <View>
-                    <Text>
-                        Mô tả sản phẩm
-                    </Text>
+                    <ProductInfor />
                 </View>
-                <HeightSpacer height={5} />
+                <HeightSpacerSeller height={10} color='#F6F5F2' />
             </ScrollView>
+            <View style={styles.bot}>
+                <TouchableOpacity style = {styles.buttomBot}>
+                    <Text>
+                        Lưu
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style = {styles.buttomBot}>
+                    <Text>
+                        Hiển thị
+                    </Text>
+                </TouchableOpacity>
+            </View >
         </View>
     )
 }
@@ -37,14 +56,36 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        flexDirection: 'column',
     },
     header: {
-        borderBottomColor: '9CAFAA',
+        borderBottomColor: '#9290908d',
         borderBottomWidth: 1,
+        padding: 10
     },
-    imageComponent:{
+    imageComponent: {
+        marginHorizontal: 10,
+        marginVertical: 15
     },
-    productName:{
-        height: 40
+    productName: {
+        marginHorizontal: 10,
+        marginVertical: 15
+    },
+    productDescription: {
+        marginHorizontal: 10,
+        marginVertical: 15
+    },
+
+    bot:{
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    buttomBot:{
+        margin: 10, 
+        borderWidth: 0.5,
+        flex: 1,
+        alignItems: 'center',
+        paddingVertical: 10,
+        backgroundColor: '#F6F5F2'
     }
 })

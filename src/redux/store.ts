@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import accountReducer from './slice/accountSlice';
+import industrySellerReducer from './slice/seller/industrySellerSlice';
+import productSellerReducer from './slice/seller/productSellerSlice';
 import productReducer from './slice/ProductSlice';
 import industryReducer from './slice/industrySlice';
 import { IndustryAPI } from './api/IndustryAPI';
@@ -9,6 +11,8 @@ const store = configureStore({
   reducer: {
     accountReducer,
     productReducer,
+    productSellerReducer,
+    industrySellerReducer,
     industryReducer,
     [IndustryAPI.reducerPath]: IndustryAPI.reducer,
     [ProductAPI.reducerPath]: ProductAPI.reducer,
