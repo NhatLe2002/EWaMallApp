@@ -44,7 +44,8 @@ const HeaderCommonSub: React.FC<Props> = ({
     goBack: {
       position: 'absolute',
       left:'5%',
-      bottom:'10%'
+      bottom:'10%',
+      zIndex:2
     },
   });
   const navigation = useNavigation();
