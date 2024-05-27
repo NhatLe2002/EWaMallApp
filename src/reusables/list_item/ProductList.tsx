@@ -10,7 +10,8 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {InterfaceProductState} from '../../constant/interface';
 import {Product} from '../../constant/types';
-import { fetchAllProducts } from '../../redux/slice/ProductSlice';
+import { fetchAllProducts } from '../../redux/slice/productSlice';
+
 
 const ProductList = () => {
   const navigation = useNavigation<any>();

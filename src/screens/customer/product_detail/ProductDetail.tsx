@@ -15,7 +15,8 @@ import FooterProductDetail from '../../../components/product_detail/FooterProduc
 import {useDispatch, useSelector} from 'react-redux';
 
 import {InterfaceProductState} from '../../../constant/interface';
-import { getProductById } from '../../../redux/slice/ProductSlice';
+import { getProductById } from '../../../redux/slice/productSlice';
+
 
 const ProductDetail = () => {
   const route = useRoute<any>();

@@ -81,7 +81,7 @@ const BottomTabGuest: React.FC = () => {
           name={item.icon}
           onPress={() => {
             if (item.title !== 'home') {
-              navigation.navigate('Login' as never);
+              navigation.navigate('Address' as never);
             }
           }}
         />
