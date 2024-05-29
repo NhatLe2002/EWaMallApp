@@ -78,4 +78,3 @@ interface InterfaceIndustryState {
   industryList: Industry[];
   error: string | null;
 }
-export type {InterfaceAccountState,InterfaceIndustryState, InterfaceProductState};

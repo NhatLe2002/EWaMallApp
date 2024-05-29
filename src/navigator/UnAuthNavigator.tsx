@@ -23,8 +23,9 @@ const UnAuthNavigator: React.FC = () => {
       initialRouteName="HomeGuest"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="HomeGuest" component={HomeGuest} />
-      <Stack.Screen name="Address" component={AddressScreen} />
-      <Stack.Screen name="add_address" component={AddAddress} />
+      {/* <Stack.Screen name="Address" component={AddressScreen} />
+      <Stack.Screen name="add_address" component={AddAddress} /> */}
+      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="flashsale" component={FlashSaleScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
     </Stack.Navigator>

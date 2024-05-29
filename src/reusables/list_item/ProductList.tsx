@@ -28,7 +28,7 @@ const ProductList = () => {
         onPress={() => {
           navigation.navigate('ProductDetail', { productId: item.id });
         }}>
-        <Image style={styles.image} source={{ uri: item.imagesId }} />
+        <Image style={styles.image} source={{ uri: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' }} />
         <View style={styles.containter}>
           <Text style={styles.nameProduct} numberOfLines={2}>
             {item.productName}
@@ -40,7 +40,7 @@ const ProductList = () => {
           </View>
           <View style={styles.subAddressContainer}>
             <Feather name="map-pin" size={14} color="#B9B9B9" />
-            <Text style={styles.address}>{item.seller.address}</Text>
+            <Text style={styles.address}>{item?.seller?.address}</Text>
           </View>
         </View>
       </TouchableOpacity>
