@@ -14,14 +14,14 @@ const ProductSeller = () => {
     const navigation = useNavigation();
     return (
         <View style={styles.container}>
+            <HeaderProductSeller />
             <ScrollView>
-                <HeaderProductSeller />
                 <ProductListSeller />
             </ScrollView>
-            <TouchableOpacity style={styles.addButton} 
-            onPress={() => navigation.navigate('AddProductSeller' as never)}
+            <TouchableOpacity style={styles.addButton}
+                onPress={() => navigation.navigate('AddProductSeller' as never)}
             >
-                <AntDesign name="pluscircle" size={20} color={'#FFFFFF'} style={styles.icon}/>
+                <AntDesign name="pluscircle" size={20} color={'#FFFFFF'} style={styles.icon} />
                 <Text style={styles.addButtonText}>
                     Thêm sản phẩm
                 </Text>
@@ -36,6 +36,7 @@ export default ProductSeller
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column'
     },
     addButton: {
         position: 'absolute',
@@ -57,6 +58,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontWeight: 'bold',
         textAlign: 'center',
-        flexShrink: 1, 
+        flexShrink: 1,
     },
 })

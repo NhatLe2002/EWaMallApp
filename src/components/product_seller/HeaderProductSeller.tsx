@@ -6,11 +6,10 @@ import { COLORS } from '../../constant/theme';
 
 const productStatuss = [
     { id: 1, name: 'Còn hàng', quantity: 7 },
-    { id: 2, name: 'Hết hàng', quantity: 7 },
+    { id: 2, name: 'Hết hàng', quantity: 2 },
     { id: 3, name: 'Chờ duyệt', quantity: 7 },
-    { id: 4, name: 'Vi phạm', quantity: 7 },
-    { id: 5, name: 'Còn hàng', quantity: 7 },
-    { id: 6, name: 'Còn hàng', quantity: 7 }
+    { id: 4, name: 'Vi phạm', quantity: 0 },
+    { id: 5, name: 'Đã ẩn', quantity: 1 },
 ];
 const renderRecentItems = (selectedId: any) => {
     if (selectedId === 1) {
@@ -96,19 +95,18 @@ export default HeaderProductSeller;
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         flexDirection: 'column',
-        flex: 1,
     },
     scrollViewContent: {
+        backgroundColor: '#fffff',
         flexDirection: 'row',
         alignItems: 'center',
     },
     touchable: {
-        marginRight: 20,
-        padding: 10,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 5,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        backgroundColor: '#fffff',
         alignItems: 'center',
     },
     selectedTouchable: {
@@ -130,7 +128,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#E9BB45',
     },
     recentTouchable: {
-        marginTop: 10,
+        marginVertical: 10,
         marginLeft: 20,
         paddingVertical: 10,
         paddingHorizontal: 40,

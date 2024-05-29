@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
@@ -7,10 +7,15 @@ import CountDown from 'react-native-countdown-component';
 import ProductSale from './ProductSale';
 import {productsFormatted} from '../../data/Product';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
+import {useNavigation} from '@react-navigation/native';
 const FlashSaleHome: React.FC = () => {
+  const navigation = useNavigation<any>();
+  const handleNavigate = () => {
+    navigation.navigate('flashsale');
+  };
   return (
     <View>
-      <View style={styles.container}>
+      <TouchableOpacity onPress={()=> handleNavigate()} style={styles.container}>
         <View style={styles.content}>
           <View style={styles.contentSub}>
             <Text style={styles.text}>F</Text>
@@ -53,7 +58,7 @@ const FlashSaleHome: React.FC = () => {
           <Text style={styles.textSub}>Xem thêm</Text>
           <Feather name="chevron-right" size={16} color={COLORS.gray_2} />
         </View>
-      </View>
+      </TouchableOpacity>
       <HeightSpacer height={SIZES.height / 60} />
       <ProductSale data={productsFormatted} />
     </View>
