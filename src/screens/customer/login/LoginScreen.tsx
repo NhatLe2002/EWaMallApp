@@ -10,6 +10,9 @@ import accountApi from '../../../api/accountApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsLogin, setRole } from '../../../redux/slice/accountSlice';
 import { InterfaceAccountState } from '../../../constant/interface';
+import * as signalR from '@microsoft/signalr';
+import 'react-native-url-polyfill/auto';
+
 
 type Inputs = {
   email: string;
@@ -32,6 +35,33 @@ const LoginScreen: React.FC = () => {
         if (role === 'User') {
           navigation.navigate('BottomTab' as never);
         }
+
+        // Kết nối tới NotificationHub
+        const connection = new signalR.HubConnectionBuilder()
+          .withUrl("https://ewamallbe.onrender.com/notificationHub",{
+            skipNegotiation: true,
+            transport: signalR.HttpTransportType.WebSockets
+          })
+          .build();
+          connection.start()
+          .then(() => {
+              console.log("Connected to NotificationHub");
+
+              // Gọi hàm SaveUserConnection trên hub để lưu kết nối
+              connection.invoke("SaveUserConnection", res.data.email)
+                  .catch(err => console.error(err.toString()));
+          // Đăng ký lắng nghe sự kiện "ReceivedNotification"
+          connection.on("ReceivedNotification", (message) => {
+            console.log("Nhận thông báo:", message);
+          });
+                  // Đăng ký lắng nghe sự kiện "ReceiveNotification"
+          // connection.on("ReceiveNotification", (notification) => {
+          //   console.log("Nhận thông báo:", notification);
+            // Gọi hàm để hiển thị thông báo
+            //showNotification(notification);
+         // });
+          })
+
       }
     } catch (error) {
       console.log(error);
