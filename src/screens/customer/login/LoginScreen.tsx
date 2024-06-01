@@ -10,6 +10,7 @@ import accountApi from '../../../api/accountApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsLogin, setRole } from '../../../redux/slice/accountSlice';
 import { InterfaceAccountState } from '../../../constant/interface';
+import PushNotification from 'react-native-push-notification';
 import * as signalR from '@microsoft/signalr';
 import 'react-native-url-polyfill/auto';
 
@@ -24,7 +25,12 @@ const LoginScreen: React.FC = () => {
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm<Inputs>();
   const { isLogin, role } = useSelector((state: InterfaceAccountState) => state.accountReducer);
-
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("https://ewamallbe.onrender.com/notificationHub", {
+      skipNegotiation: true,
+      transport: signalR.HttpTransportType.WebSockets
+    })
+    .build();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const res = await accountApi.login(data);
@@ -37,29 +43,25 @@ const LoginScreen: React.FC = () => {
         }
 
         // Kết nối tới NotificationHub
-        const connection = new signalR.HubConnectionBuilder()
-          .withUrl("https://ewamallbe.onrender.com/notificationHub",{
-            skipNegotiation: true,
-            transport: signalR.HttpTransportType.WebSockets
-          })
-          .build();
-          connection.start()
+        connection.start()
           .then(() => {
-              console.log("Connected to NotificationHub");
+            console.log("Connected to NotificationHub");
 
-              // Gọi hàm SaveUserConnection trên hub để lưu kết nối
-              connection.invoke("SaveUserConnection", res.data.email)
-                  .catch(err => console.error(err.toString()));
-          // Đăng ký lắng nghe sự kiện "ReceivedNotification"
-          connection.on("ReceivedNotification", (message) => {
-            console.log("Nhận thông báo:", message);
-          });
-                  // Đăng ký lắng nghe sự kiện "ReceiveNotification"
-          // connection.on("ReceiveNotification", (notification) => {
-          //   console.log("Nhận thông báo:", notification);
-            // Gọi hàm để hiển thị thông báo
-            //showNotification(notification);
-         // });
+            // Gọi hàm SaveUserConnection trên hub để lưu kết nối
+            connection.invoke("SaveUserConnection", res.data.user.name, res.data.role.id)
+              .catch(err => console.error(err.toString()));
+            // Đăng ký lắng nghe sự kiện "ReceivedNotification"
+            connection.on("ReceivedNotification", (message) => {
+              console.log("Nhận thông báo:", message);
+              PushNotification.localNotification({
+                channelId: "general_notifications", // Đảm bảo sử dụng đúng channelId
+                message: JSON.stringify(message), // Tin nhắn thông báo
+              });
+            });
+            // Đăng ký lắng nghe sự kiện "ReceivedNotification"
+            connection.on("ReceivedPersonalNotification", (message) => {
+              console.log("Nhận thông báo personal:", message);
+            });
           })
 
       }
