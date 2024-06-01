@@ -3,8 +3,10 @@ import { Industry } from "../types/industryType";
 
 interface InterfaceIndustryState {
   industrySellerReducer?: any;
-  industryList: Industry[];
+  industryListAll: Industry[];
+  subIndustryById: Industry[];
   industry: Industry | null;
+  loading: boolean;
   error: string | null;
 }
 

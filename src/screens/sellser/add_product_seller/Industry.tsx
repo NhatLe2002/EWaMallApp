@@ -2,8 +2,15 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import HeaderTitleSeller from '../../../reusables/Title/HeaderTitleSeller'
 import ListIndustry from '../../../components/industry_seller.tsx/ListIndustry'
+import { Control } from 'react-hook-form'
+import { ProductCreate } from '../../../constant/types/productType'
 
-const Industry = () => {
+
+type ProductSellerProps = {
+  control: Control<ProductCreate>;
+}
+const Industry: React.FC<ProductSellerProps> = ({ control }) => {
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -12,6 +19,7 @@ const Industry = () => {
       <View>
         <ListIndustry/>
       </View>
+      
     </View>
   )
 }
