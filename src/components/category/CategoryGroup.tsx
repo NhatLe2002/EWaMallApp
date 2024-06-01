@@ -20,7 +20,7 @@ const CategoryGroup: React.FC<Category> = ({name, miniCates}: Category) => {
         style={{
           textAlign: 'center',
           textAlignVertical: 'center',
-          fontSize: 20,
+          fontSize: 18,
           height: SIZES.height / 24,
           backgroundColor: '#d2dd72bc',
           borderRadius: 4,
@@ -30,17 +30,17 @@ const CategoryGroup: React.FC<Category> = ({name, miniCates}: Category) => {
       <ScrollView
         horizontal
         style={{
-          maxWidth: '100%',
           flexDirection: 'row',
           flexWrap: 'wrap',
         }}>
         {miniCates.map((item, i) => (
           <View style={styles.cate}>
             <CategoryCard
-              fontsize={14}
+              key={i + 100}
+              fontsize={16}
               heightI={SIZES.height / 14}
               name={item.name}
-              imgUrl=""
+              imgUrl="https://suckhoedoisong.qltns.mediacdn.vn/Images/quangcao/2018/01/25/suckhoedoisong.vn-_Tin_thng-_Thng_o.jpg"
             />
           </View>
         ))}
@@ -54,13 +54,11 @@ export default CategoryGroup;
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    width: '97%',
     height: 'auto',
     marginLeft: 5,
   },
   cate: {
-    width: '23%',
-    height: 'auto',
+    width: SIZES.width / 6,
     backgroundColor: '#e0df9c6e',
     margin: 3,
   },

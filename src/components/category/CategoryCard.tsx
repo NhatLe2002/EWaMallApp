@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Image} from 'react-native-elements';
+import {SIZES} from '../../constant/theme';
 
 interface Category {
   imgUrl: string;
@@ -36,7 +37,10 @@ const CategoryCard: React.FC<Category> = ({
 export default CategoryCard;
 
 const styles = StyleSheet.create({
-  container: {marginHorizontal: 5},
+  container: {
+    marginHorizontal: 5,
+    width: SIZES.width / 6,
+  },
   img: {
     height: '90%',
     width: '100%',
