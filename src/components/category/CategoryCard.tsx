@@ -39,7 +39,7 @@ export default CategoryCard;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 5,
-    width: SIZES.width / 6,
+    width: '100%',
   },
   img: {
     height: '90%',

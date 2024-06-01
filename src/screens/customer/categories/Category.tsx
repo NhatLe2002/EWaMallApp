@@ -11,7 +11,11 @@ import CategoryCard from '../../../components/category/CategoryCard';
 import CategoryGroup from '../../../components/category/CategoryGroup';
 import {SIZES} from '../../../constant/theme';
 import {InterfaceIndustryState} from '../../../constant/interface/industryInterface';
-import {fetchAllIndustry} from '../../../redux/slice/seller/industrySellerSlice';
+import {
+  fetchAllIndustry,
+  getAllSubIndustryById,
+} from '../../../redux/slice/seller/industrySellerSlice';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const listTP = [
   {
@@ -146,45 +150,40 @@ const list = [
 ];
 
 const Category = () => {
-  const dispatch = useDispatch<any>();
-  const {industryList} = useSelector(
+  var dispatch = useDispatch<any>();
+  var {industryListAll, subIndustryById} = useSelector(
     (state: InterfaceIndustryState) => state.industrySellerReducer,
   );
   useEffect(() => {
     dispatch(fetchAllIndustry());
   }, [dispatch]);
-
   var industry1: any[] = [];
-  if (Array.isArray(industryList)) {
-    industryList.forEach((element: any) => {
+  if (Array.isArray(industryListAll)) {
+    industryListAll.forEach((element: any) => {
       if (element.level == 1) {
         industry1.push({
           id: element.id,
           industryName: element.industryName,
-          child: [],
         });
       }
     });
   }
-  // useEffect(() => {
-  //   dispatch(getSubIndustry(1));
-  // }, [dispatch]);
-  // console.log(industryList);
-  industry1.forEach((element: any) => {
-    console.log(element);
-    if (Array.isArray(industryList)) {
-      industryList.forEach((element1: any) => {
-        if (element1.level == 2 && element1.parentNodeId == element.id) {
-          element.child.push({
-            id: element1.id,
-            industryName: element1.industryName,
-            child: [],
-          });
-        }
-      });
-    }
-  });
-  console.log(industry1[0]);
+  const [industry2Id, setIndustry2Id] = useState([]);
+  var industry2: any[] = [];
+  const [industry1Id, setIndustry1Id] = useState(2);
+  useEffect(() => {
+    dispatch(getAllSubIndustryById(industry1Id));
+  }, [industry1Id]);
+  if (Array.isArray(industryListAll)) {
+    subIndustryById.forEach((element: any) => {
+      if (element.level == 1) {
+        industry2.push({
+          id: element.id,
+          industryName: element.industryName,
+        });
+      }
+    });
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.search_bar}>search</Text>
@@ -192,22 +191,31 @@ const Category = () => {
         <View style={styles.industry1}>
           <ScrollView>
             {industry1.map((item, i) => (
-              <View style={styles.cateIn1}>
-                <CategoryCard
-                  key={item.id}
-                  fontsize={17}
-                  heightI={SIZES.height / 7}
-                  name={item.industryName}
-                  imgUrl="https://suckhoedoisong.qltns.mediacdn.vn/Images/quangcao/2018/01/25/suckhoedoisong.vn-_Tin_thng-_Thng_o.jpg"
-                />
-              </View>
+              <TouchableOpacity onPress={() => setIndustry1Id(item.id)}>
+                <View style={styles.cateIn1}>
+                  <CategoryCard
+                    key={item.id}
+                    fontsize={17}
+                    heightI={SIZES.height / 7}
+                    name={item.industryName}
+                    imgUrl="https://suckhoedoisong.qltns.mediacdn.vn/Images/quangcao/2018/01/25/suckhoedoisong.vn-_Tin_thng-_Thng_o.jpg"
+                  />
+                </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
         <View style={styles.industry2}>
           <ScrollView>
-            {listTP.map((item, i) => (
-              <CategoryGroup name={item.name} miniCates={item.cates} />
+            {industry2.map((item, i) => (
+              // <CategoryCard
+              //   key={item.id}
+              //   fontsize={15}
+              //   heightI={SIZES.height / 7}
+              //   name={item.industryName}
+              //   imgUrl="https://suckhoedoisong.qltns.mediacdn.vn/Images/quangcao/2018/01/25/suckhoedoisong.vn-_Tin_thng-_Thng_o.jpg"
+              // />
+              <View></View>
             ))}
           </ScrollView>
         </View>
@@ -243,6 +251,7 @@ const styles = StyleSheet.create({
   },
   cateIn1: {
     backgroundColor: '#e4c36a7d',
+    width: '100%',
     borderRadius: 7,
     marginVertical: 3,
   },

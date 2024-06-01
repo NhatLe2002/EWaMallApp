@@ -1,5 +1,4 @@
-import { Industry } from "../types/industryType";
-
+import {Industry} from '../types/industryType';
 
 interface InterfaceIndustryState {
   industrySellerReducer?: any;
@@ -10,6 +9,4 @@ interface InterfaceIndustryState {
   error: string | null;
 }
 
-
-
-export type { InterfaceIndustryState };
+export type {InterfaceIndustryState};
