@@ -1,105 +1,121 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ListRenderItem, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import { InterfaceIndustryState } from '../../constant/interface/industryInterface';
-import { fetchAllIndustry } from '../../redux/slice/seller/industrySellerSlice';
+import { fetchAllIndustry, getAllSubIndustryById } from '../../redux/slice/seller/industrySellerSlice';
 import { Industry } from '../../constant/types/industryType';
+import { FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { setProductCreateField } from '../../redux/slice/seller/productSellerSlice';
+import { InterfaceProductState } from '../../constant/interface/productInterface';
 
 
 
-const lv1List = [
-    { id: 1, name: 'Còn hàng', quantity: 7 },
-    { id: 2, name: 'Hết hàng', quantity: 7 },
-    { id: 3, name: 'Chờ duyệt', quantity: 7 },
-    { id: 4, name: 'Vi phạm', quantity: 7 },
-    { id: 5, name: 'Còn hàng', quantity: 7 },
-    { id: 6, name: 'Còn hàng', quantity: 7 }
-];
-const lv2List = [
-    { id: 1, name: 'Còn hàng2', quantity: 7 },
-    { id: 2, name: 'Hết hàng2', quantity: 7 },
-    { id: 3, name: 'Chờ duyệt', quantity: 7 },
-    { id: 4, name: 'Vi phạm', quantity: 7 },
-    { id: 5, name: 'Còn hàng', quantity: 7 },
-    { id: 6, name: 'Còn hàng', quantity: 7 }
-];
-const lv3List = [
-    { id: 1, name: 'Còn hàng3', quantity: 7 },
-    { id: 2, name: 'Hết hàng3', quantity: 7 },
-    { id: 3, name: 'Chờ duyệt', quantity: 7 },
-    { id: 4, name: 'Vi phạm', quantity: 7 },
-    { id: 5, name: 'Còn hàng', quantity: 7 },
-    { id: 6, name: 'Còn hàng', quantity: 7 }
-];
-
+// Định nghĩa kiểu dữ liệu cho một mục trong danh sách
+interface IndustryItem {
+    id: number;
+    name: string;
+    seletedId: number;
+}
 
 
 const ListIndustry = () => {
+    const navigation = useNavigation();
+    const [industry, setIndustry] = useState([
+        { id: 1, name: 'Vui lòng chọn', seletedId: 1 },
+    ]);
     const dispatch = useDispatch<any>();
-    const { industryList } = useSelector(
+    const [listIndustryResult, setListIndustryResult] = useState<Industry[]>([]);
+    const { industryListAll, subIndustryById, loading } = useSelector(
         (state: InterfaceIndustryState) => state.industrySellerReducer,
     );
-    const [industry, setIndustry] = useState([
-        { id: 1, name: 'Vui lòng chọn' },
-    ]);
-    const [selectedId, setSelectedId] = useState(1);
-    const [listIndustryResult, setListIndustryResult] = useState(lv1List);
-    
-    const handleSelectIndustry = (selectedIndustry: any) => {
-        const updatedIndustry = [...industry];
-        if (updatedIndustry.length > 0) {
-            updatedIndustry[updatedIndustry.length - 1].name = selectedIndustry.name;
-            setListIndustryResult(lv2List)
+    const { productCreate } = useSelector(
+        (state: InterfaceProductState) => state.productSellerReducer,
+    );
+    useEffect(() => {
+        if (!loading) {
+            setListIndustryResult(subIndustryById || []);
         }
-        updatedIndustry.push({ id: updatedIndustry.length + 1, name: 'Vui lòng chờ' });
-        setIndustry(updatedIndustry);
-    }
+    }, [loading]);
     useEffect(() => {
         dispatch(fetchAllIndustry());
     }, [dispatch]);
-    console.log(industryList);
+    useEffect(() => {
+        if (industryListAll && industryListAll.length > 0) {
+            const filteredIndustries = industryListAll.filter((industry: Industry) => industry.level === 1);
+            setListIndustryResult(filteredIndustries);
+        }
+    }, [industryListAll]);
+
+    const [selectedId, setSelectedId] = useState(1);
+    const handleSelectIndustry = async (selectedIndustry: Industry) => {
+        const updatedIndustry = [...industry];
+        if (selectedIndustry.isLeaf === true) {
+            dispatch(setProductCreateField({ industryId: selectedIndustry.id.toString() }));
+            console.log(productCreate);
+            navigation.goBack();
+        }
+        if (selectedId === industry.length) {
+            await dispatch(getAllSubIndustryById(selectedIndustry.id));
+            updatedIndustry[updatedIndustry.length - 1].name = selectedIndustry.industryName;
+            updatedIndustry[updatedIndustry.length - 1].seletedId = selectedIndustry.id;
+            updatedIndustry.push({ id: updatedIndustry.length + 1, name: 'Vui lòng chọn', seletedId: 1 });
+            setIndustry(updatedIndustry);
+            setSelectedId(industry.length + 1);
+        } else {
+            updatedIndustry[selectedId - 1].name = selectedIndustry.industryName;
+            updatedIndustry[selectedId - 1].seletedId = selectedIndustry.id;
+            await dispatch(getAllSubIndustryById(selectedIndustry.id));
+            updatedIndustry.splice(selectedId);
+            updatedIndustry.push({ id: selectedId + 1, name: 'Vui lòng chọn', seletedId: 1 });
+            setIndustry(updatedIndustry);
+            setSelectedId(updatedIndustry.length);
+        }
 
 
-    // const { industryList } = useSelector(
-    //     (state: InterfaceIndustryState) => state.industryReducer,
-    // );
-
-    // useEffect(() => {
-    //     dispatch(fetchAllIndustry());
-    // }, []);
-    // console.log(industryList);
+    }
+    const handleSelectTitle = async (selectTitle: IndustryItem) => {
+        console.log(selectTitle)
+        await dispatch(getAllSubIndustryById(selectTitle.seletedId));
+    }
+    const renderItem: ListRenderItem<IndustryItem> = ({ item }) => (
+        <TouchableOpacity
+            key={item.id}
+            style={[
+                styles.touchable,
+                selectedId === item.id && styles.selectedTouchable
+            ]}
+            onPress={() => { setSelectedId(item.id); handleSelectTitle(item) }}
+        >
+            <Text style={[
+                styles.text,
+                selectedId === item.id && styles.selectedText
+            ]}>
+                {item.name}
+            </Text>
+            {selectedId === item.id && <View style={styles.underline} />}
+        </TouchableOpacity>
+    );
 
     return (
         <View style={styles.container}>
             <View style={styles.headerList}>
-                <ScrollView horizontal={true} contentContainerStyle={styles.scrollViewContent}>
-                    {industry.map((item) => (
-                        <TouchableOpacity
-                            key={item.id}
-                            style={[
-                                styles.touchable,
-                                selectedId === item.id && styles.selectedTouchable
-                            ]}
-                            onPress={() => setSelectedId(item.id)}
-                        >
-                            <Text style={[
-                                styles.text,
-                                selectedId === item.id && styles.selectedText
-                            ]}>
-                                {item.name}
-                            </Text>
-                            {selectedId === item.id && <View style={styles.underline} />}
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
+                <FlatList
+                    horizontal
+                    data={industry}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id.toString()}
+                    contentContainerStyle={styles.scrollViewContent}
+                    showsHorizontalScrollIndicator={false}
+                />
             </View>
             <ScrollView style={styles.scrollViewList}>
-                {industryList.map((industry : Industry) => (
+                {listIndustryResult.map((industry: Industry) => (
                     <TouchableOpacity
                         style={styles.touchableDetail}
                         key={industry.id}
-                        onPress={() => handleSelectIndustry(industry)}
+                        onPress={() => { handleSelectIndustry(industry); }}
                     >
                         <Text>
                             {industry.industryName}

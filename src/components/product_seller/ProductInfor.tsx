@@ -1,12 +1,34 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { Control, Controller, useFormContext } from 'react-hook-form';
+import { ProductCreate } from '../../constant/types/productType';
+import { useDispatch, useSelector } from 'react-redux';
+import { InterfaceProductState } from '../../constant/interface/productInterface';
+import { setProductCreateField } from '../../redux/slice/seller/productSellerSlice';
+import { ProductSellCommand } from '../../constant/types/productSellCommand';
+
+const DefaultProductSellCommand: ProductSellCommand[] = [
+    {
+        name: "Không",
+        price: "",
+        inventoryNumber: "",
+        path: "0",
+        parentNodeId: "",
+    }
+];
+
 
 const ProductInfor = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch<any>();
+    const { productCreate, loading } = useSelector(
+        (state: InterfaceProductState) => state.productSellerReducer,
+    );
+    const { control, setValue } = useFormContext();
     const [price, setPrice] = useState<string>('');
     const [isValidPrice, setIsValidPrice] = useState<boolean>(true);
     const [inventory, setInventory] = useState<string>('');
@@ -27,29 +49,47 @@ const ProductInfor = () => {
             setIsValidPrice(false);
         }
     };
-
+    useEffect(() => {
+        // dispatch(setProductCreateField({ productSellCommand: productSellCommand }));
+    }, []);
     return (
         <View style={styles.container}>
-            <TouchableOpacity 
-            onPress={() => navigation.navigate("Industry" as never)}
-            style={styles.industryContainer}>
-                <View style={styles.industryItem}>
-                    <AntDesign name='menuunfold' size={20} />
-                    <Text style={styles.text}>Ngành hàng</Text>
-                </View>
-                <MaterialIcons name='navigate-next' size={20} />
-            </TouchableOpacity>
+            <Controller
+                control={control}
+                name="productSellCommand[0].name"
+                defaultValue="Không"
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="Nhập giá sản phẩm"
+                        style={styles.priceInput}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+            />
             <View style={styles.priceContainer}>
                 <View style={styles.industryItem}>
                     <Ionicons name='pricetags-outline' size={20} />
                     <Text style={styles.text}>Giá</Text>
                 </View>
-                <TextInput
-                    style={styles.priceInput}
-                    keyboardType="numeric"
-                    value={price}
-                    onChangeText={handlePriceChange}
-                    placeholder="Nhập giá"
+                <Controller
+                    control={control}
+                    name="productSellCommand[0].price"
+                    defaultValue=""
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <TextInput
+                            placeholder="Nhập giá sản phẩm"
+                            style={styles.priceInput}
+                            onBlur={onBlur}
+                            onChangeText={(text) => {
+                                onChange(text);
+                                handlePriceChange(text);
+                            }}
+                            value={value}
+                            keyboardType="numeric"
+                        />
+                    )}
                 />
             </View>
             {!isValidPrice && (
@@ -60,12 +100,20 @@ const ProductInfor = () => {
                     <MaterialIcons name='inventory' size={20} />
                     <Text style={styles.text}>Kho hàng</Text>
                 </View>
-                <TextInput
-                    style={styles.quantityInput}
-                    keyboardType="numeric"
-                    value={inventory}
-                    onChangeText={handleInventoryChange}
-                    placeholder="Nhập số lượng hàng"
+                <Controller
+                    control={control}
+                    name="productSellCommand[0].inventoryNumber"
+                    defaultValue=""
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <TextInput
+                            placeholder="Nhập số lượng hàng"
+                            style={styles.quantityInput}
+                            onBlur={onBlur}
+                            onChangeText={(text) => { onChange(text); handleInventoryChange(text) }}
+                            value={value}
+                            keyboardType="numeric"
+                        />
+                    )}
                 />
             </View>
         </View>

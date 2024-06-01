@@ -1,3 +1,4 @@
+import { ProductCreate } from '../constant/types/productType';
 import axiosClient from './axiosApi';
 
 
@@ -13,6 +14,10 @@ const productApi = {
   getProductBySellerId(sellerId:number){
     const url =`/api/Product/GetProductBySellerId/${sellerId}`
     return axiosClient.get(url)
+  },
+  createProductBySeller(productCreate: ProductCreate){
+    const url =`/api/Product/CreateProduct`
+    return axiosClient.post(url, productCreate)
   }
 };
 
