@@ -1,4 +1,4 @@
-import {Product} from './types';
+import {Industry, Product} from './types';
 
 interface InterfaceAccountState {
   accountReducer?: any;
@@ -12,7 +12,20 @@ interface InterfaceAccountState {
   success: boolean;
 }
 
-// Giao diện cho Industry
+
+interface InterfaceProductState {
+  productReducer?: any;
+  productList: Product[];
+  product: Product | null;
+  error: string | null;
+}
+
+export type {InterfaceAccountState, InterfaceProductState};
+
+
+
+
+//Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha 
 export interface IIndustry {
   industryName: string;
   isActive: boolean;
@@ -61,5 +74,8 @@ interface InterfaceProductState {
   product: Product | null;
   error: string | null;
 }
-
-export type {InterfaceAccountState, InterfaceProductState};
+interface InterfaceIndustryState {
+  industryReducer?: any;
+  industryList: Industry[];
+  error: string | null;
+}

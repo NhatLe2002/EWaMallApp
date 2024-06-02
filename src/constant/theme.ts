@@ -12,6 +12,7 @@ const COLORS = {
   gray: 'gray',
   gray_1: '#9D9D9D',
   gray_2: '#848484',
+  gray_3: '#F6F5F2',
   yellowMain: '#E9BB45',
   price: '#CDA000',
   price_red:'#CD0000',

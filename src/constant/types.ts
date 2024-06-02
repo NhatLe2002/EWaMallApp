@@ -37,11 +37,10 @@
     isLeaf: boolean;
     path: number;
     parentNodeId: number | null;
-    parentNode: any | null; 
+    parentNode: Industry | null; 
     industryDetails: any[]; 
     id: number;
   };
-  
   type Seller = {
     shopName: string;
     address: string;
@@ -71,4 +70,5 @@
     id: number;
   };
  
-  export type {ProductTypes,ProductProps,CartProductTypes,ProductCartProps,Product}
+  
+  export type {ProductTypes,ProductProps,CartProductTypes,ProductCartProps,Product,Industry}
