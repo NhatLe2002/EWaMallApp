@@ -1,9 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import productApi from '../../api/productApi';
-
-import {Product} from '../../constant/types';
 import {InterfaceProductState} from '../../constant/interface';
-
+import {Product} from '../../constant/types';
 const initialState: InterfaceProductState = {
   productList: [],
   product: null,
@@ -31,7 +29,6 @@ export const getProductById = createAsyncThunk(
     }
   },
 );
-
 const productSlice = createSlice({
   name: 'product',
   initialState,
