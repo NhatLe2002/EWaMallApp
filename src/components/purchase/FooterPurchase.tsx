@@ -4,9 +4,9 @@ import { COLORS, FONTS, SIZES } from '../../constant/theme'
 import { useNavigation } from '@react-navigation/native';
 import { formatPriceToVND } from '../../config/FixPrice';
 
-const FooterPurchase: React.FC = () => {
+const FooterPurchase:React.FC<{totalCost: number}> = ({totalCost}) => {
     const price = 200000;
-    const formattedPrice = formatPriceToVND(price);
+    const formattedPrice = formatPriceToVND(totalCost);
     const navigation = useNavigation()
   return (
     <View style={styles.container}>

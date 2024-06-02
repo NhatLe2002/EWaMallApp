@@ -1,6 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect } from 'react';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
 import HeaderTitleSeller from '../../../reusables/Title/HeaderTitleSeller';
 import AddImageProductSeller from '../../../components/add_product_seller/AddImageProductSeller';
 import { ScrollView } from 'react-native';
@@ -13,10 +12,11 @@ import { ProductCreate } from '../../../constant/types/productType';
 import { ProductSellDetail } from '../../../constant/types/productSellDetail';
 import { ProductSellCommand } from '../../../constant/types/productSellCommand';
 import { useDispatch, useSelector } from 'react-redux';
-import { createProduct } from '../../../redux/slice/seller/productSellerSlice';
-import { InterfaceProductState } from '../../../constant/interface/productInterface';
 import IndustryDetail from '../../../components/product_seller/IndustryDetail';
-
+import { createProduct, setProductCreateError, setProductCreateField } from '../../../redux/slice/form/formCreateProductBySellerSlice';
+import { IFormProductCreateState } from '../../../constant/interface/formCreateProductInterface';
+import { productDescriptionSchema, productNameSchema } from '../../../constant/validate/productvalidate';
+import { uploadImageToFirebase } from '../../../features/UploadImg'
 const productSellDetails: ProductSellDetail[] = [{
   detailId: "1",
   description: "vinamilk"
@@ -48,66 +48,85 @@ const productCreate: ProductCreate = {
 
 const AddProductSeller = () => {
   const dispatch = useDispatch<any>();
-  const { productCreate, product, loading } = useSelector(
-    (state: InterfaceProductState) => state.productSellerReducer,
+  const { productCreate, productCreateError, loading, product } = useSelector(
+    (state: IFormProductCreateState) => state.formCreateProductReducer,
   );
-  const methods = useForm<ProductCreate>({ defaultValues: productCreate });
-
-  const updateFormData = (data: Partial<ProductCreate>) => {
-    Object.entries(data).forEach(([key, value]) => {
-      methods.setValue(key as keyof ProductCreate, value);
-    });
-  };
-  useEffect(() => {
-    updateFormData(productCreate);
-  }, [productCreate]);
   const handleSubmit = (data: ProductCreate) => {
-    data.sellerId = '2';
-    data.productSellCommand = productSellCommand;
-    console.log(data);
+    try {
+      productNameSchema.validate(data.productName);
+      dispatch(setProductCreateError({ field: 'productName', error: '' }));
+    } catch (error: any) {
+      dispatch(setProductCreateError({ field: 'productName', error: error.message }));
+    }
+    try {
+      productDescriptionSchema.validate(data.productDescription);
+      dispatch(setProductCreateError({ field: 'productDescription', error: '' }));
+    } catch (error: any) {
+      dispatch(setProductCreateError({ field: 'productDescription', error: error.message }));
+    }
+    dispatch(setProductCreateField({ sellerId: "2" }));
     dispatch(createProduct(data));
+    console.log(JSON.stringify(data, null, 2));
+    console.log(product)
+    // if (productCreateError && areAllFieldsEmpty(productCreateError)) {
+    //   console.log(data);
+    //  console.log(productCreateError);
+    // }
   };
 
+  const areAllFieldsEmpty = (errorObject: any) => {
+    const errorValues = Object.values(errorObject);
+    return errorValues.every((value) => value === '');
+  };
+  const handleUpload = async () => {
+    const productId = 11;
+    const uri = '/Users/quangvinh/Desktop/Screenshot 2024-05-27 at 20.49.31.png';
+    try {
+      const downloadURL = await uploadImageToFirebase(uri, productId);
+      Alert.alert('Success', `Image uploaded successfully! URL: ${downloadURL}`);
+    } catch (error) {
+      Alert.alert('Error', `Failed to upload image: ${error} `);
+      console.log(error)
+    }
+  };
   return (
-    <FormProvider {...methods}>
-      <View style={{ flex: 1, backgroundColor: COLORS.white }}>
-        <View style={styles.header}>
-          <HeaderTitleSeller text={'Thêm sản phẩm'} />
-        </View>
-        <ScrollView style={styles.container}>
-          <View style={styles.imageComponent}>
-            <AddImageProductSeller />
-          </View>
-          <HeightSpacerSeller height={10} color='#F6F5F2' />
-          <View style={styles.productName}>
-            <ProductName />
-          </View>
-          <HeightSpacerSeller height={10} color='#F6F5F2' />
-          <View style={styles.productDescription}>
-            <ProductDescription />
-          </View>
-          <HeightSpacerSeller height={10} color='#F6F5F2' />
-          <View>
-            <IndustryDetail />
-          </View>
-          <HeightSpacerSeller height={10} color='#F6F5F2' />
-          <View>
-            <ProductInfor />
-          </View>
-          <HeightSpacerSeller height={10} color='#F6F5F2' />
-        </ScrollView>
-        <View style={styles.bot}>
-          <TouchableOpacity
-            style={styles.buttomBot}
-            onPress={methods.handleSubmit(handleSubmit)}>
-            <Text>Lưu</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttomBot}>
-            <Text>Hiển thị</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <View style={styles.header}>
+        <HeaderTitleSeller text={'Thêm sản phẩm'} />
       </View>
-    </FormProvider>
+      <ScrollView style={styles.container}>
+        <View style={styles.imageComponent}>
+          <AddImageProductSeller />
+        </View>
+        <HeightSpacerSeller height={10} color='#F6F5F2' />
+        <View style={styles.productName}>
+          <ProductName />
+        </View>
+        <HeightSpacerSeller height={10} color='#F6F5F2' />
+        <View style={styles.productDescription}>
+          <ProductDescription />
+        </View>
+        <HeightSpacerSeller height={10} color='#F6F5F2' />
+        <View>
+          <IndustryDetail />
+        </View>
+        <HeightSpacerSeller height={10} color='#F6F5F2' />
+        <View>
+          <ProductInfor />
+        </View>
+        <HeightSpacerSeller height={10} color='#F6F5F2' />
+      </ScrollView>
+      <View style={styles.bot}>
+        <TouchableOpacity
+          style={styles.buttomBot}
+          onPress={() => handleSubmit(productCreate)}>
+          <Text>Lưu</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttomBot}>
+          <Text>Hiển thị</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 

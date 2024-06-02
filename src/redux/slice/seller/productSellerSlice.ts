@@ -1,9 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { InterfaceProductState } from '../../../constant/interface/productInterface'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import type {PayloadAction} from '@reduxjs/toolkit';
+import {InterfaceProductState} from '../../../constant/interface/productInterface';
 import productApi from '../../../api/productApi';
 import { Product, ProductCreate } from '../../../constant/types/productType';
 
+import {CreateProduct} from '../../../constant/types';
 
 const initialState: InterfaceProductState = {
   productList: [],
@@ -21,6 +22,7 @@ const initialState: InterfaceProductState = {
   product: null,
   error: null,
   loading: false,
+  createProduct: null,
 }
 export const getProductsBySellerId = createAsyncThunk(
   'products/getProductsBySellerId',
@@ -34,55 +36,63 @@ export const getProductsBySellerId = createAsyncThunk(
   },
 );
 export const createProduct = createAsyncThunk(
-  'products/createProduct',
-  async (productData: ProductCreate) => {
+  'products/create_product',
+  async (data: CreateProduct) => {
+    const {
+      productName,
+      productDescription,
+      coverImageId,
+      imagesId,
+      videoId,
+      industryId,
+      sellerId,
+      productSellDetails,
+      productSellCommand,
+    } = data;
+    // console.log("data", data);
+    const product_create = {
+      productName: productName,
+      productDescription: productDescription,
+      coverImageId: coverImageId,
+      imagesId: imagesId,
+      videoId: videoId,
+      industryId: industryId,
+      sellerId: sellerId,
+      productSellDetails: productSellDetails,
+      productSellCommand: productSellCommand,
+    };
     try {
-      const response = await productApi.createProductBySeller(productData);
+      const response = await productApi.createProduct(product_create);
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
-
 const productSellerSlice = createSlice({
   name: 'productSeller',
   initialState,
-  reducers: {
-    setProductCreateField: (state, action: PayloadAction<Partial<ProductCreate>>) => {
-      state.productCreate = { ...state.productCreate, ...action.payload };
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(
       getProductsBySellerId.fulfilled,
       (state, action: PayloadAction<Product[]>) => {
-        return { ...state, productList: action.payload, error: '' };
+        return {...state, productList: action.payload, error: ''};
       },
     );
+    builder.addCase(getProductsBySellerId.rejected, (state, action) => {
+      return {...state, error: action.payload as string};
+    });
     builder.addCase(
-      getProductsBySellerId.rejected, (state, action) => {
-        return { ...state, error: action.payload as string };
-      }
+      createProduct.fulfilled,
+      (state, action: PayloadAction<CreateProduct>) => {
+        return {...state, createProduct: action.payload, error: ''};
+      },
     );
-    builder
-      .addCase(createProduct.pending,
-        (state) => {
-          state.loading = true;
-          state.error = null;
-        })
-      .addCase(createProduct.fulfilled,
-        (state, action: PayloadAction<Product>) => {
-          return { ...state, product: action.payload, error: '', loading: false };
-        })
-      .addCase(createProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      }
-      );
+    builder.addCase(createProduct.rejected, (state, action) => {
+      return {...state, error: action.payload as string};
+    });
+  },
+});
 
-  }
-})
-
-export const {setProductCreateField} = productSellerSlice.actions;
-export default productSellerSlice.reducer
+export default productSellerSlice.reducer;

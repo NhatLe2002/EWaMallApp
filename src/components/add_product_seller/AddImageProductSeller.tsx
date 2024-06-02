@@ -4,10 +4,9 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import SubTitleAddProductSeller from '../../reusables/Title/SubTitleAddProductSeller';
 import { COLORS, SIZES } from '../../constant/theme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useFormContext } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { InterfaceProductState } from '../../constant/interface/productInterface';
-import { setProductCreateField } from '../../redux/slice/seller/productSellerSlice';
+import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
+import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
 const AddImageProductSeller = () => {
     const [imageUris, setImageUris] = useState<string[]>([]);
     const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
@@ -15,12 +14,10 @@ const AddImageProductSeller = () => {
     const [selectedCoverImage, setSelectedCoverImage] = useState<string | null>(null);
 
 
-    const { control } = useFormContext();
     const dispatch = useDispatch<any>();
-    const { productCreate, loading } = useSelector(
-        (state: InterfaceProductState) => state.productSellerReducer,
+    const { productCreate, productCreateError, loading } = useSelector(
+        (state: IFormProductCreateState) => state.formCreateProductReducer,
     );
-
 
     const handleAddImage = () => {
         setModalVisibleAdd(true);

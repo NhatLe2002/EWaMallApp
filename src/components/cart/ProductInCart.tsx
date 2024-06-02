@@ -1,48 +1,106 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {CartProductTypes, ProductTypes} from '../../constant/types';
+import {Cart, CartProductTypes} from '../../constant/types';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '../../reusables/checkbox/CheckBox';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {formatPriceToVND} from '../../config/FixPrice';
+import {useDispatch} from 'react-redux';
+import {decreaseQuantity, increaseQuantity, setProductBuy} from '../../redux/slice/cartSlice';
+
+
 interface Props {
   item: CartProductTypes;
 }
 
 const ProductInCart: React.FC<Props> = ({item}) => {
-  const [checked, setChecked] = useState(true);
-  const toggleCheckbox = () => setChecked(!checked);
-  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch<any>();
+  const [sellerCheckboxState, setSellerCheckboxState] =
+    useState<boolean>(false);
+  const [productCheckboxStates, setProductCheckboxStates] = useState<{
+    [key: number]: boolean;
+  }>({});
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]); 
+  const handleToggleSellerCheckbox = (sellerId: number) => {
+    const sellerProducts = item.products.filter(
+      product => product.sellerId === sellerId,
+    );
+    const newProductCheckboxStates = {...productCheckboxStates};
+    const newSelectedProducts: React.SetStateAction<number[]> = [];
+  
+    const newSellerCheckboxState = !sellerCheckboxState;
+    setSellerCheckboxState(newSellerCheckboxState);
+  
+    sellerProducts.forEach(product => {
+      newProductCheckboxStates[product.productSellDetailId] = newSellerCheckboxState;
+      if (newSellerCheckboxState) {
+        newSelectedProducts.push(product.productSellDetailId);
+      }
+    });
+  
+    setProductCheckboxStates(newProductCheckboxStates);
+    setSelectedProducts(newSelectedProducts);
+  };
+  
 
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+  const handleToggleProductCheckbox = (productSellDetailId: number) => {
+    setProductCheckboxStates(prevState => ({
+      ...prevState,
+      [productSellDetailId]: !prevState[productSellDetailId],
+    }));
+    setSelectedProducts(prevProducts => {
+      if (prevProducts.includes(productSellDetailId)) {
+        return prevProducts.filter(id => id !== productSellDetailId);
+      } else {
+        return [...prevProducts, productSellDetailId];
+      }
+    });
   };
 
-  const increaseQuantity = () => {
-    setQuantity(quantity + 1);
-  };
 
+
+  useEffect(() => {
+    const allProductsSelected = item.products.every(
+      product => productCheckboxStates[product.productSellDetailId],
+    );
+    setSellerCheckboxState(allProductsSelected);
+    dispatch(setProductBuy(selectedProducts));
+  }, [productCheckboxStates]);
+
+  const decrease_Quantity = (cartId: number, quantity: number) => {
+    dispatch(decreaseQuantity({cartId, quantity}));
+  };
+  const increase_Quantity = (cartId: number, quantity: number) => {
+    dispatch(increaseQuantity({cartId, quantity}));
+  };
   return (
     <View style={styles.container}>
       <View style={styles.headerShop}>
-        <CheckBox onPress={() => toggleCheckbox()} isChecked={checked} />
+        <CheckBox
+          onPress={() => handleToggleSellerCheckbox(item.sellerId)}
+          isChecked={sellerCheckboxState}
+        />
         <MaterialCommunityIcons
           name="storefront-outline"
           size={20}
           color="#7F7F7F"
         />
-        <Text style={styles.textShop}>{item.nameShop}</Text>
+        <Text style={styles.textShop}>{item.sellerName}</Text>
       </View>
       {item.products.map(product => (
-        <View style={styles.containerProduct} key={product.id}>
-          <CheckBox onPress={() => toggleCheckbox()} isChecked={checked} />
-
-          <Image style={styles.imageProduct} source={{uri: product.imgUrl}} />
+        <View style={styles.containerProduct} key={product.productSellDetailId}>
+          <CheckBox
+            onPress={() => handleToggleProductCheckbox(product.productSellDetailId)}
+            isChecked={productCheckboxStates[product.productSellDetailId] || false}
+          />
+          <Image
+            style={styles.imageProduct}
+            source={{uri: product.coverImageId}}
+          />
           <View style={styles.infoProduct}>
             <Text style={styles.nameProduct} numberOfLines={1}>
-              {product.name}
+              {product.productName}
             </Text>
             <View style={styles.classificationContainer}>
               <Text style={styles.classificationText}>Phân loại</Text>
@@ -53,17 +111,21 @@ const ProductInCart: React.FC<Props> = ({item}) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-              <Text style={styles.price}>{product.price}</Text>
+              <Text style={styles.price}>{formatPriceToVND(product.cost)}</Text>
               <View style={styles.quantityContainer}>
                 <TouchableOpacity
                   style={styles.buttonQuantity}
-                  onPress={decreaseQuantity}>
+                  onPress={() => {
+                    decrease_Quantity(product.cartId, product.quantity);
+                  }}>
                   <Text>-</Text>
                 </TouchableOpacity>
-                <Text style={styles.quantityText}>{quantity}</Text>
+                <Text style={styles.quantityText}>{product.quantity}</Text>
                 <TouchableOpacity
                   style={styles.buttonQuantity}
-                  onPress={increaseQuantity}>
+                  onPress={() =>
+                    increase_Quantity(product.cartId, product.quantity)
+                  }>
                   <Text>+</Text>
                 </TouchableOpacity>
               </View>
@@ -72,12 +134,13 @@ const ProductInCart: React.FC<Props> = ({item}) => {
         </View>
       ))}
       <View style={styles.footerShop}>
-      <Ionicons name="ticket-outline" size={16} color={COLORS.red_price} />
-        <Text style={{color:'#848484',fontSize:12}}>Thêm Shop Voucher</Text>
+        <Ionicons name="ticket-outline" size={16} color={COLORS.red_price} />
+        <Text style={{color: '#848484', fontSize: 12}}>Thêm Shop Voucher</Text>
       </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
@@ -136,7 +199,7 @@ const styles = StyleSheet.create({
   },
   classificationText: {
     fontSize: 12,
-    color:'#777777'
+    color: '#777777',
   },
   quantityContainer: {
     flexDirection: 'row',

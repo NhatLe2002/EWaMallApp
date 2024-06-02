@@ -9,7 +9,41 @@ import InfoProduct from '../../../components/purchase/InfoProduct';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import InfoPrice from '../../../components/purchase/InfoPrice';
+import { useSelector } from 'react-redux';
+import { InterfaceCartState } from '../../../constant/interface';
 const PurchaseScreen: React.FC = () => {
+  const {cartList, product_purchase} = useSelector(
+    (state: InterfaceCartState) => state.cartReducer,
+  );
+  const filteredCartList = cartList.filter(
+    (item: {productSellDetailId: number}) => {
+      return product_purchase.includes(item.productSellDetailId);
+    },
+  );
+
+  const productsByShop: {[sellerId: number]: any[]} = filteredCartList.reduce(
+    (acc: {[x: string]: any[]}, item: {sellerId: string | number}) => {
+      if (!acc[item.sellerId]) {
+        acc[item.sellerId] = [];
+      }
+      acc[item.sellerId].push(item);
+      return acc;
+    },
+    {},
+  );
+
+  const filteredCartListByShop = Object.entries(productsByShop).map(
+    ([sellerId, products]) => ({
+      sellerId: parseInt(sellerId),
+      products: products,
+    }),
+  );
+  const totalCost = filteredCartListByShop?.reduce((total, shop) => {
+    const shopTotal = shop.products.reduce((subtotal, product) => {
+      return subtotal + product.cost * product.quantity;
+    }, 0);
+    return total + shopTotal;
+  }, 0);
   return (
     <View style={styles.container}>
       <HeaderCommon
@@ -20,7 +54,7 @@ const PurchaseScreen: React.FC = () => {
       />
       <ScrollView style={styles.content}>
         <InfoAddress />
-        <InfoProduct />
+        <InfoProduct filteredCartListByShop={filteredCartListByShop} />
        {/* Voucher */}
         <View style={styles.containerVoucher}>
           <View style={styles.addVoucher}>
@@ -46,9 +80,9 @@ const PurchaseScreen: React.FC = () => {
             <Feather name="chevron-right" size={16} color={COLORS.gray_2} />
           </View>
         </View>
-        <InfoPrice />
+        <InfoPrice totalCost={totalCost} />
       </ScrollView>
-      <FooterPurchase />
+      <FooterPurchase  totalCost={totalCost}  />
     </View>
   );
 };

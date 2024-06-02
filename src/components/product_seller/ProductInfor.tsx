@@ -4,12 +4,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { Control, Controller, useFormContext } from 'react-hook-form';
 import { ProductCreate } from '../../constant/types/productType';
 import { useDispatch, useSelector } from 'react-redux';
 import { InterfaceProductState } from '../../constant/interface/productInterface';
-import { setProductCreateField } from '../../redux/slice/seller/productSellerSlice';
 import { ProductSellCommand } from '../../constant/types/productSellCommand';
+import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
 
 const DefaultProductSellCommand: ProductSellCommand[] = [
     {
@@ -28,92 +27,60 @@ const ProductInfor = () => {
     const { productCreate, loading } = useSelector(
         (state: InterfaceProductState) => state.productSellerReducer,
     );
-    const { control, setValue } = useFormContext();
     const [price, setPrice] = useState<string>('');
     const [isValidPrice, setIsValidPrice] = useState<boolean>(true);
     const [inventory, setInventory] = useState<string>('');
+    const [productSellCommandInput, setProductSellCommandInput] = useState<ProductSellCommand[]>(DefaultProductSellCommand)
 
 
     const handleInventoryChange = (text: string) => {
-        const formattedInventory = text.replace(/[^0-9]/g, '');
-        setInventory(formattedInventory);
+        setProductSellCommandInput(prevCommands => prevCommands.map(command => ({ ...command, inventoryNumber: text })));
     };
 
-    const handlePriceChange = (text: string) => {
-        const formattedPrice = text.replace(/[^0-9.]/g, '');
-        setPrice(formattedPrice);
-        const numericPrice = parseFloat(formattedPrice);
-        if (!isNaN(numericPrice) && numericPrice >= 1000 && numericPrice <= 120000000) {
-            setIsValidPrice(true);
-        } else {
-            setIsValidPrice(false);
-        }
+    const handlePriceChange = async (text: string) => {
+        setProductSellCommandInput(prevCommands => prevCommands.map(command => ({ ...command, price: text })));
     };
     useEffect(() => {
-        // dispatch(setProductCreateField({ productSellCommand: productSellCommand }));
-    }, []);
+        dispatch(setProductCreateField({ productSellCommand: productSellCommandInput }));
+    }, [productSellCommandInput]);
     return (
         <View style={styles.container}>
-            <Controller
-                control={control}
-                name="productSellCommand[0].name"
-                defaultValue="Không"
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        placeholder="Nhập giá sản phẩm"
-                        style={styles.priceInput}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-            />
+            <TouchableOpacity
+                onPress={() => navigation.navigate("ProductComman" as never)}
+                style={styles.industryContainer}>
+                <View style={styles.industryItem}>
+                    <AntDesign name='menuunfold' size={20} />
+                    <Text style={styles.text}>Phân loại hàng</Text>
+                </View>
+                {false ? (
+                    <Text >{}</Text>
+                ) : <MaterialIcons name='navigate-next' size={20} />}
+            </TouchableOpacity>
             <View style={styles.priceContainer}>
                 <View style={styles.industryItem}>
                     <Ionicons name='pricetags-outline' size={20} />
                     <Text style={styles.text}>Giá</Text>
                 </View>
-                <Controller
-                    control={control}
-                    name="productSellCommand[0].price"
-                    defaultValue=""
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            placeholder="Nhập giá sản phẩm"
-                            style={styles.priceInput}
-                            onBlur={onBlur}
-                            onChangeText={(text) => {
-                                onChange(text);
-                                handlePriceChange(text);
-                            }}
-                            value={value}
-                            keyboardType="numeric"
-                        />
-                    )}
+                <TextInput
+                    placeholder="Nhập giá sản phẩm"
+                    style={styles.priceInput}
+                    onChangeText={(text) => {
+                        handlePriceChange(text);
+                    }}
+                    keyboardType="numeric"
                 />
             </View>
-            {!isValidPrice && (
-                <Text style={styles.errorText}>Giá phải từ 1000.00 đến 120000000.00</Text>
-            )}
+
             <View style={styles.deliveryContainer}>
                 <View style={styles.industryItem}>
                     <MaterialIcons name='inventory' size={20} />
                     <Text style={styles.text}>Kho hàng</Text>
                 </View>
-                <Controller
-                    control={control}
-                    name="productSellCommand[0].inventoryNumber"
-                    defaultValue=""
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            placeholder="Nhập số lượng hàng"
-                            style={styles.quantityInput}
-                            onBlur={onBlur}
-                            onChangeText={(text) => { onChange(text); handleInventoryChange(text) }}
-                            value={value}
-                            keyboardType="numeric"
-                        />
-                    )}
+                <TextInput
+                    placeholder="Nhập số lượng hàng"
+                    style={styles.quantityInput}
+                    onChangeText={(text) => { handleInventoryChange(text) }}
+                    keyboardType="numeric"
                 />
             </View>
         </View>
