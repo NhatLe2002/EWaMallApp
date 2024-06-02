@@ -9,6 +9,12 @@ const productApi = {
   getProductById(productId:number){
     const url =`/api/Product/GetProductById/${productId}`
     return axiosClient.get(url)
+  },
+  getProductBySearch(searchValue:string){
+    const url =`/api/Product/GetAllProductsBySearch`
+    return axiosClient.post(url,{
+      searchValue : searchValue
+    })
   }
 };
 

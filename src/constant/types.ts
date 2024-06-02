@@ -67,6 +67,7 @@
     productSellerDetails: any[]; 
     sellerId: number;
     seller: Seller;
+    sellerAddress : string;
     id: number;
   };
  

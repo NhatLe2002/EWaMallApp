@@ -57,6 +57,7 @@ export interface IProduct {
 interface InterfaceProductState {
   productReducer?: any;
   productList: Product[];
+  productSearchList: Product[];
   product: Product | null;
   error: string | null;
 }

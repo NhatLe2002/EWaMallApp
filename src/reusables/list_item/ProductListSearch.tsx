@@ -12,23 +12,18 @@ import {InterfaceProductState} from '../../constant/interface';
 import {Product} from '../../constant/types';
 
 type ProductTypes = {
-  id: number;
-  name: string;
-  imgUrl: string;
-  price: string;
-  address: string;
-  sold: number;
-  sales: number;
+  products : Product[]
 };
-const ProductList = () => {
+const ProductListSearch = (props : ProductTypes) => {
+  console.log(props.products)
   const navigation = useNavigation<any>();
-  const dispatch = useDispatch<any>();
-  const {productList} = useSelector(
-    (state: InterfaceProductState) => state.productReducer,
-  );
-  useEffect(() => {
-    dispatch(fetchAllProducts());
-  }, [dispatch]);
+  // const dispatch = useDispatch<any>();
+  // const {productList} = useSelector(
+  //   (state: InterfaceProductState) => state.productReducer,
+  // );
+  // useEffect(() => {
+  //   dispatch(fetchAllProducts());
+  // }, [dispatch]);
 
   const renderItem = ({item}: {item: Product}) => (
     <View style={styles.product}>
@@ -59,7 +54,7 @@ const ProductList = () => {
     <>
       <FlatList
         style={{backgroundColor: COLORS.background_list}}
-        data={productList}
+        data={props.products}
         scrollEnabled={false}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
@@ -69,7 +64,7 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default ProductListSearch;
 
 const styles = StyleSheet.create({
   headerContainer: {

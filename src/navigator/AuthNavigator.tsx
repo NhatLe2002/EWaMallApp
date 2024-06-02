@@ -10,6 +10,8 @@ import ProductSeller from '../screens/sellser/product_seller/ProductSeller';
 import AuthGuard from './Auth';
 import OrderSeller from '../screens/sellser/order_seller/OrderSeller';
 import AddProductSeller from '../screens/sellser/add_product_seller/AddProductSeller';
+import SearchPage from '../screens/guest/search/SearchPage';
+import SearchPageResult from '../screens/guest/search/SearchPageResult';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -35,6 +37,8 @@ const AuthNavigator: React.FC = () => {
 
 
       {/* Seller navigator */}
+      <Stack.Screen name="SearchPageResult" component={SearchPageResult}/>
+      <Stack.Screen name="SearchPage" component={SearchPage} />
       <Stack.Screen name="SellerHome" component={SellerHome} />
       <Stack.Screen name="ProductSeller" component={ProductSeller} />
       <Stack.Screen name="OrderSeller" component={OrderSeller} />
