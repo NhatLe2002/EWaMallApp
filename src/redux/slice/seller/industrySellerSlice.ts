@@ -1,11 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { InterfaceIndustryState } from "../../../constant/interface/industryInterface";
-import { Industry } from "../../../constant/types/industryType";
+import { Industry, IndustryById } from "../../../constant/types/industryType";
 import industryApi from "../../../api/industryApi";
 
 const initialState: InterfaceIndustryState = {
   industryListAll: [],
   subIndustryById: [],
+  industryById: null,
   industry: null,
   loading: false,
   error: null
@@ -33,13 +34,26 @@ export const getAllSubIndustryById = createAsyncThunk(
     }
   },
 );
-
+export const getIndustryById = createAsyncThunk(
+  'industrys/getIndustryById',
+  async (industryId: number) => {
+    try {
+      const response = await industryApi.getIndustryById(industryId);
+      // console.log("getIndustryById response data:", JSON.stringify(response.data, null, 2)); // Log dữ liệu chuỗi hóa
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 
 const industrySellerSlice = createSlice({
   name: 'industrySeller',
   initialState,
   reducers: {
-
+    set: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -73,6 +87,26 @@ const industrySellerSlice = createSlice({
         state.error = action.payload as string;
       }
     );
+    builder.addCase(
+      getIndustryById.pending,
+      (state) => {
+        state.loading = true;
+        state.error = '';
+      }
+    ).addCase(
+      getIndustryById.fulfilled,
+      (state, action: PayloadAction<IndustryById>) => {
+        // console.log("Action payload in reducer:", JSON.stringify(action.payload, null, 2)); // Log dữ liệu chuỗi hóa
+        return { ...state, industryById: action.payload, loading: false, error: '' };
+      }
+    ).addCase(
+      getIndustryById.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      }
+    );
+
   }
 })
 

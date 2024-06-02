@@ -3,6 +3,7 @@ import accountReducer from './slice/accountSlice';
 import industrySellerReducer from './slice/seller/industrySellerSlice';
 import productSellerReducer from './slice/seller/productSellerSlice';
 import industryDetailSellerReducer from './slice/seller/industryDetailSellerSlice';
+import formCreateProductReducer from './slice/form/formCreateProductBySellerSlice';
 import productReducer from './slice/productSlice';
 import industryReducer from './slice/industrySlice';
 import { IndustryAPI } from './api/IndustryAPI';
@@ -16,6 +17,10 @@ const store = configureStore({
     industrySellerReducer,
     industryReducer,
     industryDetailSellerReducer,
+
+    //form
+    formCreateProductReducer,
+
     [IndustryAPI.reducerPath]: IndustryAPI.reducer,
     [ProductAPI.reducerPath]: ProductAPI.reducer,
   },

@@ -33,25 +33,11 @@ export const getProductsBySellerId = createAsyncThunk(
     }
   },
 );
-export const createProduct = createAsyncThunk(
-  'products/createProduct',
-  async (productData: ProductCreate) => {
-    try {
-      const response = await productApi.createProductBySeller(productData);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
 
 const productSellerSlice = createSlice({
   name: 'productSeller',
   initialState,
   reducers: {
-    setProductCreateField: (state, action: PayloadAction<Partial<ProductCreate>>) => {
-      state.productCreate = { ...state.productCreate, ...action.payload };
-    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -65,24 +51,8 @@ const productSellerSlice = createSlice({
         return { ...state, error: action.payload as string };
       }
     );
-    builder
-      .addCase(createProduct.pending,
-        (state) => {
-          state.loading = true;
-          state.error = null;
-        })
-      .addCase(createProduct.fulfilled,
-        (state, action: PayloadAction<Product>) => {
-          return { ...state, product: action.payload, error: '', loading: false };
-        })
-      .addCase(createProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      }
-      );
-
   }
 })
 
-export const {setProductCreateField} = productSellerSlice.actions;
+export const {} = productSellerSlice.actions;
 export default productSellerSlice.reducer

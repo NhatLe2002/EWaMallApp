@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import { InterfaceIndustryState } from '../../constant/interface/industryInterface';
-import { fetchAllIndustry, getAllSubIndustryById } from '../../redux/slice/seller/industrySellerSlice';
+import { fetchAllIndustry, getAllSubIndustryById, getIndustryById } from '../../redux/slice/seller/industrySellerSlice';
 import { Industry } from '../../constant/types/industryType';
 import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { setProductCreateField } from '../../redux/slice/seller/productSellerSlice';
 import { InterfaceProductState } from '../../constant/interface/productInterface';
+import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
+import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
 
 
 
@@ -30,8 +31,8 @@ const ListIndustry = () => {
     const { industryListAll, subIndustryById, loading } = useSelector(
         (state: InterfaceIndustryState) => state.industrySellerReducer,
     );
-    const { productCreate } = useSelector(
-        (state: InterfaceProductState) => state.productSellerReducer,
+    const { productCreate, productCreateError } = useSelector(
+        (state: IFormProductCreateState) => state.formCreateProductReducer,
     );
     useEffect(() => {
         if (!loading) {
@@ -53,7 +54,8 @@ const ListIndustry = () => {
         const updatedIndustry = [...industry];
         if (selectedIndustry.isLeaf === true) {
             dispatch(setProductCreateField({ industryId: selectedIndustry.id.toString() }));
-            console.log(productCreate);
+            dispatch(getIndustryById(selectedIndustry.id));
+            // console.log(productCreate);
             navigation.goBack();
         }
         if (selectedId === industry.length) {
