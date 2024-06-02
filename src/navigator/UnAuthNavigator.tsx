@@ -9,9 +9,10 @@ import ProductDetail from '../screens/customer/product_detail/ProductDetail';
 import { useSelector } from 'react-redux';
 import { InterfaceAccountState } from '../constant/interface';
 import HomeGuest from '../screens/guest/HomeGuest';
+import SearchPage from '../screens/guest/search/SearchPage';
+import SearchPageResult from '../screens/guest/search/SearchPageResult';
 import FlashSaleScreen from '../screens/customer/flashsale/FlashSaleScreen';
-import AddressScreen from '../screens/customer/address/AddressScreen';
-import AddAddress from '../screens/customer/address/AddAddress';
+
 
 const Stack = createNativeStackNavigator();
 const UnAuthNavigator: React.FC = () => {
@@ -22,9 +23,9 @@ const UnAuthNavigator: React.FC = () => {
     <Stack.Navigator
       initialRouteName="HomeGuest"
       screenOptions={{headerShown: false}}>
+      <Stack.Screen name="SearchPageResult" component={SearchPageResult}/>
       <Stack.Screen name="HomeGuest" component={HomeGuest} />
-      {/* <Stack.Screen name="Address" component={AddressScreen} />
-      <Stack.Screen name="add_address" component={AddAddress} /> */}
+      <Stack.Screen name="SearchPage" component={SearchPage} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="flashsale" component={FlashSaleScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />

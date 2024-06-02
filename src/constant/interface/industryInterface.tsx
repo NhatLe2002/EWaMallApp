@@ -1,13 +1,14 @@
-import { Industry } from "../types/industryType";
+import { Industry, IndustryById } from "../types/industryType";
 
 
 interface InterfaceIndustryState {
   industrySellerReducer?: any;
-  industryList: Industry[];
+  industryListAll: Industry[];
+  subIndustryById: Industry[];
+  industryById: IndustryById | null;
   industry: Industry | null;
+  loading: boolean;
   error: string | null;
 }
 
-
-
-export type { InterfaceIndustryState };
+export type {InterfaceIndustryState};
