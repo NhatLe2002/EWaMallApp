@@ -8,7 +8,7 @@ import HeightSpacer from '../../../reusables/height_spacer/HeightSpacer';
 import { COLORS, FONTS, SIZES } from '../../../constant/theme';
 import accountApi from '../../../api/accountApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsLogin, setRole } from '../../../redux/slice/accountSlice';
+import { setIsLogin, setRole, setUsername } from '../../../redux/slice/accountSlice';
 import { InterfaceAccountState } from '../../../constant/interface';
 import PushNotification from 'react-native-push-notification';
 import * as signalR from '@microsoft/signalr';
@@ -38,6 +38,7 @@ const LoginScreen: React.FC = () => {
         console.log(res.data);
         dispatch(setIsLogin(true));
         dispatch(setRole(res.data.role.roleName));
+        dispatch(setUsername(res.data.user.name));
         if (role === 'User') {
           navigation.navigate('BottomTab' as never);
         }
@@ -51,16 +52,22 @@ const LoginScreen: React.FC = () => {
             connection.invoke("SaveUserConnection", res.data.user.name, res.data.role.id)
               .catch(err => console.error(err.toString()));
             // Đăng ký lắng nghe sự kiện "ReceivedNotification"
-            connection.on("ReceivedNotification", (message) => {
-              console.log("Nhận thông báo:", message);
+            connection.on("ReceivedNotification", (title, message) => {
+              console.log("Nhận thông báo:",title, message);
               PushNotification.localNotification({
                 channelId: "general_notifications", // Đảm bảo sử dụng đúng channelId
-                message: JSON.stringify(message), // Tin nhắn thông báo
+                title: title,
+                message: message, // Tin nhắn thông báo
               });
             });
             // Đăng ký lắng nghe sự kiện "ReceivedNotification"
-            connection.on("ReceivedPersonalNotification", (message) => {
+            connection.on("ReceivedPersonalNotification", (title, message) => {
               console.log("Nhận thông báo personal:", message);
+              PushNotification.localNotification({
+                channelId: "general_notifications", // Đảm bảo sử dụng đúng channelId
+                title: title,
+                message: message, // Tin nhắn thông báo
+              });
             });
           })
 
