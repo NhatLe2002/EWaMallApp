@@ -2,15 +2,28 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import type {PayloadAction} from '@reduxjs/toolkit';
 import {InterfaceProductState} from '../../../constant/interface/productInterface';
 import productApi from '../../../api/productApi';
-import {Product} from '../../../constant/types/productType';
+import { Product, ProductCreate } from '../../../constant/types/productType';
+
 import {CreateProduct} from '../../../constant/types';
 
 const initialState: InterfaceProductState = {
   productList: [],
+  productCreate: {
+    productName: '',
+    productDescription: '',
+    coverImageId: '',
+    imagesId: '',
+    videoId: '',
+    industryId: '',
+    sellerId: '',
+    productSellDetails: [],
+    productSellCommand: []
+  } ,
   product: null,
   error: null,
+  loading: false,
   createProduct: null,
-};
+}
 export const getProductsBySellerId = createAsyncThunk(
   'products/getProductsBySellerId',
   async (sellerId: number) => {

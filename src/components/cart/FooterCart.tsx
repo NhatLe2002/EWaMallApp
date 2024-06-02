@@ -43,8 +43,8 @@ const FooterCart: React.FC = () => {
             </Text>
           </View>
           <TouchableOpacity
-            disabled={product_purchase.length === 0}
-            style={[styles.buttonBuy, product_purchase.length === 0 && styles.disabledButton]}
+            disabled={product_purchase?.length === 0}
+            style={[styles.buttonBuy, product_purchase?.length === 0 && styles.disabledButton]}
             onPress={() => navigation.navigate('Purchase' as never)}>
             <Text style={styles.textBuy}>Thanh toán</Text>
           </TouchableOpacity>

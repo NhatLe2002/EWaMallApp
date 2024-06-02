@@ -10,9 +10,10 @@ import ProductSeller from '../screens/sellser/product_seller/ProductSeller';
 import AuthGuard from './Auth';
 import OrderSeller from '../screens/sellser/order_seller/OrderSeller';
 import AddProductSeller from '../screens/sellser/add_product_seller/AddProductSeller';
-import Industry from '../screens/sellser/add_product_seller/Industry';
 import Finance from '../screens/sellser/finance/Finance';
 import FlashSaleScreen from '../screens/customer/flashsale/FlashSaleScreen';
+import ProductComman from '../screens/sellser/add_product_seller/ProductComman';
+import Industry from '../screens/sellser/add_product_seller/Industry';
 import AddressScreen from '../screens/customer/address/AddressScreen';
 import AddAddress from '../screens/customer/address/AddAddress';
 import SelectAddress from '../components/address/SelectAddress';
@@ -39,6 +40,7 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="OrderSeller" component={OrderSeller} />
       <Stack.Screen name="AddProductSeller" component={AddProductSeller} />
       <Stack.Screen name="Industry" component={Industry} />
+      <Stack.Screen name="ProductComman" component={ProductComman} />
       <Stack.Screen name="Finance" component={Finance} />
     </Stack.Navigator>
   );

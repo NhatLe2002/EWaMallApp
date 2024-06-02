@@ -6,16 +6,16 @@ import {
   TextInput,
   Button,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import HeaderCommonSub from '../../../reusables/header/HeaderCommonSub';
-import {COLORS, FONTS, SIZES} from '../../../constant/theme';
-import {useForm, Controller} from 'react-hook-form';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
+import { COLORS, FONTS, SIZES } from '../../../constant/theme';
+import { useForm, Controller } from 'react-hook-form';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 const AddAddress: React.FC = () => {
   const navigation = useNavigation<any>();
-  const {control, handleSubmit} = useForm();
+  const { control, handleSubmit } = useForm();
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isFormFilled, setIsFormFilled] = useState(false);
@@ -25,6 +25,7 @@ const AddAddress: React.FC = () => {
   };
   const handleProvincePress = () => {
     navigation.navigate('SelectProvince');
+    console.log("Tesadas")
   };
 
   const handleInputChange = (value: string, fieldName: string) => {
@@ -46,12 +47,12 @@ const AddAddress: React.FC = () => {
         colorBack={COLORS.yellowMain}
       />
       <ScrollView>
-        <Text style={{paddingVertical: '3%', paddingLeft: '5%', fontSize: 16}}>
+        <Text style={{ paddingVertical: '3%', paddingLeft: '5%', fontSize: 16 }}>
           Liên hệ
         </Text>
         <Controller
           control={control}
-          render={({field: {onChange, onBlur, value}}) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
               onBlur={onBlur}
@@ -67,7 +68,7 @@ const AddAddress: React.FC = () => {
         />
         <Controller
           control={control}
-          render={({field: {onChange, onBlur, value}}) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
               onBlur={onBlur}
@@ -82,29 +83,31 @@ const AddAddress: React.FC = () => {
           )}
           name="phoneNumber"
         />
-        <Text style={{paddingVertical: '3%', paddingLeft: '5%', fontSize: 16}}>
+        <Text style={{ paddingVertical: '3%', paddingLeft: '5%', fontSize: 16 }}>
           Địa chỉ
         </Text>
 
         <Controller
           control={control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <TextInput
-              editable={false}
-              onPress={handleProvincePress}
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={text => {
-                onChange(text);
-                handleInputChange(text, 'phoneNumber');
-              }}
-              value={value}
-              placeholder="Tỉnh/Thành phố, Quận/Huyện, Phường/Xã"
-            />
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TouchableOpacity onPress={() => handleProvincePress()}>
+              <View pointerEvents='none'>
+                <TextInput
+                  editable={false}
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={text => {
+                    onChange(text);
+                    handleInputChange(text, 'phoneNumber');
+                  }}
+                  value={value}
+                  placeholder="Tỉnh/Thành phố, Quận/Huyện, Phường/Xã"
+                />
+              </View>
+            </TouchableOpacity>
           )}
           name="address"
         />
-
         <TouchableOpacity
           style={{
             paddingVertical: '3%',
