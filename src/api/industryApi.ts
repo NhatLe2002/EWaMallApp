@@ -1,4 +1,4 @@
-import axiosClient from './axiosApi';
+import {axiosClient} from './axiosApi';
 
 
 const industryApi = {
@@ -8,6 +8,10 @@ const industryApi = {
   },
   getAllSubIndustryById(industryId:number){
     const url =`/api/Industry/GetAllSubIndustry/${industryId}`
+    return axiosClient.get(url)
+  },
+  getIndustryById(industryId:number){
+    const url =`/api/Industry/GetIndustryById/${industryId}`
     return axiosClient.get(url)
   },
 };

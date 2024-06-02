@@ -100,7 +100,7 @@ const SearchPageResult: React.FC = () => {
                                     autoCapitalize="none"
                                     readOnly={true}
                                     value={route.searchValue.searchKey}
-                                    style={{ color: "black" }}
+                                    style={{ color: "black" , height: '10%'}}
                                 />
                             </View>
                             <View style={styles.content}>
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         height: SIZES.height / 25,
-        width: SIZES.width / 1.25,
+        width: SIZES.width / 1.4,
         paddingHorizontal: 10,
         borderWidth: 1,
         borderColor: COLORS.yellow,
@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between'
     },
     container_modal: {
         height: SIZES.height,

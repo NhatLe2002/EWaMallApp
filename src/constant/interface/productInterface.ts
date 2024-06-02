@@ -1,4 +1,5 @@
 import { Product, ProductCreate } from "../types/productType";
+import { CreateProduct } from "../types";
 
 interface InterfaceProductState {
   productSellerReducer?: any;
@@ -7,6 +8,7 @@ interface InterfaceProductState {
   product: Product | null;
   error: string | null;
   loading: boolean
+  createProduct?:CreateProduct | null
 }
 
 

@@ -1,7 +1,10 @@
-type Detail = {
-    id: number ,
-    detail: string 
-}
 
 
-export type { Detail }
+
+export type Detail = {
+    detailName: string;
+    detailDescription: string;
+    industryDetails: any[];
+    productDetails: any;
+    id: number;
+};

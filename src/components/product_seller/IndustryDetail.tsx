@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -11,49 +11,36 @@ import { ProductSellDetail } from '../../constant/types/productSellDetail';
 import { FlatList } from 'react-native';
 import { TextInput } from 'react-native';
 import { Detail } from '../../constant/types/detailType';
-import { setProductCreateField } from '../../redux/slice/seller/productSellerSlice';
-
-
-
-const detailList = [
-    {
-        id: 1,
-        detail: "Thương hiệu"
-    },
-    {
-        id: 2,
-        detail: "Xuất xứ"
-    },
-    {
-        id: 3,
-        detail: "Chức năng bổ sung"
-    },
-]
-
-const productSellDetails: ProductSellDetail[] = [{
-    detailId: "1",
-    description: "vinamilk"
-},
-{
-    detailId: "2",
-    description: "Việt Nam"
-}
-];
+import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
+import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
+import { InterfaceIndustryState } from '../../constant/interface/industryInterface';
+import { IndustryDetailType } from '../../constant/types/industryDetailtype';
 
 const IndustryDetail = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch<any>();
-    const { productCreate, loading } = useSelector(
-        (state: InterfaceProductState) => state.productSellerReducer,
+    const { productCreate, productCreateError, loading, error } = useSelector(
+        (state: IFormProductCreateState) => state.formCreateProductReducer,
+    );
+    const { industryById } = useSelector(
+        (state: InterfaceIndustryState) => state.industrySellerReducer,
     );
     //variable
     const [productDetailsInput, setProductDetailsInput] = useState<{ [key: string]: string }>({});
     const [productDetail, setProductDetail] = useState<ProductSellDetail[]>([]);
+    const [detailsList, setDetailsList] = useState<Detail[]>([]);
 
+    
+
+    useEffect(() => {
+        if (industryById) {
+            setDetailsList(industryById.industryDetails.map((industryDetail: IndustryDetailType) => industryDetail.detail));
+        }
+    }, [industryById]);
 
 
     //handle
-    const handleTextInputChange = (item: Detail, text : string) => {
+    const handleTextInputChange = (item: Detail, text: string) => {
         setProductDetailsInput(prevDetails => ({
             ...prevDetails,
             [item.id]: text
@@ -69,22 +56,22 @@ const IndustryDetail = () => {
             }
         });
         // console.log(productDetail);
-        dispatch(setProductCreateField({ productSellDetails:  productDetail}));
-        console.log(productCreate);
+        dispatch(setProductCreateField({ productSellDetails: productDetail }));
+        // console.log(productCreate);
     };
 
     //render
-    const renderDetailItem = ({ item }: { item: typeof detailList[0] }) => (
+    const renderDetailItem = ({ item }: { item: Detail }) => (
         <View style={styles.industryContainer}>
             <View style={styles.industryItem}>
                 <SimpleLineIcons name='note' size={20} />
-                <Text style={styles.text}>{item.detail}</Text>
+                <Text style={styles.text}>{item.detailName}</Text>
             </View>
             <TextInput
                 style={styles.textInput}
-                value={productDetailsInput[item.id]||''}
+                value={productDetailsInput[item.id] || ''}
                 onChangeText={(text) => handleTextInputChange(item, text)}
-                placeholder={`Nhập ${item.detail}`}
+                placeholder={`Nhập ${item.detailName}`}
             />
         </View>
     );
@@ -97,12 +84,14 @@ const IndustryDetail = () => {
                     <AntDesign name='menuunfold' size={20} />
                     <Text style={styles.text}>Ngành hàng</Text>
                 </View>
-                <MaterialIcons name='navigate-next' size={20} />
+                {productCreate.industryId ? (
+                    <Text >{productCreate.industryId}</Text>
+                ) : <MaterialIcons name='navigate-next' size={20} />}
             </TouchableOpacity>
             {productCreate.industryId !== '' ? (
                 <FlatList
                     scrollEnabled={false}
-                    data={detailList}
+                    data={detailsList}
                     renderItem={renderDetailItem}
                     keyExtractor={item => item.id.toString()}
                 />) : (<></>)

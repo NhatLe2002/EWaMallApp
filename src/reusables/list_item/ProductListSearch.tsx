@@ -1,60 +1,70 @@
-import {FlatList, StyleSheet, View, Image, Text} from 'react-native';
-import React, {useEffect} from 'react';
-import {COLORS} from '../../constant/theme';
-import {SIZES} from '../../constant/theme';
+import { FlatList, StyleSheet, View, Image, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { COLORS } from '../../constant/theme';
+import { SIZES } from '../../constant/theme';
 import Feather from 'react-native-vector-icons/Feather';
-import {productsListFormatted} from '../../data/Product';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchAllProducts} from '../../redux/slice/productSlice';
-import {InterfaceProductState} from '../../constant/interface';
-import {Product} from '../../constant/types';
+import { productsListFormatted } from '../../data/Product';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllProducts } from '../../redux/slice/productSlice';
+import { InterfaceProductState } from '../../constant/interface';
+import { Product } from '../../constant/types';
+import { formatPriceToVND } from '../../config/FixPrice';
+import { updateProductListWithImages } from '../../features/GetImage';
 
 type ProductTypes = {
-  products : Product[]
+  products: Product[]
 };
-const ProductListSearch = (props : ProductTypes) => {
+const ProductListSearch = (props: ProductTypes) => {
+  const [updatedProductList, setUpdatedProductList] = useState<Product[]>([]);
   console.log(props.products)
   const navigation = useNavigation<any>();
-  // const dispatch = useDispatch<any>();
-  // const {productList} = useSelector(
-  //   (state: InterfaceProductState) => state.productReducer,
-  // );
-  // useEffect(() => {
-  //   dispatch(fetchAllProducts());
-  // }, [dispatch]);
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      const updatedList = await updateProductListWithImages(props.products);
+      setUpdatedProductList(updatedList);
+    };
 
-  const renderItem = ({item}: {item: Product}) => (
+    fetchProductImages();
+  }, [props.products]);
+
+  const renderItem = ({ item }: { item: Product }) => (
     <View style={styles.product}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ProductDetail', {productId: item.id});
+          navigation.navigate('ProductDetail', { productId: item.id });
         }}>
-        <Image style={styles.image} source={{uri: item.imagesId}} />
+        <Image
+          style={styles.image}
+          source={{
+            uri: item.imageUrl ? String(item.imageUrl) : 'defaultImageUrl',
+          }}
+        />
         <View style={styles.containter}>
           <Text style={styles.nameProduct} numberOfLines={2}>
             {item.productName}
           </Text>
           <View style={styles.subContainer}>
             {/* Thêm Field */}
-            {/* <Text style={styles.price}>{item.price}</Text>
-            <Text style={styles.sold}> Đã bán {item.sold}</Text> */}
+            <Text style={styles.price}>{formatPriceToVND(item?.minPrice)}</Text>
+            {/* <Text style={styles.sold}> Đã bán {item.sold}</Text> */}
           </View>
           <View style={styles.subAddressContainer}>
             <Feather name="map-pin" size={14} color="#B9B9B9" />
-            <Text style={styles.address}>{item.sellerAddress}</Text>
+            <Text style={styles.address}>{item?.sellerAddress}</Text>
           </View>
         </View>
       </TouchableOpacity>
     </View>
+    
   );
 
   return (
     <>
       <FlatList
-        style={{backgroundColor: COLORS.background_list}}
-        data={props.products}
+        style={{ backgroundColor: COLORS.background_list }}
+        data={updatedProductList}
         scrollEnabled={false}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
     margin: 5,
     backgroundColor: COLORS.white,
     shadowColor: COLORS.border_product,
-    shadowOffset: {width: 4, height: 4},
+    shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 0.6,
     shadowRadius: 5,
   },

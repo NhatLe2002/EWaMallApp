@@ -36,7 +36,7 @@ const SearchPage: React.FC = () => {
       <View style={styles.container_parrent}>
         <TouchableHighlight
           underlayColor={COLORS.white}
-          onPress={() => navigation.navigate('HomeGuest' as never)}>
+          onPress={() => navigation.goBack()}>
           <Feather name="arrow-left" size={30} color={COLORS.yellow} />
         </TouchableHighlight>
         <View style={styles.container}>
@@ -47,7 +47,7 @@ const SearchPage: React.FC = () => {
               autoCapitalize="none"
               autoFocus={true}
               autoCorrect={false}
-              style={{width:200}}
+              style={{width:200, height: '10%'}}
               onChange={e=> HandleInputChange(e)}
             />
           </View>
@@ -111,7 +111,7 @@ const SearchPage: React.FC = () => {
                   <Text style={{marginTop: 10, color: "#ff7300", fontWeight: "500"}}>Xu hướng tìm kiếm <MaterialIcons name='celebration' size={15}/></Text>
                   <FlatList
                     data={banner}
-                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
                     renderItem={({item}) => (
                       <View style={{flexDirection: "row", alignItems: 'center',
                       justifyContent: 'space-between',}}>

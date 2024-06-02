@@ -10,12 +10,15 @@ import ProductSeller from '../screens/sellser/product_seller/ProductSeller';
 import AuthGuard from './Auth';
 import OrderSeller from '../screens/sellser/order_seller/OrderSeller';
 import AddProductSeller from '../screens/sellser/add_product_seller/AddProductSeller';
-import SearchPage from '../screens/guest/search/SearchPage';
-import SearchPageResult from '../screens/guest/search/SearchPageResult';
-import Industry from '../screens/sellser/add_product_seller/Industry';
 import Finance from '../screens/sellser/finance/Finance';
 import FlashSaleScreen from '../screens/customer/flashsale/FlashSaleScreen';
-
+import SearchPage from '../screens/guest/search/SearchPage';
+import SearchPageResult from '../screens/guest/search/SearchPageResult';
+import AddressScreen from '../screens/customer/address/AddressScreen';
+import AddAddress from '../screens/customer/address/AddAddress';
+import SelectAddress from '../components/address/SelectAddress';
+import Industry from '../screens/sellser/add_product_seller/Industry';
+import ProductComman from '../screens/sellser/add_product_seller/ProductComman';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -29,6 +32,9 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Cart" component={Cart} />
       <Stack.Screen name="Purchase" component={PurchaseScreen} />
       <Stack.Screen name="flashsale" component={FlashSaleScreen} />
+      <Stack.Screen name="Address" component={AddressScreen} />
+      <Stack.Screen name="add_address" component={AddAddress} />
+      <Stack.Screen name="SelectProvince" component={SelectAddress} />
 
       {/* Seller navigator */}
       <Stack.Screen name="SearchPageResult" component={SearchPageResult}/>
@@ -38,6 +44,7 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="OrderSeller" component={OrderSeller} />
       <Stack.Screen name="AddProductSeller" component={AddProductSeller} />
       <Stack.Screen name="Industry" component={Industry} />
+      <Stack.Screen name="ProductComman" component={ProductComman} />
       <Stack.Screen name="Finance" component={Finance} />
     </Stack.Navigator>
   );
