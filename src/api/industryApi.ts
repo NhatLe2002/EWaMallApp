@@ -1,4 +1,4 @@
-import axiosClient from './axiosApi';
+import {axiosClient} from './axiosApi';
 
 
 const industryApi = {

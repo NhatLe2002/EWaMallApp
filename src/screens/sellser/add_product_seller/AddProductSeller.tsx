@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import HeaderTitleSeller from '../../../reusables/Title/HeaderTitleSeller'
 import AddImageProductSeller from '../../../components/add_product_seller/AddImageProductSeller'
@@ -8,8 +8,20 @@ import ProductDescription from '../../../components/add_product_seller/ProductDe
 import HeightSpacerSeller from '../../../reusables/height_spacer/HeightSpacerSeller'
 import ProductInfor from '../../../components/product_seller/ProductInfor'
 import { COLORS } from '../../../constant/theme'
+import { uploadImageToFirebase } from '../../../features/UploadImg'
 
 const AddProductSeller = () => {
+    const handleUpload = async () => {
+        const productId = 11;
+        const uri = '/Users/quangvinh/Desktop/Screenshot 2024-05-27 at 20.49.31.png';
+        try {
+          const downloadURL = await uploadImageToFirebase(uri, productId);
+          Alert.alert('Success', `Image uploaded successfully! URL: ${downloadURL}`);
+        } catch (error) {
+          Alert.alert('Error', `Failed to upload image: ${error} `);
+          console.log(error)
+        }
+      };
     return (
         <View style = {{flex: 1, backgroundColor: COLORS.white}}>
             <View style={styles.header}>
@@ -35,7 +47,7 @@ const AddProductSeller = () => {
                 <HeightSpacerSeller height={10} color='#F6F5F2' />
             </ScrollView>
             <View style={styles.bot}>
-                <TouchableOpacity style = {styles.buttomBot}>
+                <TouchableOpacity  onPress={handleUpload} style = {styles.buttomBot}>
                     <Text>
                         Lưu
                     </Text>

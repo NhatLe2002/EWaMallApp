@@ -6,6 +6,7 @@ const initialState: InterfaceAccountState = {
   notification: null,
   role: '',
   username: '',
+  userId: '',
   loading: false,
   error: null,
   success: false,
@@ -23,6 +24,9 @@ const accountSlice = createSlice({
     setUsername: (state, action: PayloadAction<string>) => {
       state.username = action.payload;
     },
+    setUserId: (state, action: PayloadAction<string>) => {
+      state.userId = action.payload;
+    },
   },
   extraReducers: () => {
     // Các reducer thêm vào ở đây nếu có
@@ -30,6 +34,6 @@ const accountSlice = createSlice({
   },
 });
 
-export const {setRole, setIsLogin, setUsername} = accountSlice.actions;
+export const {setRole, setIsLogin, setUsername,setUserId} = accountSlice.actions;
 
 export default accountSlice.reducer;

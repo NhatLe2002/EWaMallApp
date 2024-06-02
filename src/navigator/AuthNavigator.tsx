@@ -13,6 +13,9 @@ import AddProductSeller from '../screens/sellser/add_product_seller/AddProductSe
 import Industry from '../screens/sellser/add_product_seller/Industry';
 import Finance from '../screens/sellser/finance/Finance';
 import FlashSaleScreen from '../screens/customer/flashsale/FlashSaleScreen';
+import AddressScreen from '../screens/customer/address/AddressScreen';
+import AddAddress from '../screens/customer/address/AddAddress';
+import SelectAddress from '../components/address/SelectAddress';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -26,6 +29,9 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Cart" component={Cart} />
       <Stack.Screen name="Purchase" component={PurchaseScreen} />
       <Stack.Screen name="flashsale" component={FlashSaleScreen} />
+      <Stack.Screen name="Address" component={AddressScreen} />
+      <Stack.Screen name="add_address" component={AddAddress} />
+      <Stack.Screen name="SelectProvince" component={SelectAddress} />
 
       {/* Seller navigator */}
       <Stack.Screen name="SellerHome" component={SellerHome} />

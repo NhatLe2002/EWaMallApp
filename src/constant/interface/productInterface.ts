@@ -1,3 +1,4 @@
+import { CreateProduct } from "../types";
 import { Product } from "../types/productType";
 
 interface InterfaceProductState {
@@ -5,6 +6,7 @@ interface InterfaceProductState {
     productList: Product[];
     product: Product | null;
     error: string | null;
+    createProduct?:CreateProduct | null
   }
   
 

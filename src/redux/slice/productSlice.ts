@@ -1,7 +1,9 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import productApi from '../../api/productApi';
-import {InterfaceProductState} from '../../constant/interface';
+
 import {Product} from '../../constant/types';
+import {InterfaceProductState} from '../../constant/interface';
+
 const initialState: InterfaceProductState = {
   productList: [],
   product: null,
