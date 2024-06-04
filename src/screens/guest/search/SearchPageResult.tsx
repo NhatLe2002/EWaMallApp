@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import ProductList from '../../../reusables/list_item/ProductList';
 import { Gesture, GestureDetector, ScrollView, TextInput, TouchableHighlight } from 'react-native-gesture-handler';
 import { COLORS, SIZES } from '../../../constant/theme';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -8,55 +7,62 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Animated, { Easing, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { Button } from 'react-native-elements';
-import { FlatList } from 'react-native';
 import SearchCategory from './SearchCategory';
 import ProductListSearch from '../../../reusables/list_item/ProductListSearch';
 import { InterfaceProductState } from '../../../constant/interface';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductBySearch, setClearSearchProduct } from '../../../redux/slice/productSlice';
+import { getProductBySearch, setClearSearchProduct, setProductFilterList, setProductFilterListToProductList } from '../../../redux/slice/productSlice';
 import { Product} from '../../../constant/types';
-
-
 
 const SearchPageResult: React.FC = () => {
     const route: any = useRoute().params;
     const [modalVisible, setModalVisible] = useState(false);
-    const [onModal, setOnModal] = useState(false);
     const translateY = useSharedValue(SIZES.height/2);
     const test = useSharedValue(false);
     const dispatch = useDispatch<any>();
-    const {productSearchList} = useSelector(
+    const [productShow, setProductShow] = useState([] as Product[])
+    const {productSearchList, productFilterList} = useSelector(
         (state: InterfaceProductState) => state.productReducer,
     );
     useEffect(() => {
-        dispatch(getProductBySearch(route.searchValue.searchKey));
+        loadProduct()
     }, [dispatch]);
-
+    useEffect(() =>{
+        setProductShow(productSearchList);
+    }, [productSearchList])
+    function loadProduct(){
+        dispatch(getProductBySearch(route.searchValue.searchKey)); 
+    }
 
     const HandleModalClose = () => {
         translateY.value = SIZES.height
         setTimeout(() => {
             setModalVisible(false)
-        }, 300);
+        }, 300); 
     }
-
+    const HandleFilterSubmit = () =>{
+        setProductShow(productFilterList);
+        translateY.value = SIZES.height
+        setTimeout(() => {
+            setModalVisible(false)
+        }, 300); 
+    }
     const gesture = Gesture.Pan().onBegin((event) => {
     }).onUpdate((event) => {
         if (test.value == true) {
-            if (event.y > 100) {
+            if (event.y > SIZES.height/9) {
                 translateY.value = event.y
             }
             else {
-                translateY.value = 150
+                translateY.value = SIZES.height/6
             }
-            if (event.y > 700) {
-                translateY.value = 650
+            if (event.y > SIZES.height/1.7) {
+                translateY.value = SIZES.height/1.9
             }
         }
     }).onEnd((event) => {
         test.value = false;
-        if (event.y > 800) {
+        if (event.y > SIZES.height*(4/5)) {
             translateY.value = SIZES.height
             runOnJS(setModalVisible)(false);
         }
@@ -140,10 +146,10 @@ const SearchPageResult: React.FC = () => {
                         </View>
                     </TouchableHighlight>
                 </View>
-                <ScrollView>
-                    {
-                        productSearchList? <><ProductListSearch products={productSearchList}/></>:<View style={{alignSelf: "center", justifyContent: "space-around", height: SIZES.height/2}}><Text>Sản phẩm không tồn tại</Text></View>
-                    }
+                <ScrollView style={{height: "100%"}}>
+                            {
+                                productSearchList? <><ProductListSearch products={productShow}/></>:<View style={{alignSelf: "center", justifyContent: "space-around", height: SIZES.height/2}}><Text>Sản phẩm không tồn tại</Text></View>
+                            }
                 </ScrollView>
                 {
                     modalVisible == true ? (
@@ -182,24 +188,25 @@ const SearchPageResult: React.FC = () => {
                                         <View style={styles.category}>
                                             <Text>Theo Giá Sản Phẩm</Text>
                                             <View style={styles.category_list}>
-                                                <SearchCategory data={[{name:"Cao Đến Thấp"}, {name:"Thấp Đến Cao"}]} />
+                                                <SearchCategory data={[{name:"Cao Đến Thấp", active : false}, {name:"Thấp Đến Cao", active : false}]} />
                                             </View>
                                         </View>
                                         <View style={styles.category}>
                                             <Text>Đánh Giá</Text>
                                             <View style={styles.category_list}>
-                                                <SearchCategory data={[{name:"5 Sao"}, {name:"Từ 4 Sao"}, {name:"Từ 3 Sao"}, {name:"Từ 2 Sao"}, {name:"Từ 1 Sao"}]} />
+                                                <SearchCategory data={[{name:"5 Sao", active : false}, {name:"Từ 4 Sao", active : false}, {name:"Từ 3 Sao", active : false}, {name:"Từ 2 Sao", active : false}, {name:"Từ 1 Sao" , active : false}]} />
                                             </View>
                                         </View>                                    
                                     </ScrollView>
                                     </View>
                                 </Animated.View>
-
-
                                 <View style={styles.button}>
                                     <TouchableHighlight
                                         underlayColor={COLORS.yellow}
-                                        onPress={() => { }}
+                                        onPress={() => {
+                                            loadProduct();
+                                            HandleModalClose();
+                                            }}
                                         style={{
                                             height: "100%",
                                             width: SIZES.width / 2.5,
@@ -217,7 +224,9 @@ const SearchPageResult: React.FC = () => {
                                     </TouchableHighlight>
                                     <TouchableHighlight
                                         underlayColor={COLORS.yellow}
-                                        onPress={() => { }}
+                                        onPress={() => { 
+                                            HandleFilterSubmit();
+                                        }}
                                         style={{
                                             height: "100%",
                                             width: SIZES.width / 2.5,

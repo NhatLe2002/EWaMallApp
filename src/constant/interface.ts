@@ -68,6 +68,7 @@ interface InterfaceProductState {
   productReducer?: any;
   productList: Product[];
   productSearchList: Product[];
+  productFilterList: Product[];
   product: Product | null;
   error: string | null;
 }
