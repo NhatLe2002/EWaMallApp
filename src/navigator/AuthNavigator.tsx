@@ -13,6 +13,8 @@ import AddProductSeller from '../screens/sellser/add_product_seller/AddProductSe
 import Industry from '../screens/sellser/add_product_seller/Industry';
 import Finance from '../screens/sellser/finance/Finance';
 import FlashSaleScreen from '../screens/customer/flashsale/FlashSaleScreen';
+import RegistrationScreen1 from '../components/register_seller/RegistrationScreen1';
+import RegisterForm from '../components/register_seller/RegisterForm';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -34,6 +36,8 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="AddProductSeller" component={AddProductSeller} />
       <Stack.Screen name="Industry" component={Industry} />
       <Stack.Screen name="Finance" component={Finance} />
+      <Stack.Screen name="RegistrationSellerScreen" component={RegistrationScreen1} />
+      <Stack.Screen name="RegisterSellerScreen" component={RegisterForm} />
     </Stack.Navigator>
   );
 };
