@@ -7,6 +7,24 @@ const storageService = {
       console.error('Failed to save the role', error);
     }
   },
+  async setSearchKey(key: string[]) {
+    try {
+      return await AsyncStorage.setItem('searchKey', JSON.stringify(key));
+    } catch (error) {
+      console.error('Failed to save the searchKey', error);
+    }
+  },
+  async getSearchKey() {
+    try {
+      var json = await AsyncStorage.getItem('searchKey');
+      if(json != null){
+        return JSON.parse(json)
+      }
+      return null;
+    } catch (error) {
+      console.error('Failed to save the searchKey', error);
+    }
+  },
   async getRole() {
     let role;
     try {
@@ -53,6 +71,13 @@ const storageService = {
     const keys = ['role', 'name', 'id'];
     try {
       await AsyncStorage.multiRemove(keys);
+    } catch (error) {
+      console.error('Failed to Remover the role', error);
+    }
+  },
+  async removeSearch() {
+    try {
+      await AsyncStorage.removeItem("searchKey");
     } catch (error) {
       console.error('Failed to Remover the role', error);
     }

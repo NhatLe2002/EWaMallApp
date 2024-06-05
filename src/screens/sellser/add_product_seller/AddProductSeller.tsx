@@ -32,6 +32,7 @@ const productSellCommand: ProductSellCommand[] = [{
   inventoryNumber: "200",
   path: "0",
   parentNodeId: "",
+  
 }
 ];
 const productCreate: ProductCreate = {
