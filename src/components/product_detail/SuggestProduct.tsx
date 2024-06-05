@@ -12,6 +12,7 @@ type ProductTypes = {
   address: string;
   sold: number;
   sales: number;
+  rate: number;
 };
 
 const SuggestProduct = () => {
@@ -19,13 +20,16 @@ const SuggestProduct = () => {
   const getItem = (productsListFormatted: ProductTypes[], index: number) =>
     productsListFormatted[index];
   const Item = ({item}: {item: ProductTypes}) => (
-    <Product
-      imgUrl={item.imgUrl}
-      name={item.name}
-      price={item.price}
-      sold={item.sold}
-      address={item.address}
-    />
+    <View style={{width: SIZES.width / 2.9}}>
+      <Product
+        imgUrl={item.imgUrl}
+        name={item.name}
+        price={item.price}
+        sold={item.sold}
+        address={item.address}
+        rate={4.6}
+      />
+    </View>
   );
   return (
     <View style={styles.container}>
@@ -59,6 +63,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     paddingHorizontal: '4%',
+    paddingBottom: 4,
     marginVertical: 3,
     height: SIZES.height / 3.5,
   },

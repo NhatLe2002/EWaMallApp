@@ -27,8 +27,20 @@ const DeliveryPrice: React.FC = () => {
         </Text>
       </View>
       <View style={styles.deli_bot}>
-        <Text style={{fontFamily:FONTS.inter_regular,color:'#5d5c5c',fontSize:12}}>Nhận vào</Text>
-        <Text style={{fontFamily:FONTS.inter_regular,color:'#5d5c5c',fontSize:12}}>
+        <Text
+          style={{
+            fontFamily: FONTS.inter_regular,
+            color: '#5d5c5c',
+            fontSize: 12,
+          }}>
+          Nhận vào
+        </Text>
+        <Text
+          style={{
+            fontFamily: FONTS.inter_regular,
+            color: '#5d5c5c',
+            fontSize: 12,
+          }}>
           12 tháng 2 - 16 tháng 2
         </Text>
       </View>
@@ -41,20 +53,20 @@ export default DeliveryPrice;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    marginBottom: '1%',
-    paddingHorizontal: '3%',
-    paddingVertical: '2%',
-    flexDirection:'column',
-    gap:8
+    marginVertical: 3,
+    paddingHorizontal: '4%',
+    paddingVertical: 3,
+    flexDirection: 'column',
+    gap: 8,
   },
   deli_bot: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap:10
+    gap: 10,
   },
   deli_top: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap:20
+    gap: 20,
   },
 });

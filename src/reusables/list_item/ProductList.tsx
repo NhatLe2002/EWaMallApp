@@ -16,10 +16,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {InterfaceProductState} from '../../constant/interface';
 import {Product} from '../../constant/types';
 import {fetchAllProducts} from '../../redux/slice/productSlice';
-import {
-  updateProductListWithImages,
-} from '../../features/GetImage';
-import { formatPriceToVND } from '../../config/FixPrice';
+import {updateProductListWithImages} from '../../features/GetImage';
+import {formatPriceToVND} from '../../config/FixPrice';
 
 const ProductList = () => {
   const navigation = useNavigation<any>();
@@ -33,7 +31,6 @@ const ProductList = () => {
 
   useEffect(() => {
     dispatch(fetchAllProducts());
-
   }, [dispatch]);
 
   useEffect(() => {
@@ -64,7 +61,9 @@ const ProductList = () => {
             </Text>
             <View style={styles.subContainer}>
               {/* Thêm Field */}
-              <Text style={styles.price}>{formatPriceToVND(item?.minPrice)}</Text>
+              <Text style={styles.price}>
+                {formatPriceToVND(item?.minPrice)}
+              </Text>
               {/* <Text style={styles.sold}> Đã bán {item.sold}</Text> */}
             </View>
             <View style={styles.subAddressContainer}>

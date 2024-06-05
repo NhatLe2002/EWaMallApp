@@ -29,6 +29,8 @@ import {
 import {BottomSheetDefaultFooterProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types';
 import {formatPriceToVND} from '../../../config/FixPrice';
 import {addToCart} from '../../../redux/slice/cartSlice';
+import {Product} from '../../../constant/types';
+import {listFilesInProductFolder} from '../../../features/GetImage';
 
 const ProductDetail = () => {
   const route = useRoute<any>();
@@ -51,9 +53,8 @@ const ProductDetail = () => {
     id: number;
     quantity: number;
   } | null>(null);
-
+  const [updatedProduct, setUpdatedProduct] = useState<string[]>();
   const updateSelectedProduct = (id: number, quantity: number) => {
-    console.log('Selected product:', {id, quantity});
     setSelectedProduct({id, quantity});
   };
   useEffect(() => {
@@ -61,6 +62,13 @@ const ProductDetail = () => {
     scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: true});
   }, [productId]);
 
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      const updatedList = await listFilesInProductFolder(product.id);
+      setUpdatedProduct(updatedList);
+    };
+    fetchProductImages();
+  }, [product]);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
@@ -79,7 +87,7 @@ const ProductDetail = () => {
   const closeModal = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
     setSelectedProductId(null);
-    setSelectedPrice(null); 
+    setSelectedPrice(null);
     setSelectedProduct(null);
   }, []);
   const handleAddToCart = () => {
@@ -97,7 +105,7 @@ const ProductDetail = () => {
       closeModal();
     }
   };
-
+  console.log(product);
   const footerAddProduct = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -121,11 +129,20 @@ const ProductDetail = () => {
       <View style={styles.container}>
         <HeaderSearch />
         <ScrollView style={styles.content} ref={scrollViewRef}>
-          <View>
-            <Image
-              source={{uri: 'https://picsum.photos/200/300?random=1'}}
-              style={styles.image}
-            />
+          <View
+            style={{
+              marginBottom: 2,
+              height: SIZES.height / 2.8,
+              width: SIZES.width,
+            }}>
+            {updatedProduct?.map((item, i) => (
+              <View style={styles.image}>
+                <Image
+                  source={{uri: item ? String(item) : 'defaultImageUrl'}}
+                  style={styles.image}
+                />
+              </View>
+            ))}
           </View>
           <TitleProduct
             productName={product?.productName}
@@ -140,7 +157,7 @@ const ProductDetail = () => {
             <Text
               style={{
                 backgroundColor: 'white',
-                height: '4%',
+                height: 38,
                 fontSize: 16,
                 color: 'black',
                 paddingTop: 5,
@@ -312,7 +329,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: SIZES.height / 2.7,
+    height: SIZES.height / 2.5,
     marginBottom: 3,
   },
   container: {
