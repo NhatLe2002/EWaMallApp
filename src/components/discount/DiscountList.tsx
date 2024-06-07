@@ -1,6 +1,8 @@
-import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import DiscountItem from './DiscountItem';
+import { useSelector } from 'react-redux';
+import { IVoucher, IVoucherState } from '../../constant/interface/IVoucherState';
 
 interface Discount {
   id: number;
@@ -9,24 +11,28 @@ interface Discount {
   code: string;
 }
 
-interface DiscountListProps {
-  discounts: Discount[];
-}
 
-const DiscountList: React.FC<DiscountListProps> = ({ discounts }) => {
+const DiscountList = () => {
+  // const [voucher, setVoucher] = useState<IVoucher>();
+  const { voucherList } = useSelector(
+    (state: IVoucherState) => state.voucherReducer,
+  );
+
   return (
-    <FlatList
-      data={discounts}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <DiscountItem
-          title={item.title}
-          conditions={item.conditions}
-          code={item.code}
-        />
-      )}
-      contentContainerStyle={styles.listContainer}
-    />
+    <View>
+      <FlatList
+        data={voucherList}
+        keyExtractor={(item) => item?.voucherCode}
+        renderItem={({ item }) => (
+          <DiscountItem
+            title={item?.name}
+            conditions={item?.maxDiscount}
+            code={item?.voucherCode}
+          />
+        )}
+        contentContainerStyle={styles.listContainer}
+      />
+    </View>
   );
 };
 

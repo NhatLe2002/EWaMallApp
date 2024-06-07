@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import Header from '../../../components/discount/Header';
 import TabNavigation from '../../../components/discount/TabNavigation';
 import VoucherActions from '../../../components/discount/DiscountAction';
 import DiscountList from '../../../components/discount/DiscountList';
 import { COLORS } from '../../../constant/theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllVoucher } from '../../../redux/slice/customer/voucherSlice';
+import { IVoucher, IVoucherState } from '../../../constant/interface/IVoucherState';
 
 type DiscountCategory = 'all' | 'ewamall' | 'shop' | 'partner';
 
@@ -33,7 +36,19 @@ const fakeDiscounts: Record<DiscountCategory, Discount[]> = {
   ],
 };
 
+
+
 const DiscountScreen: React.FC = () => {
+  const dispatch = useDispatch<any>();
+  const { voucherList } = useSelector(
+    (state: IVoucherState) => state.voucherReducer,
+  );
+
+  useEffect(() => {
+    dispatch(fetchAllVoucher());
+    console.log(JSON.stringify(voucherList, null, 2))
+  }, [dispatch]);
+
   const [selectedTab, setSelectedTab] = useState<DiscountCategory>('all');
   const [discounts, setDiscounts] = useState<Discount[]>(fakeDiscounts.all);
 
@@ -47,7 +62,7 @@ const DiscountScreen: React.FC = () => {
       <Header />
       <TabNavigation onSelectTab={handleSelectTab} />
       <VoucherActions />
-      <DiscountList discounts={discounts} />
+      <DiscountList/>
     </SafeAreaView>
   );
 };
