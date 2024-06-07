@@ -9,7 +9,7 @@ import ProductList from '../../../reusables/list_item/ProductList';
 import ReusableText from '../../../reusables/Text/ReusableText';
 
 const Home: React.FC = () => (
-  <ScrollView style={styles.scrollContainer}>
+  <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollContainer}>
     <HeaderHome />
     <HeightSpacer height={SIZES.height / 18} />
     <CategoryHome />

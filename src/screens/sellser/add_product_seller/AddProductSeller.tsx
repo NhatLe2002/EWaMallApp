@@ -51,6 +51,7 @@ const AddProductSeller = () => {
   const { productCreate, productCreateError, loading, product } = useSelector(
     (state: IFormProductCreateState) => state.formCreateProductReducer,
   );
+  console.log("tsst",productCreate)
   const handleSubmit = (data: ProductCreate) => {
     try {
       productNameSchema.validate(data.productName);

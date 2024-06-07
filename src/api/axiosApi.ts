@@ -14,6 +14,7 @@ import { ADDRESSURL, APIURL, FEEURL } from './constant_api';
   baseURL: FEEURL,
 });
 axiosAddress.defaults.headers.common['token'] = 'c07940d0-1c39-11ef-a834-92c5c8e2c58a';
+axiosFee.defaults.headers.common['token'] = 'c07940d0-1c39-11ef-a834-92c5c8e2c58a';
 
 // axiosClient.interceptors.request.use(
 //   (config) => {

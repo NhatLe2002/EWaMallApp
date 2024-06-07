@@ -8,7 +8,7 @@ import productReducer from './slice/productSlice';
 import industryReducer from './slice/industrySlice';
 import cartReducer from './slice/cartSlice';
 import addressReducer from './slice/addressSlice';
-
+import orderReducer from './slice/orderSlice';
 const store = configureStore({
   reducer: {
     accountReducer,
@@ -18,7 +18,8 @@ const store = configureStore({
     productSellerReducer,
     industrySellerReducer,
     industryReducer,
-    formCreateProductReducer
+    formCreateProductReducer,
+    orderReducer
   },
 });
 export type RootState = ReturnType<typeof store.getState>
