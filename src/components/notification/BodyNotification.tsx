@@ -1,35 +1,53 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { InterfaceAccountState } from '../../constant/interface';
+import { useSelector, useDispatch } from 'react-redux';
+import { InterfaceAccountState, InterfaceNotification } from '../../constant/interface';
 import axios from 'axios';
+import { setNewNotificationReceived } from '../../redux/slice/notificationSlice';
+
+// Define the notification interface
+interface Notification {
+  title: string;
+  message: string;
+}
 
 const BodyNotification = () => {
   const { username } = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
   );
-  console.log(username);
-  const [notifications, setNotifications] = useState([]);
+
+  const { newNotificationReceived } = useSelector(
+    (state: InterfaceNotification) => state.notificationReducer,
+  );
+
+  const dispatch = useDispatch();
+
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [dataFetched, setDataFetched] = useState(false); // State để đánh dấu đã fetch data lần đầu tiên
+
+  const fetchData = async () => {
+    try {
+      const apiURL = `https://ewamallbe.onrender.com/api/Notification/GetAllNotificationByUserId/${username}`;
+      const response = await axios.get(apiURL);
+      const data: Notification[] = response.data;
+      setNotifications(data);
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      dispatch(setNewNotificationReceived(false));
+      setDataFetched(true); // Đánh dấu rằng dữ liệu đã được fetch lần đầu tiên
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiURL = `https://ewamallbe.onrender.com/api/Notification/GetAllNotificationByUserId/${username}`;
-        const response = await axios.get(apiURL);
-        const data = response.data;
-        setNotifications(data);
-        console.log('Data from API:', data); 
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-
-    const intervalId = setInterval(fetchData, 5000); // Gọi lại fetchData mỗi 5 giây
-
-    return () => clearInterval(intervalId); // Xóa interval khi component bị unmount
-  }, [username]); // Thêm username vào mảng dependencies của useEffect để useEffect được gọi lại khi username thay đổi
+    if (!dataFetched) {
+      fetchData(); // Fetch data lần đầu tiên nếu chưa fetch
+    }
+    if (username && newNotificationReceived) {
+      fetchData(); // Fetch data khi có thông báo mới
+    }
+  }, [username, newNotificationReceived, dataFetched]); // Dependencies
 
   return (
     <View style={styles.container}>

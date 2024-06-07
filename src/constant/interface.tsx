@@ -22,7 +22,10 @@ interface InterfaceProductState {
 
 export type {InterfaceAccountState, InterfaceProductState};
 
-
+export interface InterfaceNotification{
+  notificationReducer?: any;
+  newNotificationReceived: boolean | undefined;
+}
 
 
 //Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha 

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import accountReducer from './slice/accountSlice';
 import industrySellerReducer from './slice/seller/industrySellerSlice';
 import productSellerReducer from './slice/seller/productSellerSlice';
+import notificationReducer from './slice/notificationSlice'
 import productReducer from './slice/productSlice';
 import industryReducer from './slice/industrySlice';
 import { IndustryAPI } from './api/IndustryAPI';
@@ -11,6 +12,7 @@ const store = configureStore({
   reducer: {
     accountReducer,
     productReducer,
+    notificationReducer,
     productSellerReducer,
     industrySellerReducer,
     industryReducer,
