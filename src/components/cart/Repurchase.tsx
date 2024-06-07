@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { CartProductTypes, ProductTypes } from '../../constant/types';
+import { Cart, CartProductTypes, ProductTypes } from '../../constant/types';
 
 
 interface Props {
@@ -10,8 +10,8 @@ interface Props {
 const Repurchase: React.FC<Props> = ({item}) => {
   return (
     <View>
-      <Text>{item.nameShop}</Text>
-      <Text>{item.id}</Text>
+      {/* <Text>{item.nameShop}</Text>
+      <Text>{item.id}</Text> */}
     </View>
   );
 };

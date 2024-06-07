@@ -1,5 +1,5 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import {useNavigation} from '@react-navigation/native';
 import {formatPriceToVND} from '../../config/FixPrice';
@@ -7,10 +7,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-const FooterProductDetail: React.FC = () => {
+const FooterProductDetail: React.FC<{openBottomSheet: () => void}> = ({
+  openBottomSheet,
+}) => {
   const price = 200000;
   const formattedPrice = formatPriceToVND(price);
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.containerBuy}>
@@ -38,16 +41,16 @@ const FooterProductDetail: React.FC = () => {
             />
             <Text style={styles.textIcon}>Chat ngay</Text>
           </View>
-          <View style={styles.containerIcon}>
+          <TouchableOpacity onPress={openBottomSheet} style={styles.containerIcon}>
             <FontAwesome5 name="cart-plus" size={18} color="#605F5F" />
             <Text style={styles.textIcon}>Thêm vào giỏ</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           style={styles.buttonBuy}
           onPress={() => navigation.navigate('Purchase' as never)}>
           <Text style={styles.textBuy}>Mua ngay</Text>
-          <Text style={{color:'white'}}>{formattedPrice}</Text>
+          <Text style={{color: 'white'}}>{formattedPrice}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -90,5 +93,10 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.inter_regular,
     fontSize: 11,
     color: '#605F5F',
+  },
+  containerModal: {
+    height: SIZES.height,
+    flex: 1,
+    zIndex: 22,
   },
 });

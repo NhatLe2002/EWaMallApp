@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
     paddingVertical: '2%',
   },
   textOption: {
+    color: COLORS.gray_2,
     fontSize: 15,
     fontFamily: FONTS.inter_medium,
   },

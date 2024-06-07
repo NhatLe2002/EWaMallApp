@@ -49,21 +49,6 @@ const SuggestProduct = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
       />
-      {/* <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{height: '70%', marginBottom: 7}}>
-        {productsListFormatted.map((item, index) => (
-          <Product
-            key={index}
-            imgUrl={item.imgUrl}
-            name={item.name}
-            price={item.price}
-            sold={item.sold}
-            address={item.address}
-          />
-        ))}
-      </ScrollView> */}
     </View>
   );
 };

@@ -1,31 +1,47 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProductCreateError, setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
+import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
+
+
+
 
 const ProductName = () => {
-    const [productName, setProductName] = useState('');
+    //init
+    const dispatch = useDispatch<any>();
+    const { productCreate, productCreateError, loading } = useSelector(
+        (state: IFormProductCreateState) => state.formCreateProductReducer,
+    );
+    const [textInputProductName, setTextInputProductName] = useState('');
 
-    const handleProductNameChange = (text: any) => {
-        // Giới hạn chiều dài của tên sản phẩm thành 120 ký tự
-        if (text.length <= 120) {
-            setProductName(text);
-        }
+
+
+    //handel
+    const handleProductNameChange = async (text: string) => {
+        setTextInputProductName(text);
+        await dispatch(setProductCreateField({ productName: text }));
+
     };
-
     return (
         <View>
             <View style={styles.labelContainer}>
                 <Text style={styles.labelText}>Tên sản phẩm</Text>
-                <Text>{productName.length}/120</Text>
+                <Text>{textInputProductName.length}/120</Text>
             </View>
             <View style={styles.inputContainer}>
                 <TextInput
-                    style={styles.input}
-                    value={productName}
-                    onChangeText={handleProductNameChange} 
-                    maxLength={120} 
                     placeholder="Nhập tên sản phẩm"
+                    maxLength={120}
+                    style={styles.input}
+                    onChangeText={(text) => {
+                        handleProductNameChange(text);
+                    }}
                 />
             </View>
+            {productCreateError.productName ? (
+                <Text style={styles.error}>{productCreateError.productName}</Text>
+            ) : null}
         </View>
     );
 };
@@ -49,5 +65,9 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40,
+    },
+    error: {
+        color: 'red',
+        fontSize: 12,
     },
 });

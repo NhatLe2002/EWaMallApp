@@ -1,15 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AppState, AppStateStatus, StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
+import {
+  AppState,
+  AppStateStatus,
+  StyleSheet,
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+
 import Feather from 'react-native-vector-icons/Feather';
-import { Input } from 'react-native-elements';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
+import {Input} from 'react-native-elements';
+import {useForm, SubmitHandler, Controller} from 'react-hook-form';
+import {useNavigation} from '@react-navigation/native';
 import HeightSpacer from '../../../reusables/height_spacer/HeightSpacer';
-import { COLORS, FONTS, SIZES } from '../../../constant/theme';
+import {COLORS, FONTS, SIZES} from '../../../constant/theme';
 import accountApi from '../../../api/accountApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsLogin, setRole, setUsername } from '../../../redux/slice/accountSlice';
-import { InterfaceAccountState } from '../../../constant/interface';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  setIsLogin,
+  setRole,
+  setUserId,
+  setUsername,
+} from '../../../redux/slice/accountSlice';
+import {InterfaceAccountState} from '../../../constant/interface';
+import storageService from '../../../api/storageService';
 import PushNotification from 'react-native-push-notification';
 import * as signalR from '@microsoft/signalr';
 import 'react-native-url-polyfill/auto';
@@ -25,15 +40,23 @@ const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
   const connection = useRef<signalR.HubConnection | null>(null);
   const dispatch = useDispatch();
-  const { control, handleSubmit } = useForm<Inputs>();
-  const { isLogin, role } = useSelector((state: InterfaceAccountState) => state.accountReducer);
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const {control, handleSubmit} = useForm<Inputs>();
+  const {isLogin, role} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+
+  const onSubmit: SubmitHandler<Inputs> = async data => {
+
     try {
       const res = await accountApi.login(data);
       if (res) {
         dispatch(setIsLogin(true));
         dispatch(setRole(res.data.role.roleName));
         dispatch(setUsername(res.data.user.name));
+        dispatch(setUserId(res.data.user.id));
+        storageService.setId(res.data.user.id);
+        storageService.setRole(res.data.role.roleName);
+        storageService.setRole(res.data.user.name);
         if (role === 'User') {
           navigation.navigate('BottomTab' as never);
         }
@@ -49,7 +72,10 @@ const LoginScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
 
     return () => {
       subscription.remove();
@@ -78,11 +104,11 @@ const LoginScreen: React.FC = () => {
           <Controller
             control={control}
             name="email"
-            render={({ field: { value, onChange, onBlur } }) => (
+            render={({field: {value, onChange, onBlur}}) => (
               <Input
                 placeholder="Email"
                 value={value}
-                inputStyle={{ fontSize: 15 }}
+                inputStyle={{fontSize: 15}}
                 onChangeText={onChange}
                 onBlur={onBlur}
                 leftIcon={<Feather name="mail" size={20} color="#929292" />}
@@ -92,10 +118,10 @@ const LoginScreen: React.FC = () => {
           <Controller
             control={control}
             name="password"
-            render={({ field: { value, onChange, onBlur } }) => (
+            render={({field: {value, onChange, onBlur}}) => (
               <Input
                 placeholder="Mật khẩu"
-                inputStyle={{ fontSize: 15 }}
+                inputStyle={{fontSize: 15}}
                 secureTextEntry={true}
                 value={value}
                 onChangeText={onChange}
@@ -237,7 +263,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#Eaeaea',
     borderTopWidth: 1,
     shadowColor: COLORS.border_product,
-    shadowOffset: { width: -4, height: -4 },
+    shadowOffset: {width: -4, height: -4},
     shadowOpacity: 0.6,
     shadowRadius: 6,
     paddingBottom: '2%',

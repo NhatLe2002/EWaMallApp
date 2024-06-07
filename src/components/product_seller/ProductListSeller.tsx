@@ -21,7 +21,7 @@ const ProductListSeller = () => {
     const dispatch = useDispatch<any>();
 
     const { productList } = useSelector(
-        (state: InterfaceProductState) => state.productReducer,
+        (state: InterfaceProductState) => state.productSellerReducer,
     );
 
     useEffect(() => {

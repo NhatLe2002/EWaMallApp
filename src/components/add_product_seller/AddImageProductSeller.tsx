@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Image, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import SubTitleAddProductSeller from '../../reusables/Title/SubTitleAddProductSeller';
 import { COLORS, SIZES } from '../../constant/theme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
+import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
 const AddImageProductSeller = () => {
     const [imageUris, setImageUris] = useState<string[]>([]);
     const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
     const [modalVisibleCoverImage, setModalVisibleCoverImage] = useState(false);
     const [selectedCoverImage, setSelectedCoverImage] = useState<string | null>(null);
+
+
+    const dispatch = useDispatch<any>();
+    const { productCreate, productCreateError, loading } = useSelector(
+        (state: IFormProductCreateState) => state.formCreateProductReducer,
+    );
+
     const handleAddImage = () => {
         setModalVisibleAdd(true);
     };
@@ -28,7 +38,10 @@ const AddImageProductSeller = () => {
                     const uri = response.assets[0].uri;
                     if (uri) {
                         setImageUris([...imageUris, uri]);
-                        console.log('Test ', response.assets[0].uri);
+                        dispatch(setProductCreateField({ imagesId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
+                        dispatch(setProductCreateField({ coverImageId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
+                        dispatch(setProductCreateField({ videoId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
+                        // console.log('Test ', response.assets[0].uri);
                     }
                 }
             }
@@ -50,37 +63,50 @@ const AddImageProductSeller = () => {
                     const uri = response.assets[0].uri;
                     if (uri) {
                         setImageUris([...imageUris, uri]);
+                        dispatch(setProductCreateField({ imagesId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
+                        dispatch(setProductCreateField({ coverImageId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
+                        dispatch(setProductCreateField({ videoId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
                     }
                 }
             }
         );
     };
     const handleDeleteImage = (deletedImageUri: string) => {
-        const updatedImageUris = imageUris.filter(uri => uri !== deletedImageUri);
+        const indexToDelete = imageUris.indexOf(deletedImageUri);
+        const updatedImageUris = [...imageUris];
+        if (indexToDelete !== -1) {
+            updatedImageUris.splice(indexToDelete, 1);
+        }
         setImageUris(updatedImageUris);
+        if (imageUris.length === 1) {
+            dispatch(setProductCreateField({ imagesId: "" }));
+            dispatch(setProductCreateField({ coverImageId: "" }));
+            dispatch(setProductCreateField({ videoId: "" }));
+            console.log(imageUris.length);
+        }
     };
     const handleSelectCoverImage = () => {
         if (selectedCoverImage) {
             const selectedIndex = imageUris.findIndex(uri => uri === selectedCoverImage);
             if (selectedIndex !== -1) {
-                const updatedImageUris = [...imageUris]; 
-                updatedImageUris.splice(selectedIndex, 1); 
+                const updatedImageUris = [...imageUris];
+                updatedImageUris.splice(selectedIndex, 1);
                 updatedImageUris.unshift(selectedCoverImage);
-                setImageUris(updatedImageUris); 
+                setImageUris(updatedImageUris);
             }
-            setSelectedCoverImage(null); 
-            setModalVisibleCoverImage(false); 
+            setSelectedCoverImage(null);
+            setModalVisibleCoverImage(false);
         }
     }
 
     //Reder
     const renderImageItem = ({ item }: { item: string }) => (
         <View style={styles.imageContainer}>
-            <TouchableOpacity onPress={() => {setSelectedCoverImage(item), setModalVisibleCoverImage(true)}}>
+            <TouchableOpacity onPress={() => { setSelectedCoverImage(item), setModalVisibleCoverImage(true) }}>
                 <Image source={{ uri: item }} style={styles.image} />
             </TouchableOpacity>
             <Pressable style={styles.cancelButton} onPress={() => handleDeleteImage(item)}>
-                <MaterialIcons name="cancel" size={10} color="gray"/>
+                <MaterialIcons name="cancel" size={10} color="gray" />
             </Pressable>
         </View>
     );

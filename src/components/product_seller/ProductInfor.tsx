@@ -1,43 +1,60 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { ProductCreate } from '../../constant/types/productType';
+import { useDispatch, useSelector } from 'react-redux';
+import { InterfaceProductState } from '../../constant/interface/productInterface';
+import { ProductSellCommand } from '../../constant/types/productSellCommand';
+import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
+
+const DefaultProductSellCommand: ProductSellCommand[] = [
+    {
+        name: "Không",
+        price: "",
+        inventoryNumber: "",
+        path: "0",
+        parentNodeId: "",
+    }
+];
+
 
 const ProductInfor = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch<any>();
+    const { productCreate, loading } = useSelector(
+        (state: InterfaceProductState) => state.productSellerReducer,
+    );
     const [price, setPrice] = useState<string>('');
     const [isValidPrice, setIsValidPrice] = useState<boolean>(true);
     const [inventory, setInventory] = useState<string>('');
+    const [productSellCommandInput, setProductSellCommandInput] = useState<ProductSellCommand[]>(DefaultProductSellCommand)
 
 
     const handleInventoryChange = (text: string) => {
-        const formattedInventory = text.replace(/[^0-9]/g, '');
-        setInventory(formattedInventory);
+        setProductSellCommandInput(prevCommands => prevCommands.map(command => ({ ...command, inventoryNumber: text })));
     };
 
-    const handlePriceChange = (text: string) => {
-        const formattedPrice = text.replace(/[^0-9.]/g, '');
-        setPrice(formattedPrice);
-        const numericPrice = parseFloat(formattedPrice);
-        if (!isNaN(numericPrice) && numericPrice >= 1000 && numericPrice <= 120000000) {
-            setIsValidPrice(true);
-        } else {
-            setIsValidPrice(false);
-        }
+    const handlePriceChange = async (text: string) => {
+        setProductSellCommandInput(prevCommands => prevCommands.map(command => ({ ...command, price: text })));
     };
-
+    useEffect(() => {
+        dispatch(setProductCreateField({ productSellCommand: productSellCommandInput }));
+    }, [productSellCommandInput]);
     return (
         <View style={styles.container}>
-            <TouchableOpacity 
-            onPress={() => navigation.navigate("Industry" as never)}
-            style={styles.industryContainer}>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("ProductComman" as never)}
+                style={styles.industryContainer}>
                 <View style={styles.industryItem}>
                     <AntDesign name='menuunfold' size={20} />
-                    <Text style={styles.text}>Ngành hàng</Text>
+                    <Text style={styles.text}>Phân loại hàng</Text>
                 </View>
-                <MaterialIcons name='navigate-next' size={20} />
+                {false ? (
+                    <Text >{}</Text>
+                ) : <MaterialIcons name='navigate-next' size={20} />}
             </TouchableOpacity>
             <View style={styles.priceContainer}>
                 <View style={styles.industryItem}>
@@ -45,27 +62,25 @@ const ProductInfor = () => {
                     <Text style={styles.text}>Giá</Text>
                 </View>
                 <TextInput
+                    placeholder="Nhập giá sản phẩm"
                     style={styles.priceInput}
+                    onChangeText={(text) => {
+                        handlePriceChange(text);
+                    }}
                     keyboardType="numeric"
-                    value={price}
-                    onChangeText={handlePriceChange}
-                    placeholder="Nhập giá"
                 />
             </View>
-            {!isValidPrice && (
-                <Text style={styles.errorText}>Giá phải từ 1000.00 đến 120000000.00</Text>
-            )}
+
             <View style={styles.deliveryContainer}>
                 <View style={styles.industryItem}>
                     <MaterialIcons name='inventory' size={20} />
                     <Text style={styles.text}>Kho hàng</Text>
                 </View>
                 <TextInput
-                    style={styles.quantityInput}
-                    keyboardType="numeric"
-                    value={inventory}
-                    onChangeText={handleInventoryChange}
                     placeholder="Nhập số lượng hàng"
+                    style={styles.quantityInput}
+                    onChangeText={(text) => { handleInventoryChange(text) }}
+                    keyboardType="numeric"
                 />
             </View>
         </View>
