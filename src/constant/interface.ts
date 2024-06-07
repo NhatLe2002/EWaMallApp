@@ -3,11 +3,17 @@ import {
   CreateOrderRequest,
   CreateProduct,
   District,
+  FeeShip,
   Industry,
+  OrderList,
   Product,
   ProductAddToCart,
   Province,
+  Seller,
+  ServiceShip,
+  ShipAddress,
   UpdateCartDetail,
+  Ward,
 } from './types';
 
 interface InterfaceAccountState {
@@ -18,11 +24,25 @@ interface InterfaceAccountState {
   role: string | null;
   username: string | null;
   userId: String | null;
+  sellerProfile: Seller | null;
   loading: boolean;
   error: string | null;
   success: boolean;
 }
+
+
+export interface InterfaceNotification{
+  notificationReducer?: any;
+  newNotificationReceived: boolean | undefined;
+}
+
+interface InterfaceOrderState {
+  orderReducer?: any;
+  orderList: OrderList | null;
+  info_order: CreateOrderRequest | null;
+}
 //Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha
+
 export interface IIndustry {
   industryName: string;
   isActive: boolean;
@@ -85,14 +105,18 @@ interface InterfaceCartState {
   updateCartQuantity: UpdateCartDetail | null;
   product_add: ProductAddToCart | null;
   product_purchase: number[] | null;
-  info_order: CreateOrderRequest | null;
+
   error: string | null;
 }
 interface InterfaceAddressState {
   addressReducer?: any;
+  listShipAddress: ShipAddress[];
   province: Province[];
   district: District[];
-  ward: [];
+  ward: Ward[];
+  serviceShip: ServiceShip[];
+  feeShip: FeeShip | null;
+  updateShipAddress: ShipAddress | null;
 }
 export type {
   InterfaceAccountState,
@@ -100,4 +124,5 @@ export type {
   InterfaceProductState,
   InterfaceCartState,
   InterfaceAddressState,
+  InterfaceOrderState,
 };

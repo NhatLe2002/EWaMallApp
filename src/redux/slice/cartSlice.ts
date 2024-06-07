@@ -1,8 +1,14 @@
+
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {v4 as uuidv4} from 'uuid';
 import {InterfaceCartState} from '../../constant/interface';
 import cartApi from '../../api/cartApi';
-import {Cart, CreateOrderRequest, ProductAddToCart, UpdateCartDetail} from '../../constant/types';
+import {
+  Cart,
+  CreateOrderRequest,
+  ProductAddToCart,
+  UpdateCartDetail,
+} from '../../constant/types';
 
 const initialState: InterfaceCartState = {
   cartList: [],
@@ -10,7 +16,7 @@ const initialState: InterfaceCartState = {
   product_add: null,
   product_purchase: null,
   error: null,
-  info_order: null,
+
 };
 export const fetchAllCart = createAsyncThunk(
   'cart/fetchAll',
@@ -50,12 +56,11 @@ export const addToCart = createAsyncThunk(
     }
   },
 );
-export const increaseQuantity = createAsyncThunk(
-  'cart/increase_uantity',
+export const updateCartQuantity = createAsyncThunk(
+  'cart/update_CartQuantity',
   async ({cartId, quantity}: {cartId: number; quantity: number}) => {
     try {
-      const response = await cartApi.updateQuantityCart(cartId, quantity + 1);
-
+      const response = await cartApi.updateQuantityCart(cartId, quantity);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -63,82 +68,30 @@ export const increaseQuantity = createAsyncThunk(
     }
   },
 );
-export const decreaseQuantity = createAsyncThunk(
-  'cart/decrease_quantity',
-  async ({cartId, quantity}: {cartId: number; quantity: number}) => {
-    try {
-      const response = await cartApi.updateQuantityCart(cartId, quantity - 1);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
-  },
-);
-export const createOrder = createAsyncThunk(
-  'cart/createOrder',
-  async ({
-    totalCost,
-    quantity,
-    userId,
-    sellDetailId,
-    shipCost,
-    shipAddressId,
-  }: {
-    totalCost: number;
-    quantity: number;
-    userId: number;
-    sellDetailId: number;
-    shipCost: number;
-    shipAddressId: number;
-  }) => {
-    try {
-      const generateOrderCode = (length: number): string => {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let result = '';
-        for (let i = 0; i < length; i++) {
-          result += characters.charAt(
-            Math.floor(Math.random() * characters.length),
-          );
-        }
-        return result;
-      };
 
-      const orderCode = generateOrderCode(7);
-      const orderRequest = {
-        userId: userId,
-        orderCode: orderCode,
-        totalCost: totalCost,
-        shipCost: shipCost,
-        statusId: 1,
-        shipAddressId: shipAddressId,
-        voucherId: 0,
-        paymentId: 1,
-        createOrderDetailCommands: [
-          {
-            quantity: quantity,
-            productSellDetailId: sellDetailId,
-          },
-        ],
-      };
-
-      // Gọi API để tạo đơn hàng
-      const response = await cartApi.createOrder(orderRequest);
-
-      // Trả về dữ liệu từ API
-      return response.data;
-    } catch (error) {
-      console.error('Failed to create order:', error);
-      throw error;
-    }
-  },
-);
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
     setProductBuy: (state, action: PayloadAction<number[]>) => {
       state.product_purchase = action.payload;
+    },
+    increaseQuantity: (state, action: PayloadAction<{ cartId: number, quantity: number }>) => {
+      const { cartId, quantity } = action.payload;
+    
+      const product = state.cartList.find(product => product.cartId === cartId);
+      if (product) {
+        product.quantity += 1;
+      }
+    },
+    decreaseQuantity: (state, action: PayloadAction<{ cartId: number, quantity: number }>) => {
+      const { cartId, quantity } = action.payload;
+ 
+      const product = state.cartList.find(product => product.cartId === cartId);
+      if (product) {
+      
+        product.quantity -= 1;
+      }
     },
   },
   extraReducers: builder => {
@@ -161,35 +114,18 @@ const cartSlice = createSlice({
       return {...state, error: action.payload as string};
     });
     builder.addCase(
-      increaseQuantity.fulfilled,
+      updateCartQuantity.fulfilled,
       (state, action: PayloadAction<UpdateCartDetail>) => {
         return {...state, updateCartQuantity: action.payload, error: ''};
       },
     );
-    builder.addCase(increaseQuantity.rejected, (state, action) => {
+    builder.addCase(updateCartQuantity.rejected, (state, action) => {
       return {...state, error: action.payload as string};
     });
-    builder.addCase(
-      decreaseQuantity.fulfilled,
-      (state, action: PayloadAction<UpdateCartDetail>) => {
-        return {...state, updateCartQuantity: action.payload, error: ''};
-      },
-    );
-    builder.addCase(decreaseQuantity.rejected, (state, action) => {
-      return {...state, error: action.payload as string};
-    });
-    builder.addCase(
-      createOrder.fulfilled,
-      (state, action: PayloadAction<CreateOrderRequest>) => {
-        return {...state, info_order: action.payload, error: ''};
-      },
-    );
-    builder.addCase(createOrder.rejected, (state, action) => {
-      return {...state, error: action.payload as string};
-    });
+
   },
 });
 
-export const {setProductBuy} = cartSlice.actions;
+export const {setProductBuy,increaseQuantity,decreaseQuantity} = cartSlice.actions;
 
 export default cartSlice.reducer;

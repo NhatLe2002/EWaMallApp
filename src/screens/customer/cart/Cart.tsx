@@ -10,46 +10,47 @@ import React, {useEffect, useState} from 'react';
 import HeaderCommon from '../../../reusables/header/HeaderCommon';
 import {COLORS} from '../../../constant/theme';
 import FooterCart from '../../../components/cart/FooterCart';
-import {CartProductTypes} from '../../../constant/types';
+import {Cart, CartProductTypes} from '../../../constant/types';
 import ProductInCart from '../../../components/cart/ProductInCart';
 import Repurchase from '../../../components/cart/Repurchase';
 import {useDispatch, useSelector} from 'react-redux';
 import {InterfaceCartState} from '../../../constant/interface';
 import storageService from '../../../api/storageService';
-import {fetchAllCart} from '../../../redux/slice/cartSlice';
+import {fetchAllCart, updateCartQuantity} from '../../../redux/slice/cartSlice';
 
-const Cart: React.FC = () => {
+const CartScreen: React.FC = () => {
   //khai báo
   const dispatch = useDispatch<any>();
-  const {cartList,updateCartQuantity,product_purchase} = useSelector(
+  const {cartList} = useSelector(
     (state: InterfaceCartState) => state.cartReducer,
   );
   const [activeTab, setActiveTab] = useState<'all' | 'repurchase'>('all');
 
-  const cartListUpdate: CartProductTypes[] =Array.isArray(cartList) ? cartList.reduce(
-    (acc: CartProductTypes[], item: any) => {
-      const existingIndex = acc.findIndex(
-        (x: CartProductTypes) => x.sellerId === item.sellerId,
-      );
-      if (existingIndex === -1) {
-        acc.push({
-          sellerId: item.sellerId,
-          sellerName: item.sellerName,
-          products: [{...item}],
-        });
-      } else {
-        acc[existingIndex].products.push({...item});
-      }
-      return acc;
-    },
-    [],
-  ):[];
-  const [listData, setListData] =
-  useState<CartProductTypes[]>(cartListUpdate);
+  const cartListUpdate: CartProductTypes[] = Array.isArray(cartList)
+    ? cartList.reduce((acc: CartProductTypes[], item: any) => {
+        const existingIndex = acc.findIndex(
+          (x: CartProductTypes) => x.sellerId === item.sellerId,
+        );
+        if (existingIndex === -1) {
+          acc.push({
+            sellerId: item.sellerId,
+            sellerName: item.sellerName,
+            products: [{...item}],
+          });
+        } else {
+          acc[existingIndex].products.push({...item});
+        }
+        return acc;
+      }, [])
+    : [];
+  const [listData, setListData] = useState<CartProductTypes[]>(cartListUpdate);
   //handle
   const handleTabPress = (tab: 'all' | 'repurchase') => {
     setActiveTab(tab);
     setListData(tab === 'all' ? listData : listData);
+    if (tab === 'repurchase') {
+      updateQuantityAPI(cartList);
+    }
   };
   const renderItem: ListRenderItem<CartProductTypes> = ({item}) => {
     if (activeTab === 'all') {
@@ -71,7 +72,18 @@ const Cart: React.FC = () => {
     };
 
     fetchData();
-  }, [dispatch,updateCartQuantity]);
+  }, []);
+  const updateQuantityAPI = async (cartList: Cart[]) => {
+    try {
+      cartList.map(async item => {
+        dispatch(
+          updateCartQuantity({cartId: item.cartId, quantity: item.quantity}),
+        );
+      });
+    } catch (error) {
+      console.error('Failed to update quantity ', error);
+    }
+  };
   return (
     <View style={styles.container}>
       <HeaderCommon
@@ -80,6 +92,7 @@ const Cart: React.FC = () => {
         colorBack={COLORS.yellowMain}
         backgroundColor={COLORS.white}
         icon1="chatbubble-ellipses-outline"
+        updateQuantityAPI={updateQuantityAPI}
       />
       <FlatList
         data={cartListUpdate}
@@ -94,7 +107,6 @@ const Cart: React.FC = () => {
                   activeTab === 'all' && styles.activeTab,
                 ]}
                 onPress={() => handleTabPress('all')}>
-              
                 <Text style={[activeTab === 'all' && styles.textActiveTab]}>
                   Tất cả ( 4 )
                 </Text>
@@ -105,7 +117,6 @@ const Cart: React.FC = () => {
                   activeTab === 'repurchase' && styles.activeTab,
                 ]}
                 onPress={() => handleTabPress('repurchase')}>
-              
                 <Text
                   style={[activeTab === 'repurchase' && styles.textActiveTab]}>
                   Mua lại
@@ -115,7 +126,7 @@ const Cart: React.FC = () => {
           );
         }}
       />
-      <FooterCart />
+      <FooterCart updateQuantityAPI={updateQuantityAPI} />
     </View>
   );
 };
@@ -146,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Cart;
+export default CartScreen;

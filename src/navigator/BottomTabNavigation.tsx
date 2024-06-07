@@ -10,7 +10,7 @@ import TabButton from './TabButton';
 import LoginScreen from '../screens/customer/login/LoginScreen';
 import Cart from '../screens/customer/cart/Cart';
 import Category from '../screens/customer/categories/Category';
-import Voucher from '../screens/customer/voucher/Voucher';
+import Voucher from '../screens/customer/voucher/DiscountScreen';
 import Profile from '../screens/customer/profile/Profile';
 import NotificationScreen from '../screens/customer/notifications/NotificationScreen';
 

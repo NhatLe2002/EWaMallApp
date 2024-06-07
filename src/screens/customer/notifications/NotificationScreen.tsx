@@ -3,11 +3,13 @@ import React from 'react'
 import { Checkbox } from 'react-native-paper';
 import HeaderNotification from '../../../components/notification/HeaderNotification';
 import BodyNotification from '../../../components/notification/BodyNotification';
+import FooterNotification from '../../../components/notification/FooterNotification';
 const NotificationScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <HeaderNotification />
       <BodyNotification />
+      <FooterNotification />
     </SafeAreaView>
   )
 }
