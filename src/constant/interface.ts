@@ -29,12 +29,20 @@ interface InterfaceAccountState {
   error: string | null;
   success: boolean;
 }
+
+
+export interface InterfaceNotification{
+  notificationReducer?: any;
+  newNotificationReceived: boolean | undefined;
+}
+
 interface InterfaceOrderState {
   orderReducer?: any;
   orderList: OrderList | null;
   info_order: CreateOrderRequest | null;
 }
 //Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha
+
 export interface IIndustry {
   industryName: string;
   isActive: boolean;
@@ -80,6 +88,7 @@ interface InterfaceProductState {
   productReducer?: any;
   productList: Product[];
   productSearchList: Product[];
+  productFilterList: Product[];
   product: Product | null;
   error: string | null;
 }

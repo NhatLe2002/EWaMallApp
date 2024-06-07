@@ -2,7 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import accountReducer from './slice/accountSlice';
 import industrySellerReducer from './slice/seller/industrySellerSlice';
 import productSellerReducer from './slice/seller/productSellerSlice';
-import industryDetailSellerReducer from './slice/seller/industryDetailSellerSlice';
+import voucherReducer from './slice/customer/voucherSlice';
+import notificationReducer from './slice/notificationSlice'
 import formCreateProductReducer from './slice/form/formCreateProductBySellerSlice';
 import productReducer from './slice/productSlice';
 import industryReducer from './slice/industrySlice';
@@ -13,13 +14,15 @@ const store = configureStore({
   reducer: {
     accountReducer,
     productReducer,
+    notificationReducer,
     cartReducer,
     addressReducer,
     productSellerReducer,
     industrySellerReducer,
     industryReducer,
     formCreateProductReducer,
-    orderReducer
+    voucherReducer,
+    orderReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>

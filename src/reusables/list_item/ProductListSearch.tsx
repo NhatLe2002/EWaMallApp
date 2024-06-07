@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   },
   nameProduct: {
     fontSize: 14,
+    color: COLORS.gray_2,
   },
   subContainer: {
     flex: 1,

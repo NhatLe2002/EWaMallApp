@@ -19,6 +19,9 @@ import AddAddress from '../screens/customer/address/AddAddress';
 import SelectAddress from '../components/address/SelectAddress';
 import Industry from '../screens/sellser/add_product_seller/Industry';
 import ProductComman from '../screens/sellser/add_product_seller/ProductComman';
+import ProductCommanDetail from '../screens/sellser/add_product_seller/ProductCommanDetail';
+import RegistrationScreen1 from '../components/register_seller/RegistrationScreen1';
+import RegisterForm from '../components/register_seller/RegisterForm';
 import CartScreen from '../screens/customer/cart/Cart';
 import DeliveryScreen from '../screens/customer/delivery/DeliveryScreen';
 import PurchaseSuccesful from '../screens/customer/purchase/PurchaseSuccesful';
@@ -51,6 +54,9 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Industry" component={Industry} />
       <Stack.Screen name="ProductComman" component={ProductComman} />
       <Stack.Screen name="Finance" component={Finance} />
+      <Stack.Screen name="ProductCommanDetail" component={ProductCommanDetail} />
+      <Stack.Screen name="RegistrationSellerScreen" component={RegistrationScreen1} />
+      <Stack.Screen name="RegisterSellerScreen" component={RegisterForm} />
     </Stack.Navigator>
   );
 };

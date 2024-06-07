@@ -1,6 +1,6 @@
-import {StyleSheet, Text, TouchableHighlightBase, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {COLORS, FONTS, SIZES} from '../../../constant/theme';
+import { StyleSheet, Text, TouchableHighlightBase, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { COLORS, FONTS, SIZES } from '../../../constant/theme';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -9,25 +9,77 @@ import {
   TextInput,
   TouchableHighlight,
 } from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
-import {Image} from 'react-native-elements';
-import {banner} from '../../../data/Banner';
+import { useNavigation } from '@react-navigation/native';
+import { Image } from 'react-native-elements';
+import { banner } from '../../../data/Banner';
 import { NativeSyntheticEvent } from 'react-native';
 import { TextInputChangeEventData } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { setClearSearchProduct } from '../../../redux/slice/productSlice';
+import storageService from '../../../api/storageService';
 
 const SearchPage: React.FC = () => {
-  const [searchKey, setSearchKey] = useState([1,1,1,1]);
+  const [searchKey, setSearchKey] = useState([]);
+  useEffect(() => {
+    loadItem();
+  }, []);
+  function loadItem() {
+    storageService.getSearchKey().then(s => {
+      if (s != null) {
+        setSearchKey(s.reverse())
+      } else {
+        setSearchKey([])
+      }
+    })
+  }
+  function clearSearchKey() {
+    storageService.removeSearch();
+    loadItem();
+  }
+  function saveSearchKey() {
+    storageService.getSearchKey().then(s => {
+      if (s != null) {
+        if(searchValue.searchKey.trim() == ""){
+          return
+        }
+        if(s.includes(searchValue.searchKey.trim())){
+          return;
+        }
+        if(s.length > 6){
+          s = s.reverse();
+          s.pop()
+          s = s.reverse();
+          s.push(searchValue.searchKey.trim())
+          storageService.setSearchKey(s);
+        }else{
+          s.push(searchValue.searchKey.trim())
+          storageService.setSearchKey(s);
+        }
+      } else {
+        if(searchValue.searchKey.trim() == ""){
+          return
+        }
+        var array = []
+        array.push(searchValue.searchKey.trim())
+        storageService.setSearchKey(array);
+      }
+      loadItem();
+    });
+  }
   const [searchValue, setSearchValue] = useState({
     searchKey: ""
   });
-  const [suggestItem, setSuggestItem] = useState([1,1,1,1]);
+  const [suggestItem, setSuggestItem] = useState([1, 1, 1, 1]);
   const dispatch = useDispatch<any>();
   var navigation = useNavigation();
-  const HandleInputChange = (event:NativeSyntheticEvent<TextInputChangeEventData>)=>{
+  const HandleInputChange = (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
     setSearchValue({
-      searchKey : event.nativeEvent.text
+      searchKey: event.nativeEvent.text
+    })
+  }
+  const pressToSearch = (key : string) => {
+    setSearchValue({
+      searchKey: key
     })
   }
 
@@ -47,8 +99,9 @@ const SearchPage: React.FC = () => {
               autoCapitalize="none"
               autoFocus={true}
               autoCorrect={false}
-              style={{width:200, height: '10%'}}
-              onChange={e=> HandleInputChange(e)}
+              style={{ width: 200, height: '10%', color: "black" }}
+              onChange={e => HandleInputChange(e)}
+              value={searchValue.searchKey}
             />
           </View>
           <View style={styles.content}>
@@ -60,7 +113,7 @@ const SearchPage: React.FC = () => {
             />
           </View>
         </View>
-        <TouchableHighlight          
+        <TouchableHighlight
           underlayColor={COLORS.yellow}
           style={{
             backgroundColor: COLORS.yellow,
@@ -68,15 +121,19 @@ const SearchPage: React.FC = () => {
             width: SIZES.width / 13,
             alignItems: 'center',
           }}
-          onPress={() => navigation.navigate({
-            name: "SearchPageResult",
-            params :{
-                  searchValue,
-            }
-          }as never)}>
+          onPress={() => {
+            saveSearchKey();
+            navigation.navigate({
+              name: "SearchPageResult",
+              params: {
+                searchValue,
+              }
+            } as never)
+          }
+          }>
           <Feather
             name="search"
-            style={{backgroundColor: COLORS.yellow, marginVertical: 'auto'}}
+            style={{ backgroundColor: COLORS.yellow, marginVertical: 'auto' }}
             size={20}
             color={COLORS.white}
           />
@@ -85,9 +142,23 @@ const SearchPage: React.FC = () => {
       {searchKey ? (
         searchKey.map((item, index) => (
           <>
-            <TouchableHighlight>
-              <View style={{backgroundColor: 'white', margin: 0.5, padding: 5}}>
-                <Text style={{margin: 5, color: 'black'}}>Hahaha</Text>
+            <TouchableHighlight
+            underlayColor={"grey"}
+            onPress={() => {
+              pressToSearch(item)
+              navigation.navigate({
+                name: "SearchPageResult",
+                params: {
+                  searchValue : {
+                    searchKey : item,
+                  },
+                }
+              } as never)
+            }
+          }
+            >
+              <View style={{ backgroundColor: 'white', margin: 0.5, padding: 5 }}>
+                <Text style={{ margin: 5, color: 'black' }}>{item}</Text>
               </View>
             </TouchableHighlight>
           </>
@@ -95,32 +166,40 @@ const SearchPage: React.FC = () => {
       ) : (
         <></>
       )}
-      <TouchableHighlight
-        style={{alignItems: 'center', backgroundColor: 'white'}}>
-        <View style={{margin: 0, padding: 2}}>
-          <Text style={{margin: 4}}>Extend</Text>
-        </View>
-      </TouchableHighlight>
+      {
+        searchKey.length > 0 ? <>
+          <TouchableHighlight
+            onPress={() => clearSearchKey()}
+            underlayColor={"white"}
+            style={{ alignItems: 'center', backgroundColor: 'white' }}>
+            <View style={{ margin: 0, padding: 2 }}>
+              <Text style={{ margin: 4, color: "grey" }}>Xóa lịch sử tìm kiếm</Text>
+            </View>
+          </TouchableHighlight>
+        </> : <></>
+      }
       <FlatList
         data={suggestItem}
         showsHorizontalScrollIndicator={false}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <View style={styles.container_suggest}>
-            <View style={{marginLeft:10}}>
-                <>
-                  <Text style={{marginTop: 10, color: "#ff7300", fontWeight: "500"}}>Xu hướng tìm kiếm <MaterialIcons name='celebration' size={15}/></Text>
-                  <FlatList
-                    data={banner}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({item}) => (
-                      <View style={{flexDirection: "row", alignItems: 'center',
-                      justifyContent: 'space-between',}}>
-                      <Image source={{uri: item.imgUrl}} style={styles.image} />
-                      <Text style={{marginLeft:5, color: "#4b4a4a"}}>Ngày Hội TCL 22.05</Text>
-                      </View>
-                    )}
-                  />
-                </>
+            <View style={{ marginLeft: 10 }}>
+              <>
+                <Text style={{ marginTop: 10, color: "#ff7300", fontWeight: "500" }}>Xu hướng tìm kiếm <MaterialIcons name='celebration' size={15} /></Text>
+                <FlatList
+                  data={banner}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({ item }) => (
+                    <View style={{
+                      flexDirection: "row", alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                      <Image source={{ uri: item.imgUrl }} style={styles.image} />
+                      <Text style={{ marginLeft: 5, color: "#4b4a4a" }}>Ngày Hội TCL 22.05</Text>
+                    </View>
+                  )}
+                />
+              </>
             </View>
           </View>
         )}
