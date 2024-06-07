@@ -1,11 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IFormProductCreateState } from "../../../constant/interface/formCreateProductInterface";
+import { Classification, IFormProductCreateState } from "../../../constant/interface/formCreateProductInterface";
 import { Product, ProductCreate } from "../../../constant/types/productType";
 import productApi from "../../../api/productApi";
 
 
 const initialState: IFormProductCreateState = {
     product: null,
+    classificationRedux: null,
     productCreate: {
       productName: '',
       productDescription: '',
@@ -43,6 +44,12 @@ const formCreateProductSlice = createSlice({
       setError: (state, action: PayloadAction<string | null>) => {
         state.error = action.payload;
       },
+      setClassificationRedux: (state, action: PayloadAction<Classification[] | null>) => {
+        state.classificationRedux = action.payload;
+      },
+      // setProductCommanRedux: (state, action: PayloadAction<ProductCreate["productSellCommand"] | null>) => {
+      //   state.productCreate.productSellCommand = action.payload;
+      // },
       setProductCreateError: (state, action: PayloadAction<{ field: string; error: string }>) => {
         const { field, error } = action.payload;
         state.productCreateError[field] = error;
@@ -67,5 +74,5 @@ const formCreateProductSlice = createSlice({
     
       }
 })
-export const {setProductCreateField, setError, setProductCreateError} = formCreateProductSlice.actions;
+export const {setProductCreateField, setError, setProductCreateError, setClassificationRedux} = formCreateProductSlice.actions;
 export default formCreateProductSlice.reducer

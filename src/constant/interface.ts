@@ -22,7 +22,15 @@ interface InterfaceAccountState {
   error: string | null;
   success: boolean;
 }
+
+
+export interface InterfaceNotification{
+  notificationReducer?: any;
+  newNotificationReceived: boolean | undefined;
+}
+
 //Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha
+
 export interface IIndustry {
   industryName: string;
   isActive: boolean;

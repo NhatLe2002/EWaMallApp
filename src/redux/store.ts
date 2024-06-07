@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import accountReducer from './slice/accountSlice';
 import industrySellerReducer from './slice/seller/industrySellerSlice';
 import productSellerReducer from './slice/seller/productSellerSlice';
+import notificationReducer from './slice/notificationSlice'
 import industryDetailSellerReducer from './slice/seller/industryDetailSellerSlice';
 import formCreateProductReducer from './slice/form/formCreateProductBySellerSlice';
 import productReducer from './slice/productSlice';
@@ -13,6 +14,7 @@ const store = configureStore({
   reducer: {
     accountReducer,
     productReducer,
+    notificationReducer,
     cartReducer,
     addressReducer,
     productSellerReducer,
