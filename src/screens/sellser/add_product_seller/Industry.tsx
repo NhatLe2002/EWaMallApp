@@ -2,16 +2,22 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import HeaderTitleSeller from '../../../reusables/Title/HeaderTitleSeller'
 import ListIndustry from '../../../components/industry_seller.tsx/ListIndustry'
+import { Control } from 'react-hook-form'
+import { ProductCreate } from '../../../constant/types/productType'
+
+
 
 const Industry = () => {
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <HeaderTitleSeller text={'Thêm sản phẩm'} />
       </View >
       <View>
-        <ListIndustry/>
+        <ListIndustry />
       </View>
+
     </View>
   )
 }
@@ -23,7 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     flexDirection: 'column',
-},
+  },
   header: {
     borderBottomColor: '#9290908d',
     borderBottomWidth: 1,

@@ -3,8 +3,18 @@ import React from 'react';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+
 const SearchHome: React.FC = () => {
+  var navigation = useNavigation();
   return (
+    <TouchableHighlight 
+    style={styles.container}
+    underlayColor={COLORS.white}
+    onPress={() =>
+      navigation.navigate('SearchPage' as never)}
+    >
     <View style={styles.container}>
       <View style={styles.content}>
         <Feather name="search" size={16} color={COLORS.gray_1} />
@@ -15,6 +25,7 @@ const SearchHome: React.FC = () => {
         <MaterialIcons name="keyboard-voice" size={18} color={COLORS.gray_1} />
       </View>
     </View>
+    </TouchableHighlight>
   );
 };
 

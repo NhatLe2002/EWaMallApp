@@ -1,12 +1,16 @@
-import { Product } from "../types/productType";
+import { Product, ProductCreate } from "../types/productType";
+import { CreateProduct } from "../types";
 
 interface InterfaceProductState {
-    productReducer?: any;
-    productList: Product[];
-    product: Product | null;
-    error: string | null;
-  }
-  
+  productSellerReducer?: any;
+  productList: Product[];
+  productCreate: ProductCreate ;
+  product: Product | null;
+  error: string | null;
+  loading: boolean
+  createProduct?:CreateProduct | null
+}
 
-  
-export type {InterfaceProductState};
+
+
+export type { InterfaceProductState };

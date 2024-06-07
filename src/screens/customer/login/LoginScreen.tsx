@@ -1,15 +1,33 @@
-import React, { useEffect } from 'react';
-import { AppState, AppStateStatus, StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  AppState,
+  AppStateStatus,
+  StyleSheet,
+  Image,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import { Input } from 'react-native-elements';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
+import {Input} from 'react-native-elements';
+import {useForm, SubmitHandler, Controller} from 'react-hook-form';
+import {useNavigation} from '@react-navigation/native';
 import HeightSpacer from '../../../reusables/height_spacer/HeightSpacer';
-import { COLORS, FONTS, SIZES } from '../../../constant/theme';
+import {COLORS, FONTS, SIZES} from '../../../constant/theme';
 import accountApi from '../../../api/accountApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsLogin, setRole } from '../../../redux/slice/accountSlice';
-import { InterfaceAccountState } from '../../../constant/interface';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  setIsLogin,
+  setRole,
+  setUserId,
+  setUsername,
+} from '../../../redux/slice/accountSlice';
+import {InterfaceAccountState} from '../../../constant/interface';
+import storageService from '../../../api/storageService';
+import PushNotification from 'react-native-push-notification';
+import * as signalR from '@microsoft/signalr';
+import 'react-native-url-polyfill/auto';
+
 
 type Inputs = {
   email: string;
@@ -19,19 +37,54 @@ type Inputs = {
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { control, handleSubmit } = useForm<Inputs>();
-  const { isLogin, role } = useSelector((state: InterfaceAccountState) => state.accountReducer);
+  const {control, handleSubmit} = useForm<Inputs>();
+  const {isLogin, role} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl("https://ewamallbe.onrender.com/notificationHub", {
+      skipNegotiation: true,
+      transport: signalR.HttpTransportType.WebSockets
+    })
+    .build();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async data => {
     try {
       const res = await accountApi.login(data);
       if (res) {
-        console.log(res.data);
         dispatch(setIsLogin(true));
         dispatch(setRole(res.data.role.roleName));
+        dispatch(setUsername(res.data.user.name));
+        dispatch(setUserId(res.data.user.id));
+        storageService.setId(res.data.user.id);
+        storageService.setRole(res.data.role.roleName);
+        storageService.setRole(res.data.user.name);
         if (role === 'User') {
           navigation.navigate('BottomTab' as never);
         }
+
+        // Kết nối tới NotificationHub
+        connection.start()
+          .then(() => {
+            console.log("Connected to NotificationHub");
+
+            // Gọi hàm SaveUserConnection trên hub để lưu kết nối
+            connection.invoke("SaveUserConnection", res.data.user.name, res.data.role.id)
+              .catch(err => console.error(err.toString()));
+            // Đăng ký lắng nghe sự kiện "ReceivedNotification"
+            connection.on("ReceivedNotification", (message) => {
+              console.log("Nhận thông báo:", message);
+              PushNotification.localNotification({
+                channelId: "general_notifications", // Đảm bảo sử dụng đúng channelId
+                message: JSON.stringify(message), // Tin nhắn thông báo
+              });
+            });
+            // Đăng ký lắng nghe sự kiện "ReceivedNotification"
+            connection.on("ReceivedPersonalNotification", (message) => {
+              console.log("Nhận thông báo personal:", message);
+            });
+          })
+
       }
     } catch (error) {
       console.log(error);
@@ -43,7 +96,10 @@ const LoginScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
 
     return () => {
       subscription.remove();
@@ -72,11 +128,11 @@ const LoginScreen: React.FC = () => {
           <Controller
             control={control}
             name="email"
-            render={({ field: { value, onChange, onBlur } }) => (
+            render={({field: {value, onChange, onBlur}}) => (
               <Input
                 placeholder="Email"
                 value={value}
-                inputStyle={{ fontSize: 15 }}
+                inputStyle={{fontSize: 15}}
                 onChangeText={onChange}
                 onBlur={onBlur}
                 leftIcon={<Feather name="mail" size={20} color="#929292" />}
@@ -86,10 +142,10 @@ const LoginScreen: React.FC = () => {
           <Controller
             control={control}
             name="password"
-            render={({ field: { value, onChange, onBlur } }) => (
+            render={({field: {value, onChange, onBlur}}) => (
               <Input
                 placeholder="Mật khẩu"
-                inputStyle={{ fontSize: 15 }}
+                inputStyle={{fontSize: 15}}
                 secureTextEntry={true}
                 value={value}
                 onChangeText={onChange}
@@ -231,7 +287,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#Eaeaea',
     borderTopWidth: 1,
     shadowColor: COLORS.border_product,
-    shadowOffset: { width: -4, height: -4 },
+    shadowOffset: {width: -4, height: -4},
     shadowOpacity: 0.6,
     shadowRadius: 6,
     paddingBottom: '2%',
