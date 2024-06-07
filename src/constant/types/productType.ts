@@ -11,6 +11,7 @@ type Product = {
   industry: any
   productSellDetails: any[]
   productSellerDetails: any[]
+  productStatus: number
   sellerId: number
   seller: any
   id: number

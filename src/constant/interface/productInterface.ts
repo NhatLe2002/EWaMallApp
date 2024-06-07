@@ -4,6 +4,7 @@ import { CreateProduct } from "../types";
 interface InterfaceProductState {
   productSellerReducer?: any;
   productList: Product[];
+  productListRenderRedux: Product[] | null;
   productCreate: ProductCreate ;
   product: Product | null;
   error: string | null;

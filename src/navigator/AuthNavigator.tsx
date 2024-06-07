@@ -19,6 +19,7 @@ import AddAddress from '../screens/customer/address/AddAddress';
 import SelectAddress from '../components/address/SelectAddress';
 import Industry from '../screens/sellser/add_product_seller/Industry';
 import ProductComman from '../screens/sellser/add_product_seller/ProductComman';
+import ProductCommanDetail from '../screens/sellser/add_product_seller/ProductCommanDetail';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -48,6 +49,7 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Industry" component={Industry} />
       <Stack.Screen name="ProductComman" component={ProductComman} />
       <Stack.Screen name="Finance" component={Finance} />
+      <Stack.Screen name="ProductCommanDetail" component={ProductCommanDetail} />
     </Stack.Navigator>
   );
 };
