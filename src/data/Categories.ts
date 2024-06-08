@@ -8,7 +8,7 @@ interface Item {
 const categories: Item[] = [
   {
     id: 1,
-    name: 'Danh mục 1 Danh mục 1',
+    name: 'Danh mục 1',
     category: 'A',
     imgUrl: 'https://picsum.photos/200/300?random=3',
   },
@@ -20,7 +20,7 @@ const categories: Item[] = [
   },
   {
     id: 3,
-    name: 'Danh mục 3 Danh mục 3',
+    name: 'Danh mục 3',
     category: 'A',
     imgUrl: 'https://picsum.photos/200/300?random=5',
   },

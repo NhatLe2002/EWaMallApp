@@ -19,6 +19,7 @@ import AddAddress from '../screens/customer/address/AddAddress';
 import SelectAddress from '../components/address/SelectAddress';
 import Industry from '../screens/sellser/add_product_seller/Industry';
 import ProductComman from '../screens/sellser/add_product_seller/ProductComman';
+import Category from '../screens/customer/categories/Category';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const AuthNavigator: React.FC = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+      <Stack.Screen name="Category" component={Category} />
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
       <Stack.Screen name="Cart" component={Cart} />
       <Stack.Screen name="Purchase" component={PurchaseScreen} />
@@ -36,10 +38,9 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="add_address" component={AddAddress} />
       <Stack.Screen name="SelectProvince" component={SelectAddress} />
 
-      <Stack.Screen name="SearchPageResult" component={SearchPageResult}/>
+      <Stack.Screen name="SearchPageResult" component={SearchPageResult} />
       <Stack.Screen name="SearchPage" component={SearchPage} />
-      
-      
+
       {/* Seller navigator */}
       <Stack.Screen name="SellerHome" component={SellerHome} />
       <Stack.Screen name="ProductSeller" component={ProductSeller} />
