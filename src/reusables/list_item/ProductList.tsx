@@ -15,11 +15,10 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {InterfaceProductState} from '../../constant/interface';
 import {Product} from '../../constant/types';
+
 import {fetchAllProducts} from '../../redux/slice/productSlices';
-import {
-  updateProductListWithImages,
-} from '../../features/GetImage';
-import { formatPriceToVND } from '../../config/FixPrice';
+import {updateProductListWithImages} from '../../features/GetImage';
+import {formatPriceToVND} from '../../config/FixPrice';
 
 const ProductList = () => {
   const navigation = useNavigation<any>();
@@ -33,7 +32,6 @@ const ProductList = () => {
 
   useEffect(() => {
     dispatch(fetchAllProducts());
-
   }, [dispatch]);
 
   useEffect(() => {
@@ -44,7 +42,6 @@ const ProductList = () => {
 
     fetchProductImages();
   }, [productList]);
-
   const renderItem = ({item}: {item: Product}) => {
     return (
       <View style={styles.product}>
@@ -55,7 +52,9 @@ const ProductList = () => {
           <Image
             style={styles.image}
             source={{
-              uri: item.imageUrl ? String(item.imageUrl) : 'defaultImageUrl',
+              uri: item.imageUrls
+                ? String(item.imageUrls[0])
+                : 'defaultImageUrl',
             }}
           />
           <View style={styles.containter}>
@@ -64,7 +63,9 @@ const ProductList = () => {
             </Text>
             <View style={styles.subContainer}>
               {/* Thêm Field */}
-              <Text style={styles.price}>{formatPriceToVND(item?.minPrice)}</Text>
+              <Text style={styles.price}>
+                {formatPriceToVND(item?.minPrice)}
+              </Text>
               {/* <Text style={styles.sold}> Đã bán {item.sold}</Text> */}
             </View>
             <View style={styles.subAddressContainer}>

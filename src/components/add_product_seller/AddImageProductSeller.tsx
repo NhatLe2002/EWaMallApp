@@ -5,9 +5,11 @@ import SubTitleAddProductSeller from '../../reusables/Title/SubTitleAddProductSe
 import { COLORS, SIZES } from '../../constant/theme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
+import { setImageUrisArray, setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
 import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
+import uuid from 'react-native-uuid';
 const AddImageProductSeller = () => {
+
     const [imageUris, setImageUris] = useState<string[]>([]);
     const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
     const [modalVisibleCoverImage, setModalVisibleCoverImage] = useState(false);
@@ -15,7 +17,7 @@ const AddImageProductSeller = () => {
 
 
     const dispatch = useDispatch<any>();
-    const { productCreate, productCreateError, loading } = useSelector(
+    const { productCreate, productCreateError, loading,imageProductList } = useSelector(
         (state: IFormProductCreateState) => state.formCreateProductReducer,
     );
 
@@ -37,11 +39,11 @@ const AddImageProductSeller = () => {
                 } else if (response.assets && response.assets.length > 0) {
                     const uri = response.assets[0].uri;
                     if (uri) {
+                        const guiId = uuid.v4();
                         setImageUris([...imageUris, uri]);
-                        dispatch(setProductCreateField({ imagesId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
+                        dispatch(setProductCreateField({ imagesId: guiId.toString() }));
                         dispatch(setProductCreateField({ coverImageId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
                         dispatch(setProductCreateField({ videoId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
-                        // console.log('Test ', response.assets[0].uri);
                     }
                 }
             }
@@ -50,7 +52,7 @@ const AddImageProductSeller = () => {
 
     const handleSelectFromGallery = () => {
         launchImageLibrary(
-            { mediaType: 'photo' },
+            { mediaType: 'photo',selectionLimit: 10, },
             (response) => {
                 setModalVisibleAdd(false);
                 if (response.didCancel) {
@@ -62,8 +64,10 @@ const AddImageProductSeller = () => {
                 } else if (response.assets && response.assets.length > 0) {
                     const uri = response.assets[0].uri;
                     if (uri) {
-                        setImageUris([...imageUris, uri]);
-                        dispatch(setProductCreateField({ imagesId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
+                        const guiId = uuid.v4();
+                        dispatch(setImageUrisArray([...imageProductList, uri]));
+                        // setImageUris([...imageUris, uri]);
+                        dispatch(setProductCreateField({ imagesId:guiId.toString() }));
                         dispatch(setProductCreateField({ coverImageId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
                         dispatch(setProductCreateField({ videoId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
                     }
@@ -72,7 +76,7 @@ const AddImageProductSeller = () => {
         );
     };
     const handleDeleteImage = (deletedImageUri: string) => {
-        const indexToDelete = imageUris.indexOf(deletedImageUri);
+        const indexToDelete = imageProductList.indexOf(deletedImageUri);
         const updatedImageUris = [...imageUris];
         if (indexToDelete !== -1) {
             updatedImageUris.splice(indexToDelete, 1);
@@ -127,14 +131,14 @@ const AddImageProductSeller = () => {
             <View style={{ marginBottom: 5 }}>
                 <FlatList
                     scrollEnabled={false}
-                    data={[...imageUris, 'addButton']}
+                    data={[...imageProductList, 'addButton']}
                     renderItem={({ item }) => item === 'addButton' ? renderAddImageButton() : renderImageItem({ item })}
                     keyExtractor={(item, index) => index.toString()}
                     numColumns={4}
                     contentContainerStyle={styles.listContainer}
                 />
             </View>
-            {imageUris[0] != null ? (<View style={styles.coverImageContainer}>
+            {imageProductList[0] != null ? (<View style={styles.coverImageContainer}>
                 <View style={{
                     width: '23.5%',
                     aspectRatio: 10 / 10,
@@ -143,7 +147,7 @@ const AddImageProductSeller = () => {
                     paddingHorizontal: 10,
                     marginHorizontal: 3
                 }}>
-                    <Image source={{ uri: imageUris[0] }} style={styles.image} />
+                    <Image source={{ uri: imageProductList[0] }} style={styles.image} />
                 </View>
             </View>) : ("")}
 

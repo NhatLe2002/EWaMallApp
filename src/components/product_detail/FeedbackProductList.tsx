@@ -7,8 +7,20 @@ const FeedbackProductList = () => {
   return (
     <View style={styles.container}>
       <View>
-        <FeedbackProduct />
-        <FeedbackProduct />
+        <FeedbackProduct
+          rate={4.6}
+          userAvt={''}
+          userName={''}
+          images={[]}
+          description={''}
+        />
+        <FeedbackProduct
+          rate={4}
+          userAvt={''}
+          userName={''}
+          images={[]}
+          description={''}
+        />
       </View>
     </View>
   );
@@ -21,5 +33,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingRight: '8%',
     marginVertical: 3,
+    paddingHorizontal: '4%',
   },
 });

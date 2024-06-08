@@ -8,14 +8,29 @@ import {formatPriceToVND} from '../../config/FixPrice';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {InterfaceCartState} from '../../constant/interface';
-const FooterCart: React.FC = () => {
-  const price = 200000;
-  const formattedPrice = formatPriceToVND(price);
-  const navigation = useNavigation();
-  const {product_purchase} = useSelector(
+import {Cart} from '../../constant/types';
+interface Props {
+  updateQuantityAPI?: (cartList: Cart[]) => void;
+}
+const FooterCart: React.FC<Props> = ({updateQuantityAPI}) => {
+  const navigation = useNavigation<any>();
+  const {product_purchase,cartList} = useSelector(
     (state: InterfaceCartState) => state.cartReducer,
   );
-  console.log('tss', product_purchase);
+  const handlePurchase = () => {
+    if (updateQuantityAPI) {
+
+      updateQuantityAPI(cartList);
+    }
+    navigation.navigate('Purchase')
+  };
+  const totalCost = product_purchase?.reduce((total: number, product: Cart[]) => {
+    const matchingProduct = cartList.find((item: { productSellDetailId: any; }) => item.productSellDetailId === product);
+    if (matchingProduct) {
+        total += matchingProduct.cost * matchingProduct.quantity;
+    }
+    return total;
+}, 0);
   return (
     <View style={styles.container}>
       <View style={styles.containerVoucher}>
@@ -39,13 +54,16 @@ const FooterCart: React.FC = () => {
                 color: COLORS.red_price,
                 fontFamily: FONTS.inter_SemiBold,
               }}>
-              {formattedPrice}
+              {formatPriceToVND(totalCost)}
             </Text>
           </View>
           <TouchableOpacity
             disabled={product_purchase?.length === 0}
-            style={[styles.buttonBuy, product_purchase?.length === 0 && styles.disabledButton]}
-            onPress={() => navigation.navigate('Purchase' as never)}>
+            style={[
+              styles.buttonBuy,
+              product_purchase?.length === 0 && styles.disabledButton,
+            ]}
+            onPress={handlePurchase}>
             <Text style={styles.textBuy}>Thanh toán</Text>
           </TouchableOpacity>
         </View>

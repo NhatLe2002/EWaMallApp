@@ -44,7 +44,6 @@ const Profile: React.FC = () => {
       return () => subscription.remove();
     }, [isSelectionModeEnabled, disableSelectionMode]),
   );
-  const navigation = useNavigation();
   return (
     <ScrollView style={styles.scrollContainer}>
       <HeaderProfile />

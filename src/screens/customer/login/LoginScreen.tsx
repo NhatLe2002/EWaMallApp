@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   AppState,
   AppStateStatus,
@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+
 import Feather from 'react-native-vector-icons/Feather';
 import {Input} from 'react-native-elements';
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
@@ -27,6 +28,7 @@ import storageService from '../../../api/storageService';
 import PushNotification from 'react-native-push-notification';
 import * as signalR from '@microsoft/signalr';
 import 'react-native-url-polyfill/auto';
+import SetSignalR from '../../../config/SignalR';
 
 
 type Inputs = {
@@ -36,19 +38,15 @@ type Inputs = {
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
+  const connection = useRef<signalR.HubConnection | null>(null);
   const dispatch = useDispatch();
   const {control, handleSubmit} = useForm<Inputs>();
   const {isLogin, role} = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
   );
-  const connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://ewamallbe.onrender.com/notificationHub", {
-      skipNegotiation: true,
-      transport: signalR.HttpTransportType.WebSockets
-    })
-    .build();
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
+
     try {
       const res = await accountApi.login(data);
       if (res) {
@@ -62,35 +60,13 @@ const LoginScreen: React.FC = () => {
         if (role === 'User') {
           navigation.navigate('BottomTab' as never);
         }
-
-        // Kết nối tới NotificationHub
-        connection.start()
-          .then(() => {
-            console.log("Connected to NotificationHub");
-
-            // Gọi hàm SaveUserConnection trên hub để lưu kết nối
-            connection.invoke("SaveUserConnection", res.data.user.name, res.data.role.id)
-              .catch(err => console.error(err.toString()));
-            // Đăng ký lắng nghe sự kiện "ReceivedNotification"
-            connection.on("ReceivedNotification", (message) => {
-              console.log("Nhận thông báo:", message);
-              PushNotification.localNotification({
-                channelId: "general_notifications", // Đảm bảo sử dụng đúng channelId
-                message: JSON.stringify(message), // Tin nhắn thông báo
-              });
-            });
-            // Đăng ký lắng nghe sự kiện "ReceivedNotification"
-            connection.on("ReceivedPersonalNotification", (message) => {
-              console.log("Nhận thông báo personal:", message);
-            });
-          })
-
+        // SetSignalR(res.data.user.name, res.data.role.id, connection);
+        SetSignalR(res.data.user.name, res.data.role.id, connection, dispatch);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
   const handleBack = () => {
     navigation.navigate('HomeGuest' as never);
   };

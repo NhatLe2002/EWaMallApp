@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {COLORS, FONTS, SIZES} from '../../../constant/theme';
-import {ScrollView} from 'react-native-gesture-handler';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import TitleProduct from '../../../components/product_detail/TitleProduct';
 import DeliveryPrice from '../../../components/product_detail/DeliveryPrice';
 import ShopInfor from '../../../components/product_detail/ShopInfor';
@@ -29,6 +29,12 @@ import {
 import {BottomSheetDefaultFooterProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types';
 import {formatPriceToVND} from '../../../config/FixPrice';
 import {addToCart} from '../../../redux/slice/cartSlice';
+import {Product} from '../../../constant/types';
+import {
+  listFilesInProductFolder,
+  updateProductDetailWithImages,
+  updateProductListWithImages,
+} from '../../../features/GetImage';
 
 const ProductDetail = () => {
   const route = useRoute<any>();
@@ -51,15 +57,22 @@ const ProductDetail = () => {
     id: number;
     quantity: number;
   } | null>(null);
-
+  const [updatedProduct, setUpdatedProduct] = useState<Product>();
   const updateSelectedProduct = (id: number, quantity: number) => {
-    console.log('Selected product:', {id, quantity});
     setSelectedProduct({id, quantity});
   };
   useEffect(() => {
     dispatch(getProductById(productId));
     scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: true});
   }, [productId]);
+
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      const updatedList = await updateProductDetailWithImages(product);
+      setUpdatedProduct(updatedList);
+    };
+    fetchProductImages();
+  }, [product]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -79,7 +92,7 @@ const ProductDetail = () => {
   const closeModal = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
     setSelectedProductId(null);
-    setSelectedPrice(null); 
+    setSelectedPrice(null);
     setSelectedProduct(null);
   }, []);
   const handleAddToCart = () => {
@@ -97,7 +110,7 @@ const ProductDetail = () => {
       closeModal();
     }
   };
-
+  console.log(updatedProduct?.imageUrls);
   const footerAddProduct = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -121,12 +134,26 @@ const ProductDetail = () => {
       <View style={styles.container}>
         <HeaderSearch />
         <ScrollView style={styles.content} ref={scrollViewRef}>
-          <View>
-            <Image
-              source={{uri: 'https://picsum.photos/200/300?random=1'}}
-              style={styles.image}
-            />
-          </View>
+          <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            style={{
+              marginBottom: 2,
+              height: SIZES.height / 2.8,
+            }}>
+            {updatedProduct?.imageUrls?.map((item, i) => (
+              <View key={i} style={styles.imageContainer}>
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: item ? String(item) : 'defaultImageUrl',
+                  }}
+                />
+              </View>
+            ))}
+          </ScrollView>
+
           <TitleProduct
             productName={product?.productName}
             price={product?.productSellerDetails[0]?.price}
@@ -140,7 +167,7 @@ const ProductDetail = () => {
             <Text
               style={{
                 backgroundColor: 'white',
-                height: '4%',
+                height: 38,
                 fontSize: 16,
                 color: 'black',
                 paddingTop: 5,
@@ -310,10 +337,18 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: COLORS.background_list,
   },
-  image: {
-    width: '100%',
-    height: SIZES.height / 2.7,
+  // image: {
+  //   width: '100%',
+  //   height: SIZES.height / 2.5,
+  //   marginBottom: 3,
+  // },
+  imageContainer: {
+    flexDirection: 'row',
     marginBottom: 3,
+  },
+  image: {
+    width: SIZES.width ,
+    height: SIZES.height / 2.5,
   },
   container: {
     flex: 1,
