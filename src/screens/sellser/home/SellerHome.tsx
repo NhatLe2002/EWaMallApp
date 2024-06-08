@@ -10,6 +10,7 @@ import BodyTitle from '../../../reusables/Title/BodyTitle';
 import { SIZES } from '../../../constant/theme';
 
 
+
 const SellerHome = () => {
   const check = useRoute();
   return (

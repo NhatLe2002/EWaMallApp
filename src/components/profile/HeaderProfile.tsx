@@ -16,10 +16,14 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller';
+import {useSelector} from 'react-redux';
+import {ISellerState} from '../../constant/interface/sellerInterface';
 
 const HeaderProfile = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const {seller} = useSelector((state: ISellerState) => state.sellerReducer);
+  // console.log(seller.seller);
   return (
     <View style={{position: 'relative'}}>
       <Image
@@ -78,7 +82,7 @@ const HeaderProfile = () => {
                 alignItems: 'center',
               }}>
               <View style={styles.infor}>
-                <Text style={styles.textName}>Shop Name</Text>
+                <Text style={styles.textName}>{seller.seller.shopName}</Text>
                 <Text style={styles.textFollow}>Đang theo dõi</Text>
               </View>
               <TouchableOpacity

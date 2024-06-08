@@ -24,7 +24,7 @@ rm -rf Pods rm -rf ~/Library/Developer/Xcode/DerivedData/*
 
 
 ```bash
-pod deintegrate 
+pod deintegrate D
 pod update
 ```
 ```bash

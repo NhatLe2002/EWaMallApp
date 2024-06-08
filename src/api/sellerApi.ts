@@ -17,8 +17,8 @@ const sellerApi = {
     const url = `/api/Account/RegisterSeller?userId=${params.userId}`;
     return axiosClient.post(url, newSeller);
   },
-  getSellerById(sellerId: number) {
-    const url = `/api/Account/GetSellerById/${sellerId}`;
+  getSellerByUserId(userId: number) {
+    const url = `/api/Account/GetUserDetail/${userId}`;
     return axiosClient.get(url);
   },
 };

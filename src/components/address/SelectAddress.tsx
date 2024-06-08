@@ -16,6 +16,7 @@ import {InterfaceAddressState} from '../../constant/interface';
 import Header from './Header';
 import {COLORS, FONTS} from '../../constant/theme';
 import {lightGreen100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
+import { setDistrict, setProvince, setWard } from '../../redux/slice/seller/accountSellerSlice';
 
 const SelectAddress: React.FC = () => {
   const {province, district, ward} = useSelector(
@@ -69,6 +70,7 @@ const SelectAddress: React.FC = () => {
     setShowWard(false); // Ẩn danh sách phường/xã
     setSelectedArea('district'); // Chọn vùng quận/huyện
     dispatch(fetchDistrictByProvinceId(province.ProvinceID));
+    dispatch(setProvince(province.ProvinceID))
   };
 
   // Thay đổi hàm handleDistrictSelect để hiển thị danh sách phường/xã khi chọn quận/huyện
@@ -81,6 +83,7 @@ const SelectAddress: React.FC = () => {
     setShowWard(true); // Hiển thị danh sách phường/xã
     setSelectedArea('ward'); // Chọn vùng phường/xã
     dispatch(fetchWardByDistrictId(district.DistrictID));
+    dispatch(setDistrict(district.DistrictID))
   };
 
   // Thay đổi hàm handleWardSelect để lưu thông tin phường/xã khi được chọn
@@ -90,6 +93,7 @@ const SelectAddress: React.FC = () => {
       wardCode: ward.WardCode,
       wardName: ward.WardName,
     });
+    dispatch(setWard(ward.WardCode))
   };
 
   const groupProvincesByFirstLetter = (provinces: any[]) => {
@@ -108,7 +112,7 @@ const SelectAddress: React.FC = () => {
     const grouped = groupProvincesByFirstLetter(province);
     setGroupedProvinces(grouped);
   }, [province]);
-  console.log(selectedAddress);
+  // console.log(selectedAddress);
   return (
     <>
       <Header />

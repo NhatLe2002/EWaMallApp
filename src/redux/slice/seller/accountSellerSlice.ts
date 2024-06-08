@@ -28,12 +28,26 @@ export const createSeller = createAsyncThunk(
   'seller/createSeller',
   async (seller: ISeller) => {
     try {
-        console.log('seller post : ', seller);
+        // console.log('seller post : ', seller);
       const response = await sellerApi.createSeller(seller);
       
       return response.data;
     } catch (error) {
       console.error('Failed to create seller:', error);
+      throw error;
+    }
+  },
+);
+export const getAccount = createAsyncThunk(
+  'seller/getAccount',
+  async (userId: number) => {
+    try {
+        // console.log('id before get : ', userId);
+      const response = await sellerApi.getSellerByUserId(userId);
+      
+      return response.data;
+    } catch (error) {
+      console.error('Failed to get seller:', error);
       throw error;
     }
   },
@@ -84,6 +98,12 @@ const accountSellerSlice = createSlice({
     },
   },
   extraReducers: builder => {
+    builder.addCase(getAccount.fulfilled, (state, action) => {
+      return {...state, seller: action.payload, error: ''};
+    });
+    builder.addCase(getAccount.rejected, (state, action) => {
+      return {...state, error: action.payload as string};
+    });
     builder.addCase(createSeller.fulfilled, (state, action) => {
       return {...state, seller: action.payload, error: ''};
     });
