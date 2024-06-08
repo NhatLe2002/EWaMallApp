@@ -8,17 +8,14 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import TitleReusable from '../../reusables/Text/TitleReusable';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  getOrderByUserId,
-  setOrdersByStatus,
-} from '../../redux/slice/orderSlice';
+import {getOrderByUserId} from '../../redux/slice/orderSlice';
 import {
   InterfaceAccountState,
   InterfaceOrderState,
 } from '../../constant/interface';
 import {OrderAllByUserId, Status} from '../../constant/types';
 import {Badge} from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 const ManageOrder: React.FC = () => {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch<any>();
@@ -28,9 +25,9 @@ const ManageOrder: React.FC = () => {
   const {pendingOrders, waitingOrders, deliveryOrders, successOrders} =
     useSelector((state: InterfaceOrderState) => state.orderReducer);
 
-    const handlependingOrders = ()=>{
-      navigation.navigate('OrderScreen')
-    }
+  const handleTabPress = (tab: string) => {
+    navigation.navigate('OrderScreen', {activeTab: tab});
+  };
   useEffect(() => {
     dispatch(getOrderByUserId(userId));
   }, [dispatch]);
@@ -61,7 +58,11 @@ const ManageOrder: React.FC = () => {
           end={{x: 1, y: 0.5}}
           colors={['#F4C64F', 'rgba(233, 187, 69, 0.71)']}>
           <View style={styles.containerOptions}>
-            <TouchableOpacity onPress={handlependingOrders}  style={styles.option}>
+            <TouchableOpacity
+              onPress={() => {
+                handleTabPress('pendingOrders');
+              }}
+              style={styles.option}>
               <MaterialCommunityIcons
                 name="note-edit-outline"
                 size={30}
@@ -92,7 +93,11 @@ const ManageOrder: React.FC = () => {
 
               <Text style={styles.textIcon}>Chờ xác nhận</Text>
             </TouchableOpacity>
-            <View style={styles.option}>
+            <TouchableOpacity
+              onPress={() => {
+                handleTabPress('waitingOrders');
+              }}
+              style={styles.option}>
               <Feather name="box" size={30} color="white" />
               <Badge
                 value={
@@ -117,8 +122,10 @@ const ManageOrder: React.FC = () => {
                 }}
               />
               <Text style={styles.textIcon}>Chờ lấy hàng</Text>
-            </View>
-            <View style={styles.option}>
+            </TouchableOpacity>
+            <TouchableOpacity  onPress={() => {
+                handleTabPress('deliveryOrders');
+              }} style={styles.option}>
               <MaterialCommunityIcons
                 name="truck-fast-outline"
                 size={30}
@@ -147,8 +154,10 @@ const ManageOrder: React.FC = () => {
                 }}
               />
               <Text style={styles.textIcon}>Đang vận chuyển</Text>
-            </View>
-            <View style={styles.option}>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+                handleTabPress('successOrders');
+              }} style={styles.option}>
               <MaterialCommunityIcons
                 name="star-circle-outline"
                 size={30}
@@ -177,7 +186,7 @@ const ManageOrder: React.FC = () => {
                 }}
               />
               <Text style={styles.textIcon}>Feedback</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </LinearGradient>
       </View>

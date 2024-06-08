@@ -23,6 +23,8 @@ const initialState: InterfaceOrderState = {
   waitingOrders: null,
   deliveryOrders:null,
   successOrders: null,
+  cancelOrders:null,
+  refundOrders:null
 };
 export const createOrder = createAsyncThunk(
   'cart/createOrder',
@@ -91,32 +93,7 @@ const orderSlice = createSlice({
     ) => {
       state.info_order!.createOrderDetailCommands = action.payload;
     },
-    setOrdersByStatus: (
-      state,
-      action: PayloadAction<{statusId: number; listOrder: OrderAllByUserId[]}>,
-    ) => {
-      const {statusId, listOrder} = action.payload;
-      switch (statusId) {
-        case 1:
-          // Lưu các đơn hàng của trạng thái 1 vào state khác
-          state.pendingOrders = listOrder;
-          break;
-        case 2:
-          // Lưu các đơn hàng của trạng thái 2 vào state khác
-          state.waitingOrders = listOrder;
-          break;
-        case 3:
-          // Lưu các đơn hàng của trạng thái 3 vào state khác
-          state.deliveryOrders = listOrder;
-          break;
-        case 4:
-          // Lưu các đơn hàng của trạng thái 4 vào state khác
-          state.successOrders = listOrder;
-          break;
-        default:
-          break;
-      }
-    },
+
   },
   extraReducers: builder => {
     builder.addCase(
@@ -143,6 +120,12 @@ const orderSlice = createSlice({
         state.successOrders = action.payload.filter(
           order => order.status.id === 4,
         );
+        state.cancelOrders = action.payload.filter(
+          order => order.status.id === 5,
+        );
+        state.refundOrders = action.payload.filter(
+          order => order.status.id === 6,
+        );
         return state;
       },
     );
@@ -157,6 +140,5 @@ export const {
   setShipCostt,
   setShipAddressId,
   setCreateOrderDetailCommands,
-  setOrdersByStatus,
 } = orderSlice.actions;
 export default orderSlice.reducer;
