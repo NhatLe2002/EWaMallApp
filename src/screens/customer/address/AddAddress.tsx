@@ -25,7 +25,6 @@ const AddAddress: React.FC = () => {
   };
   const handleProvincePress = () => {
     navigation.navigate('SelectProvince');
-    console.log("Tesadas")
   };
 
   const handleInputChange = (value: string, fieldName: string) => {

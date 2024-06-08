@@ -1,75 +1,108 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import {formatPriceToVND} from '../../config/FixPrice';
-import LinearGradient from 'react-native-linear-gradient';
-import MethodPay from './MethodPay';
-import {useSelector} from 'react-redux';
-import {InterfaceCartState} from '../../constant/interface';
-const InfoProduct: React.FC<{filteredCartListByShop: any[]}> = ({
-  filteredCartListByShop,
-}) => {
-  const price = 200000;
-  const formattedPrice = formatPriceToVND(price);
+import {useDispatch, useSelector} from 'react-redux';
+import {getSellerById} from '../../redux/slice/accountSlice';
+import {InterfaceAccountState} from '../../constant/interface';
+import MethodDelivery from './MethodDelivery';
+import {getServiceShip} from '../../redux/slice/addressSlice';
+import {CreateOrderDetailCommand} from '../../constant/types';
+import { setCreateOrderDetailCommands } from '../../redux/slice/orderSlice';
 
+const InfoProduct: React.FC<{
+  filteredCartListByShop: any;
+  addressShip: any;
+  totalCost: number;
+}> = ({filteredCartListByShop, totalCost, addressShip}) => {
+  const {sellerProfile} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+  const dispatch = useDispatch<any>();
+  useEffect(() => {
+    dispatch(getSellerById(filteredCartListByShop.sellerId));
+  }, [dispatch]);
+  useEffect(() => {
+    if (sellerProfile?.districtId || addressShip) {
+      dispatch(
+        getServiceShip({
+          from_district: sellerProfile?.districtId,
+          to_district: addressShip?.districtId,
+        }),
+      );
+    }
+  }, [addressShip, sellerProfile]);
+  useEffect(() => {
+    if (filteredCartListByShop && filteredCartListByShop.products.length > 0) {
+      const createOrderDetailCommands: CreateOrderDetailCommand[] =
+        filteredCartListByShop.products.map(
+          (product: {quantity: any; productSellDetailId: any}) => ({
+            quantity: product.quantity,
+            productSellDetailId: product.productSellDetailId,
+          }),
+        );
+      dispatch(setCreateOrderDetailCommands(createOrderDetailCommands));
+    }
+  }, []);
   return (
     <View style={styles.container}>
-      {filteredCartListByShop.map((shop, index) => (
-        <View key={index}>
-          <View style={styles.headerShop}>
-            <MaterialCommunityIcons
-              name="storefront-outline"
-              size={18}
-              color="#7F7F7F"
-            />
-            <Text style={styles.textShop}>{`Shop ${shop.sellerId}`}</Text>
-          </View>
-          {shop.products.map(
-            (
-              product: {
-                image: any;
-                productName: string;
-                name: string;
-                cost: number;
-                quantity: any;
-              },
-              productIndex: React.Key | null | undefined,
-            ) => (
-              <View key={productIndex} style={styles.containerProduct}>
-                <Image
-                  source={{uri: product.image}}
-                  style={styles.imageProduct}
-                />
-                <View style={styles.infoProduct}>
-                  <View>
-                    <Text numberOfLines={1}>{product.productName}</Text>
-                    <Text style={{color: '#777777', fontSize: 12}}>
-                      {product.name}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Text style={styles.textInfor}>
-                      {formatPriceToVND(product.cost)}
-                    </Text>
+      <View key={filteredCartListByShop.sellerId}>
+        <View style={styles.headerShop}>
+          <MaterialCommunityIcons
+            name="storefront-outline"
+            size={18}
+            color="#7F7F7F"
+          />
+          <Text style={styles.textShop}>
+            {filteredCartListByShop.sellerName}
+          </Text>
+        </View>
+        {filteredCartListByShop.products.map(
+          (
+            product: {
+              image: any;
+              productName: string;
+              name: string;
+              cost: number;
+              quantity: any;
+            },
+            productIndex: React.Key | null | undefined,
+          ) => (
+            <View key={productIndex} style={styles.containerProduct}>
+              <Image
+                source={{uri: product.image}}
+                style={styles.imageProduct}
+              />
+              <View style={styles.infoProduct}>
+                <View>
+                  <Text numberOfLines={1}>{product.productName}</Text>
+                  <Text style={{color: '#777777', fontSize: 12}}>
+                    {product.name}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={styles.textInfor}>
+                    {formatPriceToVND(product.cost)}
+                  </Text>
 
-                    <Text
-                      style={
-                        styles.textInfor
-                      }>{`Số lượng: x${product.quantity}`}</Text>
-                  </View>
+                  <Text
+                    style={
+                      styles.textInfor
+                    }>{`Số lượng: x${product.quantity}`}</Text>
                 </View>
               </View>
-            ),
-          )}
-        </View>
-      ))}
+            </View>
+          ),
+        )}
+      </View>
+
       <View style={styles.containerVoucher}>
         <View style={styles.addVoucher}>
           <Ionicons name="ticket-outline" size={16} color={COLORS.red_price} />
@@ -79,7 +112,7 @@ const InfoProduct: React.FC<{filteredCartListByShop: any[]}> = ({
         </View>
         <Feather name="chevron-right" size={16} color={COLORS.gray_2} />
       </View>
-      <MethodPay />
+      <MethodDelivery totalCost={totalCost} />
       <View style={styles.containerVoucher}>
         <Text style={{fontSize: 13, color: COLORS.gray_2}}>
           Ghi chú cho shop

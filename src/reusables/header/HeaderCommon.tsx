@@ -11,6 +11,9 @@ import Iconions from 'react-native-vector-icons/Ionicons';
 import {Badge} from 'react-native-elements';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import {useNavigation} from '@react-navigation/native';
+import {Cart} from '../../constant/types';
+import {useSelector} from 'react-redux';
+import {InterfaceCartState} from '../../constant/interface';
 
 interface Props {
   title: string;
@@ -19,6 +22,7 @@ interface Props {
   colorBack: string;
   icon1?: string;
   icon2?: string;
+  updateQuantityAPI?: (cartList: Cart[]) => void;
 }
 
 const HeaderCommon: React.FC<Props> = ({
@@ -28,6 +32,7 @@ const HeaderCommon: React.FC<Props> = ({
   colorTitle,
   icon1,
   icon2,
+  updateQuantityAPI,
 }: Props) => {
   const styles = StyleSheet.create({
     container: {
@@ -59,12 +64,20 @@ const HeaderCommon: React.FC<Props> = ({
       alignItems: 'center',
     },
   });
-
+  const {cartList} = useSelector(
+    (state: InterfaceCartState) => state.cartReducer,
+  );
   const navigation = useNavigation();
-
+  const handleGoBack = () => {
+    if (updateQuantityAPI) {
+      // Kiểm tra xem updateQuantityAPI có tồn tại không trước khi gọi
+      updateQuantityAPI(cartList);
+    }
+    navigation.goBack();
+  };
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={handleGoBack}>
         <FontAwesome6 name="arrow-left-long" size={22} color={colorBack} />
       </TouchableOpacity>
       <View style={styles.titleContainer}>

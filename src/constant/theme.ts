@@ -2,6 +2,7 @@ import {Dimensions} from 'react-native';
 const {height, width} = Dimensions.get('window');
 
 const COLORS = {
+  primary: '#FFD700',
   white: '#ffffff',
   blue: '#00A9FF',
   red: '#FF1E1E',
@@ -23,9 +24,12 @@ const COLORS = {
   border_header:'rgba(199, 199, 199, 0.38)',
   border_product: 'rgba(0, 0, 0, 0.07)',
   background_list: 'rgba(61, 61, 61, 0.07)',
-  background_member:'#9BBBFC'
+  background_member:'#9BBBFC',
+  secondary: '#E9BB45',
+  background: '#F5F5F5',
 };
 const SIZES = {
+  base: 10,
   small: 12,
   medium: 16,
   large: 20,

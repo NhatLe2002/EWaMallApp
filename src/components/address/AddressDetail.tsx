@@ -1,16 +1,39 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {CheckBox} from 'react-native-elements';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
+import {ShipAddress} from '../../constant/types';
+import {updateAddressByShipAddressId} from '../../redux/slice/addressSlice';
+import {useDispatch} from 'react-redux';
 
 interface AddressDetailProps {
   checked: boolean;
   onPress: () => void;
+  addressDetail: ShipAddress;
 }
 
-const AddressDetail: React.FC<AddressDetailProps> = ({checked, onPress}) => {
+const AddressDetail: React.FC<AddressDetailProps> = ({
+  checked,
+  onPress,
+  addressDetail,
+}) => {
+  const dispatch = useDispatch<any>();
+  const handlePress = async () => {
+    try {
+      // Gọi API để cập nhật isDefault thành true
+      dispatch(
+        updateAddressByShipAddressId({...addressDetail, isDefault: true}),
+      );
+
+      // Nếu API gọi thành công, thực hiện onPress để cập nhật checked
+      onPress();
+    } catch (error) {
+      console.log(error);
+      // Xử lý lỗi nếu cần
+    }
+  };
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={handlePress} style={styles.container}>
       <CheckBox
         containerStyle={{
           margin: 0,
@@ -20,7 +43,7 @@ const AddressDetail: React.FC<AddressDetailProps> = ({checked, onPress}) => {
         uncheckedIcon="circle-o"
         checkedColor={COLORS.yellowMain}
         checked={checked}
-        onPress={onPress}
+        onPress={handlePress}
       />
       <View
         style={{
@@ -36,19 +59,27 @@ const AddressDetail: React.FC<AddressDetailProps> = ({checked, onPress}) => {
               numberOfLines={1}
               style={styles.addressText}
               ellipsizeMode="tail">
-              Quang Vinh
+              {addressDetail?.name}
             </Text>
             <Text style={styles.separator}>|</Text>
-            <Text style={styles.phone}>(+84) 888385759</Text>
+            <Text style={styles.phone}>(+84) {addressDetail?.phoneNumber}</Text>
           </View>
-          <Text style={styles.addressDetail}>Thôn Xuân dục 1</Text>
+          <Text style={styles.addressDetail}>{addressDetail?.address}</Text>
           <Text style={styles.addressDetail}>
-            Xã Xuân Ninh, Huyện Quảng Ninh, Quảng Bình 
+            {addressDetail?.wardId}, {addressDetail?.districtId},{' '}
+            {addressDetail?.provinceId}
           </Text>
         </View>
-        <Text style={{fontSize: 16, color: COLORS.yellowMain,paddingHorizontal:'5%'}}>Sửa</Text>
+        <Text
+          style={{
+            fontSize: 16,
+            color: COLORS.yellowMain,
+            paddingHorizontal: '5%',
+          }}>
+          Sửa
+        </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -59,7 +90,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
 
     width: SIZES.width,
-    paddingLeft:'3%',
+    paddingLeft: '3%',
     backgroundColor: COLORS.white,
     paddingTop: '3%',
   },

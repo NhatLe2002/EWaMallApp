@@ -4,23 +4,22 @@ import Iconions from 'react-native-vector-icons/Ionicons';
 import { COLORS, SIZES } from '../../constant/theme';
 import RattingStart from '../../reusables/ratting/RattingStart';
 import { useNavigation } from '@react-navigation/native';
-import { useGetAllProductQuery } from '../../redux/api/ProductApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsBySellerId } from '../../redux/slice/seller/productSellerSlice';
 import { InterfaceProductState } from '../../constant/interface/productInterface';
 import { Product } from '../../constant/types/productType';
 
-const productsList = [
-    { id: 1, name: 'Ghế công thái học', rating: 4.5, price: 100, quantity: 10, image: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' },
-    { id: 2, name: 'Product 1', rating: 4.5, price: 100, quantity: 10, image: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' },
-    { id: 3, name: 'Product 1', rating: 4.5, price: 100, quantity: 10, image: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' },
-];
+// const productsList = [
+//     { id: 1, name: 'Ghế công thái học', rating: 4.5, price: 100, quantity: 10, image: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' },
+//     { id: 2, name: 'Product 1', rating: 4.5, price: 100, quantity: 10, image: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' },
+//     { id: 3, name: 'Product 1', rating: 4.5, price: 100, quantity: 10, image: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' },
+// ];
 
 const ProductListSeller = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch<any>();
 
-    const { productList } = useSelector(
+    const { productList,  productListRenderRedux} = useSelector(
         (state: InterfaceProductState) => state.productSellerReducer,
     );
 
@@ -28,7 +27,7 @@ const ProductListSeller = () => {
         dispatch(getProductsBySellerId(2));
     }, []);
 
-    
+
     const renderItem = ({ item }: { item: Product }) => (
         <View >
             <TouchableOpacity
@@ -62,37 +61,8 @@ const ProductListSeller = () => {
     );
     return (
         <View style={styles.container}>
-            {productsList.map(product => (
-                <TouchableOpacity
-                    key={product.id}
-                    style={styles.productItem}
-                // onPress={() => handleProductPress(product)}
-                >
-                    <Image source={{ uri: product.image }} style={styles.productImage} />
-                    <View style={styles.detailProductList}>
-                        <View style={styles.headerProductList}>
-                            <View>
-                                <Text style={styles.productName}>{product.name}</Text>
-                            </View>
-                            <TouchableOpacity
-                            // onPress={() => navigation.goBack()}
-                            >
-                                <Iconions name="trash" color={COLORS.black} size={25} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RattingStart star={3.6} size={15} />
-                            <Text style={{ marginLeft: 5 }} >{product.rating}</Text>
-                        </View>
-                        <View style={styles.botProductList}>
-                            <Text style={styles.prductPridce}>{product.price}đ</Text>
-                            <Text >Quantity: {product.quantity}</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            ))}
             <FlatList
-                data={productList}
+                data={productListRenderRedux}
                 scrollEnabled={false}
                 renderItem={renderItem}
                 keyExtractor={item => item.id.toString()}

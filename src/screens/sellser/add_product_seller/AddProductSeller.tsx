@@ -1,5 +1,5 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import HeaderTitleSeller from '../../../reusables/Title/HeaderTitleSeller';
 import AddImageProductSeller from '../../../components/add_product_seller/AddImageProductSeller';
 import { ScrollView } from 'react-native';
@@ -17,6 +17,7 @@ import { createProduct, setProductCreateError, setProductCreateField } from '../
 import { IFormProductCreateState } from '../../../constant/interface/formCreateProductInterface';
 import { productDescriptionSchema, productNameSchema } from '../../../constant/validate/productvalidate';
 import { uploadImageToFirebase } from '../../../features/UploadImg'
+import { useNavigation } from '@react-navigation/native';
 const productSellDetails: ProductSellDetail[] = [{
   detailId: "1",
   description: "vinamilk"
@@ -26,14 +27,55 @@ const productSellDetails: ProductSellDetail[] = [{
   description: "Việt Nam"
 }
 ];
-const productSellCommand: ProductSellCommand[] = [{
-  name: "Không",
-  price: "200000",
-  inventoryNumber: "200",
-  path: "0",
-  parentNodeId: "",
-  
-}
+const productSellCommand: ProductSellCommand[] = [
+  {
+    name: "Size",
+    price: "",
+    inventoryNumber: "0",
+    path: "/A",
+    parentNodeId: "",
+
+  },
+  {
+    name: "X",
+    price: "",
+    inventoryNumber: "0",
+    path: "/A/1",
+    parentNodeId: "",
+
+  },
+  {
+    name: "XL",
+    price: "",
+    inventoryNumber: "0",
+    path: "/A/1",
+    parentNodeId: "",
+
+  },
+  {
+    name: "Màu",
+    price: "",
+    inventoryNumber: "0",
+    path: "/B",
+    parentNodeId: "",
+
+  },
+  {
+    name: "Xanh",
+    price: "200000",
+    inventoryNumber: "200",
+    path: "/B/1",
+    parentNodeId: "",
+
+  },
+  {
+    name: "Đỏ",
+    price: "200000",
+    inventoryNumber: "200",
+    path: "/B/1",
+    parentNodeId: "",
+
+  }
 ];
 const productCreate: ProductCreate = {
   productName: 'Sữa ông thọ 1',
@@ -49,35 +91,46 @@ const productCreate: ProductCreate = {
 
 const AddProductSeller = () => {
   const dispatch = useDispatch<any>();
+  const navigation = useNavigation();
+  const [isModalVisible, setModalVisible] = useState(false);
   const { productCreate, productCreateError, loading, product } = useSelector(
     (state: IFormProductCreateState) => state.formCreateProductReducer,
   );
-  const handleSubmit = (data: ProductCreate) => {
+  const handleSubmit = async (data: ProductCreate) => {
     try {
-      productNameSchema.validate(data.productName);
+      await productNameSchema.validate(data.productName);
       dispatch(setProductCreateError({ field: 'productName', error: '' }));
     } catch (error: any) {
       dispatch(setProductCreateError({ field: 'productName', error: error.message }));
     }
     try {
-      productDescriptionSchema.validate(data.productDescription);
+      await productDescriptionSchema.validate(data.productDescription);
       dispatch(setProductCreateError({ field: 'productDescription', error: '' }));
     } catch (error: any) {
       dispatch(setProductCreateError({ field: 'productDescription', error: error.message }));
     }
-    dispatch(setProductCreateField({ sellerId: "2" }));
-    dispatch(createProduct(data));
-    console.log(JSON.stringify(data, null, 2));
-    console.log(product)
-    // if (productCreateError && areAllFieldsEmpty(productCreateError)) {
-    //   console.log(data);
-    //  console.log(productCreateError);
-    // }
+    if (productCreateError && areAllFieldsEmpty(productCreateError)) {
+      // console.log(data);
+      dispatch(setProductCreateField({ sellerId: "2" }));
+      dispatch(createProduct(data));
+      setModalVisible(true);
+    }
+    // console.log(JSON.stringify(data, null, 2));
+    console.log(JSON.stringify(productCreate, null, 2))
+    // console.log(JSON.stringify(data, null, 2));
+
+
+    // console.log(JSON.stringify(data, null, 2));
+    // console.log(product)
   };
 
   const areAllFieldsEmpty = (errorObject: any) => {
     const errorValues = Object.values(errorObject);
     return errorValues.every((value) => value === '');
+  };
+  const handleSubmitCreate = () => {
+    setModalVisible(false)
+    navigation.navigate("ProductSeller" as never);
   };
   const handleUpload = async () => {
     const productId = 11;
@@ -106,9 +159,9 @@ const AddProductSeller = () => {
         <HeightSpacerSeller height={10} color='#F6F5F2' />
         <View style={styles.productDescription}>
           <ProductDescription />
-        </View>
+        </View >
         <HeightSpacerSeller height={10} color='#F6F5F2' />
-        <View>
+        <View style={styles.industryDetail}>
           <IndustryDetail />
         </View>
         <HeightSpacerSeller height={10} color='#F6F5F2' />
@@ -127,6 +180,21 @@ const AddProductSeller = () => {
         <TouchableOpacity style={styles.buttomBot}>
           <Text>Hiển thị</Text>
         </TouchableOpacity>
+        <Modal
+          visible={isModalVisible}
+          onRequestClose={() => setModalVisible(false)}
+          transparent={true}
+          animationType="slide"
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalText}>Product created successfully!</Text>
+              <TouchableOpacity style={styles.okButton} onPress={handleSubmitCreate}>
+                <Text style={styles.okButtonText}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -168,5 +236,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     backgroundColor: '#F6F5F2',
+  },
+  industryDetail: {
+    marginHorizontal: 10,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: COLORS.yellowMain, 
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    width: '80%',
+  },
+  modalText: {
+    color: '#fff',
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  okButton: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 5,
+  },
+  okButtonText: {
+    color: COLORS.blue,
+    fontSize: 16,
   },
 });
