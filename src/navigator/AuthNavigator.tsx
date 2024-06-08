@@ -25,6 +25,7 @@ import RegisterForm from '../components/register_seller/RegisterForm';
 import CartScreen from '../screens/customer/cart/Cart';
 import DeliveryScreen from '../screens/customer/delivery/DeliveryScreen';
 import PurchaseSuccesful from '../screens/customer/purchase/PurchaseSuccesful';
+import ShopHome from '../screens/customer/shop_home/ShopHome';
 import OrderScreen from '../screens/customer/order/OrderScreen';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
@@ -46,6 +47,8 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="methodDeliveryList" component={DeliveryScreen} />
       <Stack.Screen name="SearchPageResult" component={SearchPageResult} />
       <Stack.Screen name="SearchPage" component={SearchPage} />
+      <Stack.Screen name="ShopHome" component={ShopHome} />
+      
       <Stack.Screen name="OrderScreen" component={OrderScreen} />
 
       {/* Seller navigator */}

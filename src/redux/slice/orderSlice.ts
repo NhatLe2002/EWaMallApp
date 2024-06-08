@@ -1,5 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {InterfaceOrderState} from '../../constant/interface';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { InterfaceOrderState } from '../../constant/interface';
 
 import {
   CreateOrderDetailCommand,
@@ -8,9 +8,12 @@ import {
 } from '../../constant/types';
 import cartApi from '../../api/cartApi';
 import orderApi from '../../api/orderApi';
+import { OrderGetBySellerId } from '../../constant/types/orderType';
 
 const initialState: InterfaceOrderState = {
   orderList: null,
+  orderListBySellerId: null,
+  orderListBySellerIdRenderRedux: null,
   info_order: {
     userId: 0,
     totalCost: 0,
@@ -24,6 +27,18 @@ const initialState: InterfaceOrderState = {
   deliveryOrders:null,
   successOrders: null,
 };
+
+export const getAllOrderBySellerId = createAsyncThunk(
+  'order/getAllOrderBySellerId',
+  async (sellerId: number) => {
+    try {
+      const response = await orderApi.getAllOrderBySellerId(sellerId);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 export const createOrder = createAsyncThunk(
   'cart/createOrder',
   async (orderRequest: CreateOrderRequest) => {
@@ -48,6 +63,7 @@ export const createOrder = createAsyncThunk(
         paymentId: 1,
       };
 
+ 
       const response = await cartApi.createOrder(requestWithOrderCode);
 
       return response.data;
@@ -91,32 +107,10 @@ const orderSlice = createSlice({
     ) => {
       state.info_order!.createOrderDetailCommands = action.payload;
     },
-    setOrdersByStatus: (
-      state,
-      action: PayloadAction<{statusId: number; listOrder: OrderAllByUserId[]}>,
-    ) => {
-      const {statusId, listOrder} = action.payload;
-      switch (statusId) {
-        case 1:
-          // Lưu các đơn hàng của trạng thái 1 vào state khác
-          state.pendingOrders = listOrder;
-          break;
-        case 2:
-          // Lưu các đơn hàng của trạng thái 2 vào state khác
-          state.waitingOrders = listOrder;
-          break;
-        case 3:
-          // Lưu các đơn hàng của trạng thái 3 vào state khác
-          state.deliveryOrders = listOrder;
-          break;
-        case 4:
-          // Lưu các đơn hàng của trạng thái 4 vào state khác
-          state.successOrders = listOrder;
-          break;
-        default:
-          break;
-      }
+    setOrderListBySellerIDRenderRedux: (state, action: PayloadAction<OrderGetBySellerId[] | null>) => {
+      state.orderListBySellerIdRenderRedux = action.payload;
     },
+   
   },
   extraReducers: builder => {
     builder.addCase(
@@ -126,7 +120,16 @@ const orderSlice = createSlice({
       },
     );
     builder.addCase(createOrder.rejected, (state, action) => {
-      return {...state, error: action.payload as string};
+      return { ...state, error: action.payload as string };
+    });
+    builder.addCase(
+      getAllOrderBySellerId.fulfilled,
+      (state, action: PayloadAction<OrderGetBySellerId[]>) => {
+        return { ...state, orderListBySellerId: action.payload, error: '' };
+      },
+    );
+    builder.addCase(getAllOrderBySellerId.rejected, (state, action) => {
+      return { ...state, error: action.payload as string };
     });
     builder.addCase(
       getOrderByUserId.fulfilled,
@@ -149,6 +152,7 @@ const orderSlice = createSlice({
     builder.addCase(getOrderByUserId.rejected, (state, action) => {
       return {...state, error: action.payload as string};
     });
+   
   },
 });
 export const {
@@ -157,6 +161,6 @@ export const {
   setShipCostt,
   setShipAddressId,
   setCreateOrderDetailCommands,
-  setOrdersByStatus,
+  setOrderListBySellerIDRenderRedux
 } = orderSlice.actions;
 export default orderSlice.reducer;
