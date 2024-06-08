@@ -37,13 +37,14 @@ const App: React.FC = () => {
           dispatch(setUsername(name));
           dispatch(setUserId(id));
         }
+        // storageService.removeInfo()
       } catch (error) {
         console.error('Failed to fetch data from storage', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [isLogin]);
 
   useEffect(() => {
     // Cấu hình Push Notification
@@ -51,6 +52,7 @@ const App: React.FC = () => {
       onNotification: function (notification) {
         console.log('NOTIFICATION:', notification);
         // process the notification
+        
       },
       requestPermissions: Platform.OS === 'ios',
     });
@@ -67,7 +69,7 @@ const App: React.FC = () => {
       },
       (created) => console.log(`createChannel returned '${created}'`) // Xác nhận kênh được tạo thành công
     );
-  }, []);
+  }, [isLogin]);
 
   return (
     <NavigationContainer>

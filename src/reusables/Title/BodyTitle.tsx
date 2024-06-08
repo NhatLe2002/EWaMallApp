@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     title: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems:'center'
     },
     leftText:{
         color: '#000000',

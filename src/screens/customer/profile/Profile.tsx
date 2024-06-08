@@ -13,6 +13,7 @@ import ManageOrder from '../../../components/profile/ManageOrder';
 import UtilitiesProfile from '../../../components/profile/UtilitiesProfile';
 import {COLORS} from '../../../constant/theme';
 import GeneralProfile from '../../../components/profile/GeneralProfile';
+import Logout from '../../../components/profile/Logout';
 
 const Profile: React.FC = () => {
   const isSelectionModeEnabled = () => {
@@ -44,7 +45,6 @@ const Profile: React.FC = () => {
       return () => subscription.remove();
     }, [isSelectionModeEnabled, disableSelectionMode]),
   );
-  const navigation = useNavigation();
   return (
     <ScrollView style={styles.scrollContainer}>
       <HeaderProfile />
@@ -56,9 +56,10 @@ const Profile: React.FC = () => {
           <UtilitiesProfile />
         </View>
         <GeneralProfile />
-        <View style={styles.contentBackground}>
+        <Logout />
+        {/* <View style={styles.contentBackground}>
           <UtilitiesProfile />
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     gap: 15,
+    marginBottom:'10%'
   },
   contentBackground: {
     backgroundColor: 'white',

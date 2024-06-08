@@ -19,7 +19,6 @@ const productApi = {
       searchValue : searchValue
     })
   },
-
   getProductBySellerId(sellerId:number){
     const url =`/api/Product/GetProductBySellerId/${sellerId}`
     return axiosClient.get(url)
