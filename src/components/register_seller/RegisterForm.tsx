@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {ISellerState} from '../../constant/interface/sellerInterface';
 import {
   createSeller,
+  getAccount,
   setAddress,
   setDescription,
   setEmail,
@@ -87,6 +88,7 @@ const RegisterForm: React.FC = () => {
     // Introduce a delay using setTimeout
     setTimeout(async () => {
       await dispatch(createSeller(seller)); // Wait for the dispatch to finish
+      await dispatch(getAccount(userId));
       setIsLoading(false); // Set loading to false after dispatch
       navigation.navigate('SellerHome');
     }, 3000); // Delay in milliseconds
@@ -166,7 +168,7 @@ const RegisterForm: React.FC = () => {
                 handleInputChange(text, 'address_detail');
               }}
               onBlur={onBlur}
-              errorMessage={errors.address ? errors.address.message : ''}
+              errorMessage={errors.address_detail ? errors.address_detail.message : ''}
             />
           )}
         />
@@ -220,7 +222,13 @@ const RegisterForm: React.FC = () => {
         <Controller
           control={control}
           name="phone"
-          rules={{required: 'Vui lòng nhập số điện thoại hợp lệ'}}
+          rules={{
+            required: 'Vui lòng nhập số điện thoại hợp lệ',
+            pattern: {
+              value: /^[0-9]{10}$/, // Regex pattern for exactly 10 digits
+              message: 'Số điện thoại phải có đúng 10 chữ số',
+            },
+          }}
           render={({field: {value, onChange, onBlur}}) => (
             <Input
               placeholder="Số điện thoại"

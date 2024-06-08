@@ -1,10 +1,5 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TitleReusable from '../../reusables/Text/TitleReusable';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
@@ -13,6 +8,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {InterfaceAccountState} from '../../constant/interface';
+import {getAccount} from '../../redux/slice/seller/accountSellerSlice';
+import {ISellerState} from '../../constant/interface/sellerInterface';
 
 const options = [
   {
@@ -66,8 +65,26 @@ const options = [
 ];
 
 const GeneralProfile = () => {
+  const dispatch = useDispatch<any>();
+  const {userId} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+  const {seller} = useSelector((state: ISellerState) => state.sellerReducer);
   const [showMore, setShowMore] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const navigation = useNavigation();
+  useEffect(() => {
+    dispatch(getAccount(userId));
+  }, [dispatch]);
+  
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (seller?.seller != null) setIsSeller(true);
+    }, 1000); // Adjust the delay time as needed
+  
+    return () => clearTimeout(timeoutId);
+  }, [seller]);
+  
   return (
     <View>
       <View style={styles.container}>
@@ -85,7 +102,11 @@ const GeneralProfile = () => {
             item.title === 'Bán hàng cùng Ewamall' ? (
               <TouchableOpacity
                 key={item.id}
-                onPress={() => navigation.navigate('RegistrationSellerScreen' as never)}>
+                onPress={() =>
+                  isSeller
+                    ? navigation.navigate('SellerHome' as never)
+                    : navigation.navigate('RegistrationSellerScreen' as never)
+                }>
                 <LinearGradient
                   key={item.id}
                   style={styles.optionSeller}
