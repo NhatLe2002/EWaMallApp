@@ -37,6 +37,7 @@ const App: React.FC = () => {
           dispatch(setUsername(name));
           dispatch(setUserId(id));
         }
+        // storageService.removeInfo()
       } catch (error) {
         console.error('Failed to fetch data from storage', error);
       }
@@ -51,6 +52,7 @@ const App: React.FC = () => {
       onNotification: function (notification) {
         console.log('NOTIFICATION:', notification);
         // process the notification
+        
       },
       requestPermissions: Platform.OS === 'ios',
     });

@@ -41,7 +41,6 @@ const ProductList = () => {
 
     fetchProductImages();
   }, [productList]);
-
   const renderItem = ({item}: {item: Product}) => {
     return (
       <View style={styles.product}>
@@ -52,7 +51,9 @@ const ProductList = () => {
           <Image
             style={styles.image}
             source={{
-              uri: item.imageUrl ? String(item.imageUrl) : 'defaultImageUrl',
+              uri: item.imageUrls
+                ? String(item.imageUrls[0])
+                : 'defaultImageUrl',
             }}
           />
           <View style={styles.containter}>

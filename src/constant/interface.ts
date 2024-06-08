@@ -5,6 +5,7 @@ import {
   District,
   FeeShip,
   Industry,
+  OrderAllByUserId,
   OrderList,
   Product,
   ProductAddToCart,
@@ -30,8 +31,7 @@ interface InterfaceAccountState {
   success: boolean;
 }
 
-
-export interface InterfaceNotification{
+export interface InterfaceNotification {
   notificationReducer?: any;
   newNotificationReceived: boolean | undefined;
 }
@@ -40,6 +40,11 @@ interface InterfaceOrderState {
   orderReducer?: any;
   orderList: OrderList | null;
   info_order: CreateOrderRequest | null;
+  orderAllByUser: OrderAllByUserId[] | null;
+  pendingOrders: OrderAllByUserId[] | null;
+  waitingOrders: OrderAllByUserId[]| null;
+  deliveryOrders: OrderAllByUserId[] | null;
+  successOrders: OrderAllByUserId[] | null;
 }
 //Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha
 

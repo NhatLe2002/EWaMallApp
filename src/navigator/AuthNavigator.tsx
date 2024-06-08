@@ -25,6 +25,7 @@ import RegisterForm from '../components/register_seller/RegisterForm';
 import CartScreen from '../screens/customer/cart/Cart';
 import DeliveryScreen from '../screens/customer/delivery/DeliveryScreen';
 import PurchaseSuccesful from '../screens/customer/purchase/PurchaseSuccesful';
+import OrderScreen from '../screens/customer/order/OrderScreen';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -45,7 +46,8 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="methodDeliveryList" component={DeliveryScreen} />
       <Stack.Screen name="SearchPageResult" component={SearchPageResult} />
       <Stack.Screen name="SearchPage" component={SearchPage} />
-      
+      <Stack.Screen name="OrderScreen" component={OrderScreen} />
+
       {/* Seller navigator */}
       <Stack.Screen name="SellerHome" component={SellerHome} />
       <Stack.Screen name="ProductSeller" component={ProductSeller} />
@@ -54,8 +56,14 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Industry" component={Industry} />
       <Stack.Screen name="ProductComman" component={ProductComman} />
       <Stack.Screen name="Finance" component={Finance} />
-      <Stack.Screen name="ProductCommanDetail" component={ProductCommanDetail} />
-      <Stack.Screen name="RegistrationSellerScreen" component={RegistrationScreen1} />
+      <Stack.Screen
+        name="ProductCommanDetail"
+        component={ProductCommanDetail}
+      />
+      <Stack.Screen
+        name="RegistrationSellerScreen"
+        component={RegistrationScreen1}
+      />
       <Stack.Screen name="RegisterSellerScreen" component={RegisterForm} />
     </Stack.Navigator>
   );

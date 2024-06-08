@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {COLORS, FONTS, SIZES} from '../../../constant/theme';
-import {ScrollView} from 'react-native-gesture-handler';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import TitleProduct from '../../../components/product_detail/TitleProduct';
 import DeliveryPrice from '../../../components/product_detail/DeliveryPrice';
 import ShopInfor from '../../../components/product_detail/ShopInfor';
@@ -30,7 +30,11 @@ import {BottomSheetDefaultFooterProps} from '@gorhom/bottom-sheet/lib/typescript
 import {formatPriceToVND} from '../../../config/FixPrice';
 import {addToCart} from '../../../redux/slice/cartSlice';
 import {Product} from '../../../constant/types';
-import {listFilesInProductFolder} from '../../../features/GetImage';
+import {
+  listFilesInProductFolder,
+  updateProductDetailWithImages,
+  updateProductListWithImages,
+} from '../../../features/GetImage';
 
 const ProductDetail = () => {
   const route = useRoute<any>();
@@ -53,7 +57,7 @@ const ProductDetail = () => {
     id: number;
     quantity: number;
   } | null>(null);
-  const [updatedProduct, setUpdatedProduct] = useState<string[]>();
+  const [updatedProduct, setUpdatedProduct] = useState<Product>();
   const updateSelectedProduct = (id: number, quantity: number) => {
     setSelectedProduct({id, quantity});
   };
@@ -64,11 +68,12 @@ const ProductDetail = () => {
 
   useEffect(() => {
     const fetchProductImages = async () => {
-      const updatedList = await listFilesInProductFolder(product.id);
+      const updatedList = await updateProductDetailWithImages(product);
       setUpdatedProduct(updatedList);
     };
     fetchProductImages();
   }, [product]);
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
@@ -105,7 +110,7 @@ const ProductDetail = () => {
       closeModal();
     }
   };
-  console.log(product);
+  console.log(updatedProduct?.imageUrls);
   const footerAddProduct = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -129,21 +134,26 @@ const ProductDetail = () => {
       <View style={styles.container}>
         <HeaderSearch />
         <ScrollView style={styles.content} ref={scrollViewRef}>
-          <View
+          <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
             style={{
               marginBottom: 2,
               height: SIZES.height / 2.8,
-              width: SIZES.width,
             }}>
-            {updatedProduct?.map((item, i) => (
-              <View style={styles.image}>
+            {updatedProduct?.imageUrls?.map((item, i) => (
+              <View key={i} style={styles.imageContainer}>
                 <Image
-                  source={{uri: item ? String(item) : 'defaultImageUrl'}}
                   style={styles.image}
+                  source={{
+                    uri: item ? String(item) : 'defaultImageUrl',
+                  }}
                 />
               </View>
             ))}
-          </View>
+          </ScrollView>
+
           <TitleProduct
             productName={product?.productName}
             price={product?.productSellerDetails[0]?.price}
@@ -327,10 +337,18 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: COLORS.background_list,
   },
-  image: {
-    width: '100%',
-    height: SIZES.height / 2.5,
+  // image: {
+  //   width: '100%',
+  //   height: SIZES.height / 2.5,
+  //   marginBottom: 3,
+  // },
+  imageContainer: {
+    flexDirection: 'row',
     marginBottom: 3,
+  },
+  image: {
+    width: SIZES.width ,
+    height: SIZES.height / 2.5,
   },
   container: {
     flex: 1,
