@@ -48,6 +48,8 @@ interface InterfaceOrderState {
   waitingOrders: OrderAllByUserId[]| null;
   deliveryOrders: OrderAllByUserId[] | null;
   successOrders: OrderAllByUserId[] | null;
+  cancelOrders: OrderAllByUserId[] | null;
+  refundOrders: OrderAllByUserId[] | null;
 }
 //Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha
 

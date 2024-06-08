@@ -48,7 +48,7 @@ const HeaderCommon: React.FC<Props> = ({
       shadowOffset: {width: 0, height: 4},
       shadowOpacity: 1,
       shadowRadius: 10,
-      zIndex: 2,
+      zIndex: 1,
     },
     titleContainer: {
       flex: 1,
@@ -87,22 +87,24 @@ const HeaderCommon: React.FC<Props> = ({
         <View style={styles.right}>
           {icon1 && (
             <View style={{marginRight: icon2 ? 10 : 0}}>
-              <Iconions name={icon1} color={COLORS.yellowMain} size={22} />
-              <Badge
-                value={10}
-                textStyle={{fontSize: 9}}
-                badgeStyle={{
-                  backgroundColor: COLORS.yellowMain,
-                  borderWidth: 1,
-                  width: 15,
-                  height: 15,
-                }}
-                containerStyle={{
-                  position: 'absolute',
-                  top: -5,
-                  right: -5,
-                }}
-              />
+              <Iconions name={icon1} color={COLORS.yellowMain} size={24} />
+              {icon1 !== 'search' && ( // Kiểm tra nếu icon1 không phải là "search"
+                <Badge
+                  value={10}
+                  textStyle={{fontSize: 9}}
+                  badgeStyle={{
+                    backgroundColor: COLORS.yellowMain,
+                    borderWidth: 1,
+                    width: 15,
+                    height: 15,
+                  }}
+                  containerStyle={{
+                    position: 'absolute',
+                    top: -5,
+                    right: -5,
+                  }}
+                />
+              )}
             </View>
           )}
           {icon2 && (

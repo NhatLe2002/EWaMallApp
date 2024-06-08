@@ -26,6 +26,8 @@ const initialState: InterfaceOrderState = {
   waitingOrders: null,
   deliveryOrders:null,
   successOrders: null,
+  cancelOrders:null,
+  refundOrders:null
 };
 
 export const getAllOrderBySellerId = createAsyncThunk(
@@ -145,6 +147,12 @@ const orderSlice = createSlice({
         );
         state.successOrders = action.payload.filter(
           order => order.status.id === 4,
+        );
+        state.cancelOrders = action.payload.filter(
+          order => order.status.id === 5,
+        );
+        state.refundOrders = action.payload.filter(
+          order => order.status.id === 6,
         );
         return state;
       },

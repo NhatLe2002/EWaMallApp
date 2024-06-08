@@ -44,7 +44,7 @@ const App: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [isLogin]);
 
   useEffect(() => {
     // Cấu hình Push Notification
@@ -69,7 +69,7 @@ const App: React.FC = () => {
       },
       (created) => console.log(`createChannel returned '${created}'`) // Xác nhận kênh được tạo thành công
     );
-  }, []);
+  }, [isLogin]);
 
   return (
     <NavigationContainer>
