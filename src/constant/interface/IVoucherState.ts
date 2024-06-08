@@ -1,8 +1,3 @@
-
-
-
-
-
 interface IVoucherState {
     voucherReducer?: any;
     voucherList: IVoucher[] | null;
@@ -10,10 +5,7 @@ interface IVoucherState {
     loading: boolean
 }
 
-
-
 export type { IVoucherState };
-
 
 export interface IVoucher {
     voucherCode: string
