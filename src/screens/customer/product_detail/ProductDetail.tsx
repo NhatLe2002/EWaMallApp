@@ -18,7 +18,7 @@ import {
   InterfaceAccountState,
   InterfaceProductState,
 } from '../../../constant/interface';
-import {getProductById} from '../../../redux/slice/productSlice';
+import {getProductById} from '../../../redux/slice/productSlices';
 
 import {
   BottomSheetModal,

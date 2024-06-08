@@ -5,6 +5,7 @@ import {Product} from '../../constant/types';
 const initialState: InterfaceProductState = {
   productList: [],
   productSearchList: [],
+  productFilterList: [],
   product: null,
   error: null,
 };
@@ -48,7 +49,7 @@ export const getProductBySearch = createAsyncThunk(
       const response = await productApi.getProductBySearch(searchValue);
       return response.data;
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   },
 );
@@ -59,6 +60,12 @@ const productSlice = createSlice({
     setClearSearchProduct: (state) => {
       state.productSearchList = [];
     },
+    setProductFilterList: (state, action:  PayloadAction<Product[]>) =>{
+      state.productFilterList = action.payload;
+    },
+    setProductFilterListToProductList: (state) =>{
+      state.productList = state.productFilterList;
+    }
   },
   extraReducers: builder => {
     builder.addCase(
@@ -82,7 +89,7 @@ const productSlice = createSlice({
     builder.addCase(
       getProductBySearch.fulfilled,
       (state, action: PayloadAction<Product[]>) => {
-        return {...state, productSearchList: action.payload, error: ''};
+        return {...state, productSearchList: action.payload, productFilterList: action.payload, error: ''};
       },
     );
     builder.addCase(getProductBySearch.rejected, (state, action) => {
@@ -90,5 +97,5 @@ const productSlice = createSlice({
     });
   },
 });
-export const {setClearSearchProduct} = productSlice.actions;
+export const {setClearSearchProduct, setProductFilterList, setProductFilterListToProductList} = productSlice.actions;
 export default productSlice.reducer;

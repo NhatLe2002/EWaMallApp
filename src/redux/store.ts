@@ -4,7 +4,7 @@ import industrySellerReducer from './slice/seller/industrySellerSlice';
 import productSellerReducer from './slice/seller/productSellerSlice';
 import industryDetailSellerReducer from './slice/seller/industryDetailSellerSlice';
 import formCreateProductReducer from './slice/form/formCreateProductBySellerSlice';
-import productReducer from './slice/productSlice';
+import productReducer from './slice/productSlices';
 import industryReducer from './slice/industrySlice';
 import cartReducer from './slice/cartSlice';
 import addressReducer from './slice/addressSlice';

@@ -15,7 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {InterfaceProductState} from '../../constant/interface';
 import {Product} from '../../constant/types';
-import {fetchAllProducts} from '../../redux/slice/productSlice';
+import {fetchAllProducts} from '../../redux/slice/productSlices';
 import {
   updateProductListWithImages,
 } from '../../features/GetImage';
