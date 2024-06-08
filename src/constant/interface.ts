@@ -59,6 +59,9 @@ export interface IIndustry {
 export interface ISeller {
   shopName: string;
   address: string;
+  provinceId: number;
+  districtId: number;
+  wardId: number;
   phoneNumber: string;
   email: string;
   description: string;
@@ -68,7 +71,18 @@ export interface ISeller {
   products: any[];
   id: number;
 }
-
+export interface ISeller_2 {
+  shopName: string;
+  address: string;
+  provinceId: number;
+  districtId: number;
+  wardId: number;
+  phoneNumber: string;
+  email: string;
+  description: string;
+  userId: number;
+  
+}
 // Giao diện cho Product
 export interface IProduct {
   productName: string;
