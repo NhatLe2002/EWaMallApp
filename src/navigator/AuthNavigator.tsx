@@ -19,6 +19,8 @@ import AddAddress from '../screens/customer/address/AddAddress';
 import SelectAddress from '../components/address/SelectAddress';
 import Industry from '../screens/sellser/add_product_seller/Industry';
 import ProductComman from '../screens/sellser/add_product_seller/ProductComman';
+import ChatHomeScreen from '../screens/customer/chat/ChatHomeScreen';
+import ChatBox from '../screens/customer/chat/ChatBox';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -35,10 +37,10 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Address" component={AddressScreen} />
       <Stack.Screen name="add_address" component={AddAddress} />
       <Stack.Screen name="SelectProvince" component={SelectAddress} />
-
+      <Stack.Screen name="ChatHomeScreen" component={ChatHomeScreen} />
       <Stack.Screen name="SearchPageResult" component={SearchPageResult}/>
       <Stack.Screen name="SearchPage" component={SearchPage} />
-      
+      <Stack.Screen name="ChatBox" component={ChatBox} />
       
       {/* Seller navigator */}
       <Stack.Screen name="SellerHome" component={SellerHome} />
