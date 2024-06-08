@@ -6,9 +6,12 @@ import {
   CreateOrderRequest,
 } from '../../constant/types';
 import cartApi from '../../api/cartApi';
+import orderApi from '../../api/orderApi';
+import { OrderGetBySellerId } from '../../constant/types/orderType';
 
 const initialState: InterfaceOrderState = {
   orderList: null,
+  orderListBySellerId: null,
   info_order: {
     userId: 0,
     totalCost: 0,
@@ -17,6 +20,18 @@ const initialState: InterfaceOrderState = {
     createOrderDetailCommands: [],
   },
 };
+
+export const getAllOrderBySellerId = createAsyncThunk(
+  'order/getAllOrderBySellerId',
+  async (sellerId: number) => {
+    try {
+      const response = await orderApi.getAllOrderBySellerId(sellerId);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 export const createOrder = createAsyncThunk(
   'cart/createOrder',
   async (orderRequest: CreateOrderRequest) => {
@@ -83,6 +98,15 @@ const orderSlice = createSlice({
     );
     builder.addCase(createOrder.rejected, (state, action) => {
       return {...state, error: action.payload as string};
+    });
+    builder.addCase(
+      getAllOrderBySellerId.fulfilled,
+      (state, action: PayloadAction<OrderGetBySellerId[]>) => {
+        return { ...state, orderListBySellerId : action.payload, error: '' };
+      },
+    );
+    builder.addCase(getAllOrderBySellerId.rejected, (state, action) => {
+      return { ...state, error: action.payload as string };
     });
   },
 });

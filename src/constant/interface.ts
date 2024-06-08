@@ -15,6 +15,7 @@ import {
   UpdateCartDetail,
   Ward,
 } from './types';
+import { OrderGetBySellerId } from './types/orderType';
 
 interface InterfaceAccountState {
   accountReducer?: any;
@@ -39,6 +40,7 @@ export interface InterfaceNotification{
 interface InterfaceOrderState {
   orderReducer?: any;
   orderList: OrderList | null;
+  orderListBySellerId: OrderGetBySellerId [] | null;
   info_order: CreateOrderRequest | null;
 }
 //Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha

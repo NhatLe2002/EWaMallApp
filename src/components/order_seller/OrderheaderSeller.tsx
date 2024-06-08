@@ -1,8 +1,11 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller'
 import { TouchableOpacity } from 'react-native'
 import { COLORS } from '../../constant/theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { InterfaceOrderState } from '../../constant/interface';
+import { getAllOrderBySellerId } from '../../redux/slice/orderSlice';
 
 const orderStatuss = [
     { id: 1, name: 'Chờ xác nhận', quantity: 7 },
@@ -32,6 +35,14 @@ const renderRecentItems = (selectedId: any) => {
 const OrderheaderSeller = () => {
     const [selectedId, setSelectedId] = useState(1);
     const [selectedRecentItemId, setSelectedRecentItemId] = useState(1);
+    const dispatch = useDispatch<any>();
+    const { orderListBySellerId } = useSelector(
+        (state: InterfaceOrderState) => state.orderReducer,
+    );
+    useEffect(() => {
+        dispatch(getAllOrderBySellerId(2));
+        console.log(JSON.stringify(orderListBySellerId, null, 2))
+    }, []);
 
     return (
         <View>
