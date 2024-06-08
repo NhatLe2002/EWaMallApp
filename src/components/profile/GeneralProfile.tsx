@@ -80,8 +80,9 @@ const GeneralProfile = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (seller?.seller != null) setIsSeller(true);
-    }, 1000); // Adjust the delay time as needed
-  
+    }, 5000); // Adjust the delay time as needed
+    console.log('');
+    if (seller?.seller != null) setIsSeller(true);
     return () => clearTimeout(timeoutId);
   }, [seller]);
   

@@ -19,14 +19,14 @@ const HeaderTitleSeller: React.FC<props> = ({ text }) => {
       {
         route.name === 'SellerHome' ? (
           <View style={styles.containerHome}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate('BottomTab' as never)}>
               <Iconions name="arrow-back" color="white" size={25} />
             </TouchableOpacity>
             <Text style={styles.textHome}>Shop của tôi</Text>
           </View>
         ) : (
           <View style={styles.containerProduct}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() =>  navigation.navigate('BottomTab' as never)}>
               <Iconions name="arrow-back" style = {styles.iconItem}/>
             </TouchableOpacity>
             <View>
