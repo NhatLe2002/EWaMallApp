@@ -5,12 +5,21 @@ import { InterfaceOrderState } from '../../constant/interface';
 import { OrderGetBySellerId } from '../../constant/types/orderType';
 import HeightSpacerSeller from '../../reusables/height_spacer/HeightSpacerSeller';
 import { COLORS } from '../../constant/theme';
+import { updateProductDetailWithImages } from '../../features/GetImage';
+import { Product } from '../../constant/types';
 
 const OrderListSeller = () => {
     const { orderListBySellerId, orderListBySellerIdRenderRedux } = useSelector(
         (state: InterfaceOrderState) => state.orderReducer,
     );
+    const fetchProductImages = async (product: Product) => {
+        const updatedList = await updateProductDetailWithImages(product);
+        return (updatedList.imageUrls);
+        // setUpdatedProduct(updatedList);
+    };
+
     const renderItem = ({ item }: { item: OrderGetBySellerId }) => (
+        
         <View >
             <HeightSpacerSeller height={10} color='#b1b1b1' />
             <View style={styles.itemContainer}>
@@ -22,7 +31,7 @@ const OrderListSeller = () => {
                     <View style={styles.itemImageContainer}>
                         <Image
                             style={styles.itemImage}
-                            source={require('../../assets/images/ProductShopHome.png')}
+                            // source={uri : {fetchProductImages(item.orderDetails?.productSellDetail?.product)}}
 
                         />
                     </View>
