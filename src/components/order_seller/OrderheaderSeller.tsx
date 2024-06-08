@@ -8,6 +8,8 @@ import { InterfaceOrderState } from '../../constant/interface';
 import { getAllOrderBySellerId, setOrderListBySellerIDRenderRedux } from '../../redux/slice/orderSlice';
 import OrderListSeller from './OrderListSeller';
 import { OrderGetBySellerId } from '../../constant/types/orderType';
+import { updateProductDetailWithImages } from '../../features/GetImage';
+import { Product } from '../../constant/types';
 
 const orderStatuss = [
     { id: 1, name: 'Chờ xác nhận', quantity: 7 },
@@ -55,8 +57,9 @@ const OrderheaderSeller = () => {
     const filterOrderByStatus = (status: number) => {
         return orderListBySellerId?.filter((order: OrderGetBySellerId) => order.statusId === status);
     };
+    
     return (
-        <View style = {styles.containner}>
+        <View style={styles.containner}>
             <View style={{ marginTop: 15 }}>
                 <HeaderTitleSeller text={'Đơn hàng của tôi'} />
             </View>
@@ -115,8 +118,8 @@ const OrderheaderSeller = () => {
 export default OrderheaderSeller
 
 const styles = StyleSheet.create({
-    containner:{
-        flex:1,
+    containner: {
+        flex: 1,
         backgroundColor: COLORS.white
     },
     scrollViewContent: {
