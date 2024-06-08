@@ -18,7 +18,6 @@ type ProductTypes = {
 };
 const ProductListSearch = (props: ProductTypes) => {
   const [updatedProductList, setUpdatedProductList] = useState<Product[]>([]);
-  console.log(props.products)
   const navigation = useNavigation<any>();
   useEffect(() => {
     const fetchProductImages = async () => {
