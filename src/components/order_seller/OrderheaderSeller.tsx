@@ -5,12 +5,13 @@ import { TouchableOpacity } from 'react-native'
 import { COLORS } from '../../constant/theme';
 
 const orderStatuss = [
-    { id: 1, name: 'Chờ lấy hàng', quantity: 7 },
-    { id: 2, name: 'Đơn hủy', quantity: 7 },
-    { id: 3, name: 'Trả hàng/Hoàn tiền', quantity: 7 },
-    { id: 4, name: 'Phản hồi đánh giá', quantity: 7 },
-    { id: 5, name: 'Còn hàng', quantity: 7 },
-    { id: 6, name: 'Còn hàng', quantity: 7 }
+    { id: 1, name: 'Chờ xác nhận', quantity: 7 },
+    { id: 2, name: 'Chờ lấy hàng', quantity: 7 },
+    { id: 3, name: 'Đang giao', quantity: 7 },
+    { id: 4, name: 'Đã giao', quantity: 7 },
+    { id: 5, name: 'Đã hủy', quantity: 7 },
+    { id: 6, name: 'Trả hàng/Hoàn tiền', quantity: 7 },
+    { id: 8, name: 'Giao không thành công', quantity: 7 }
 ];
 const renderRecentItems = (selectedId: any) => {
     if (selectedId === 1) {
