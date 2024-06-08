@@ -11,7 +11,7 @@ import SearchCategory from './SearchCategory';
 import ProductListSearch from '../../../reusables/list_item/ProductListSearch';
 import { InterfaceProductState } from '../../../constant/interface';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductBySearch, setClearSearchProduct, setProductFilterList, setProductFilterListToProductList } from '../../../redux/slice/productSlice';
+import { getProductBySearch, setClearSearchProduct, setProductFilterList, setProductFilterListToProductList } from '../../../redux/slice/productSlices';
 import { Product} from '../../../constant/types';
 
 const SearchPageResult: React.FC = () => {

@@ -25,6 +25,10 @@ import RegisterForm from '../components/register_seller/RegisterForm';
 import CartScreen from '../screens/customer/cart/Cart';
 import DeliveryScreen from '../screens/customer/delivery/DeliveryScreen';
 import PurchaseSuccesful from '../screens/customer/purchase/PurchaseSuccesful';
+import ShopHome from '../screens/customer/shop_home/ShopHome';
+import OrderScreen from '../screens/customer/order/OrderScreen';
+import ChatHomeScreen from '../screens/customer/chat/ChatHomeScreen';
+import ChatBox from '../screens/customer/chat/ChatBox';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -44,7 +48,13 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="SelectProvince" component={SelectAddress} />
       <Stack.Screen name="methodDeliveryList" component={DeliveryScreen} />
       <Stack.Screen name="SearchPageResult" component={SearchPageResult} />
+      <Stack.Screen name="ChatHomeScreen" component={ChatHomeScreen} />
       <Stack.Screen name="SearchPage" component={SearchPage} />
+      <Stack.Screen name="ShopHome" component={ShopHome} />
+      
+      <Stack.Screen name="OrderScreen" component={OrderScreen} />
+
+      <Stack.Screen name="ChatBox" component={ChatBox} />
       
       {/* Seller navigator */}
       <Stack.Screen name="SellerHome" component={SellerHome} />
@@ -54,8 +64,14 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Industry" component={Industry} />
       <Stack.Screen name="ProductComman" component={ProductComman} />
       <Stack.Screen name="Finance" component={Finance} />
-      <Stack.Screen name="ProductCommanDetail" component={ProductCommanDetail} />
-      <Stack.Screen name="RegistrationSellerScreen" component={RegistrationScreen1} />
+      <Stack.Screen
+        name="ProductCommanDetail"
+        component={ProductCommanDetail}
+      />
+      <Stack.Screen
+        name="RegistrationSellerScreen"
+        component={RegistrationScreen1}
+      />
       <Stack.Screen name="RegisterSellerScreen" component={RegisterForm} />
     </Stack.Navigator>
   );
