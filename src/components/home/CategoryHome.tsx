@@ -1,9 +1,18 @@
 import React from 'react';
-import {View, Image, StyleSheet, FlatList, ScrollView} from 'react-native';
+import {
+  View,
+  Image,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import categories from '../../data/Categories';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
 import ReusableText from '../../reusables/Text/ReusableText';
+import {useNavigation} from '@react-navigation/native';
 
 interface ItemProps {
   id: number;
@@ -13,6 +22,7 @@ interface ItemProps {
 }
 
 const CategoryHome: React.FC = () => {
+  const navigation = useNavigation<any>();
   // Chia mảng categories thành các mảng con có 2 phần tử mỗi mảng
   const chunkArray = (arr: ItemProps[], size: number) => {
     const chunkedArr: ItemProps[][] = [];
@@ -23,17 +33,19 @@ const CategoryHome: React.FC = () => {
   };
   const chunkedCategories = chunkArray(categories, 2);
   const renderItemCategory = ({item}: {item: ItemProps}) => (
-    <View style={styles.content}>
-      <Image source={{uri: item.imgUrl}} style={styles.image} />
-      <ReusableText
-        numberOfLines={2}
-        text={item.name}
-        size={11}
-        color={COLORS.black}
-        font={FONTS.roboto_regular}
-        align="center"
-      />
-    </View>
+    <TouchableOpacity onPress={() => navigation.navigate('Category')}>
+      <View style={styles.content}>
+        <Image source={{uri: item.imgUrl}} style={styles.image} />
+        <ReusableText
+          numberOfLines={2}
+          text={item.name}
+          size={11}
+          color={COLORS.black}
+          font={FONTS.roboto_regular}
+          align="center"
+        />
+      </View>
+    </TouchableOpacity>
   );
 
   return (

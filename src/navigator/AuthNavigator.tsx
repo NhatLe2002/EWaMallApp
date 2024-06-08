@@ -19,6 +19,9 @@ import AddAddress from '../screens/customer/address/AddAddress';
 import SelectAddress from '../components/address/SelectAddress';
 import Industry from '../screens/sellser/add_product_seller/Industry';
 import ProductComman from '../screens/sellser/add_product_seller/ProductComman';
+
+import Category from '../screens/customer/categories/Category';
+
 import ProductCommanDetail from '../screens/sellser/add_product_seller/ProductCommanDetail';
 import RegistrationScreen1 from '../components/register_seller/RegistrationScreen1';
 import RegisterForm from '../components/register_seller/RegisterForm';
@@ -38,6 +41,7 @@ const AuthNavigator: React.FC = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+      <Stack.Screen name="Category" component={Category} />
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="Purchase" component={PurchaseScreen} />
@@ -46,6 +50,7 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Address" component={AddressScreen} />
       <Stack.Screen name="add_address" component={AddAddress} />
       <Stack.Screen name="SelectProvince" component={SelectAddress} />
+
       <Stack.Screen name="methodDeliveryList" component={DeliveryScreen} />
       <Stack.Screen name="SearchPageResult" component={SearchPageResult} />
       <Stack.Screen name="ChatHomeScreen" component={ChatHomeScreen} />
