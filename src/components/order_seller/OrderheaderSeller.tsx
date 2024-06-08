@@ -5,7 +5,9 @@ import { TouchableOpacity } from 'react-native'
 import { COLORS } from '../../constant/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { InterfaceOrderState } from '../../constant/interface';
-import { getAllOrderBySellerId } from '../../redux/slice/orderSlice';
+import { getAllOrderBySellerId, setOrderListBySellerIDRenderRedux } from '../../redux/slice/orderSlice';
+import OrderListSeller from './OrderListSeller';
+import { OrderGetBySellerId } from '../../constant/types/orderType';
 
 const orderStatuss = [
     { id: 1, name: 'Chờ xác nhận', quantity: 7 },
@@ -36,16 +38,25 @@ const OrderheaderSeller = () => {
     const [selectedId, setSelectedId] = useState(1);
     const [selectedRecentItemId, setSelectedRecentItemId] = useState(1);
     const dispatch = useDispatch<any>();
+    const [ordertListFilter, setProductListFilter] = useState<OrderGetBySellerId[]>([]);
     const { orderListBySellerId } = useSelector(
         (state: InterfaceOrderState) => state.orderReducer,
     );
     useEffect(() => {
         dispatch(getAllOrderBySellerId(2));
-        console.log(JSON.stringify(orderListBySellerId, null, 2))
+        // console.log(JSON.stringify(orderListBySellerId, null, 2))
     }, []);
-
+    useEffect(() => {
+        const activeProducts = filterOrderByStatus(selectedId);
+        setProductListFilter(activeProducts);
+        console.log(ordertListFilter?.length);
+        dispatch(setOrderListBySellerIDRenderRedux(activeProducts));
+    }, [selectedId, orderListBySellerId])
+    const filterOrderByStatus = (status: number) => {
+        return orderListBySellerId?.filter((order: OrderGetBySellerId) => order.statusId === status);
+    };
     return (
-        <View>
+        <View style = {styles.containner}>
             <View style={{ marginTop: 15 }}>
                 <HeaderTitleSeller text={'Đơn hàng của tôi'} />
             </View>
@@ -90,12 +101,13 @@ const OrderheaderSeller = () => {
                                 ]}
                                 onPress={() => setSelectedRecentItemId(item.id)} // Cập nhật ID của mục "Gần đây" được chọn
                             >
-                                <Text style={[styles.text, selectedRecentItemId === item.id && { color: COLORS.white } ]}>{item.name}</Text>
+                                <Text style={[styles.text, selectedRecentItemId === item.id && { color: COLORS.white }]}>{item.name}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>
                 </View>
             </View>
+            <OrderListSeller />
         </View>
     )
 }
@@ -103,6 +115,10 @@ const OrderheaderSeller = () => {
 export default OrderheaderSeller
 
 const styles = StyleSheet.create({
+    containner:{
+        flex:1,
+        backgroundColor: COLORS.white
+    },
     scrollViewContent: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -110,7 +126,7 @@ const styles = StyleSheet.create({
     touchable: {
         marginRight: 20,
         padding: 10,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: COLORS.white,
         borderRadius: 5,
         alignItems: 'center',
     },
@@ -140,6 +156,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         minWidth: 80,
+        marginBottom: 10,
     },
     selectedRecentTouchable: {
         backgroundColor: '#CBBA63',

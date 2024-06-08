@@ -40,6 +40,7 @@ export interface InterfaceNotification{
 interface InterfaceOrderState {
   orderReducer?: any;
   orderList: OrderList | null;
+  orderListBySellerIdRenderRedux: OrderGetBySellerId[] | null;
   orderListBySellerId: OrderGetBySellerId [] | null;
   info_order: CreateOrderRequest | null;
 }

@@ -1,5 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {InterfaceOrderState} from '../../constant/interface';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { InterfaceOrderState } from '../../constant/interface';
 
 import {
   CreateOrderDetailCommand,
@@ -12,6 +12,7 @@ import { OrderGetBySellerId } from '../../constant/types/orderType';
 const initialState: InterfaceOrderState = {
   orderList: null,
   orderListBySellerId: null,
+  orderListBySellerIdRenderRedux: null,
   info_order: {
     userId: 0,
     totalCost: 0,
@@ -56,7 +57,7 @@ export const createOrder = createAsyncThunk(
         paymentId: 1,
       };
 
- 
+
       const response = await cartApi.createOrder(requestWithOrderCode);
 
       return response.data;
@@ -88,6 +89,9 @@ const orderSlice = createSlice({
     ) => {
       state.info_order!.createOrderDetailCommands = action.payload;
     },
+    setOrderListBySellerIDRenderRedux: (state, action: PayloadAction<OrderGetBySellerId[] | null>) => {
+      state.orderListBySellerIdRenderRedux = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -97,12 +101,12 @@ const orderSlice = createSlice({
       },
     );
     builder.addCase(createOrder.rejected, (state, action) => {
-      return {...state, error: action.payload as string};
+      return { ...state, error: action.payload as string };
     });
     builder.addCase(
       getAllOrderBySellerId.fulfilled,
       (state, action: PayloadAction<OrderGetBySellerId[]>) => {
-        return { ...state, orderListBySellerId : action.payload, error: '' };
+        return { ...state, orderListBySellerId: action.payload, error: '' };
       },
     );
     builder.addCase(getAllOrderBySellerId.rejected, (state, action) => {
@@ -116,5 +120,6 @@ export const {
   setShipCostt,
   setShipAddressId,
   setCreateOrderDetailCommands,
+  setOrderListBySellerIDRenderRedux
 } = orderSlice.actions;
 export default orderSlice.reducer;

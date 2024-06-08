@@ -9,7 +9,7 @@ const OrderSeller = () => {
   //   (state: InterfaceProductState) => state.productSellerReducer,
   // );
   return (
-    <View>
+    <View style = {styles.containner}>
       <OrderheaderSeller />
     </View>
   )
@@ -17,4 +17,8 @@ const OrderSeller = () => {
 
 export default OrderSeller
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  containner:{
+    flex:1,
+  }
+})
