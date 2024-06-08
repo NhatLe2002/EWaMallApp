@@ -2,7 +2,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, SIZES} from '../../constant/theme';
-import {Icon} from 'react-native-elements';
+import RatingStar from '../../reusables/ratting/RattingStart';
 
 interface Item {
   imgUrl: string;
@@ -10,9 +10,10 @@ interface Item {
   price: string;
   sold: number;
   address: string;
+  rate: number;
 }
 
-const Product: React.FC<Item> = ({imgUrl, name, price, sold}: Item) => {
+const Product: React.FC<Item> = ({imgUrl, name, price, sold, rate}: Item) => {
   const navigation = useNavigation();
 
   return (
@@ -37,8 +38,7 @@ const Product: React.FC<Item> = ({imgUrl, name, price, sold}: Item) => {
           </Text>
           <Text style={styles.price}>{price}</Text>
           <View style={{flexDirection: 'row'}}>
-            <Icon name="grade" color="#EAC452" size={12} />
-            <Icon name="grade" color="#EAC452" size={12} />
+            <RatingStar star={rate} size={12} />
           </View>
           <Text style={styles.sold}> Đã bán {sold}</Text>
         </View>

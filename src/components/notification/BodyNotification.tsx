@@ -1,16 +1,63 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { InterfaceAccountState, InterfaceNotification } from '../../constant/interface';
+import axios from 'axios';
+import { setNewNotificationReceived } from '../../redux/slice/notificationSlice';
+
+// Define the notification interface
+interface Notification {
+  title: string;
+  message: string;
+}
 
 const BodyNotification = () => {
+  const { username } = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+
+  const { newNotificationReceived } = useSelector(
+    (state: InterfaceNotification) => state.notificationReducer,
+  );
+
+  const dispatch = useDispatch();
+
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [dataFetched, setDataFetched] = useState(false); // State để đánh dấu đã fetch data lần đầu tiên
+
+  const fetchData = async () => {
+    try {
+      const apiURL = `https://ewamallbe.onrender.com/api/Notification/GetAllNotificationByUserId/${username}`;
+      const response = await axios.get(apiURL);
+      const data: Notification[] = response.data;
+      setNotifications(data);
+      // console.log(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      dispatch(setNewNotificationReceived(false));
+      setDataFetched(true); // Đánh dấu rằng dữ liệu đã được fetch lần đầu tiên
+    }
+  };
+
+  useEffect(() => {
+    if (!dataFetched) {
+      fetchData(); // Fetch data lần đầu tiên nếu chưa fetch
+    }
+    if (username && newNotificationReceived) {
+      fetchData(); // Fetch data khi có thông báo mới
+    }
+  }, [username, newNotificationReceived, dataFetched]); // Dependencies
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {Array(12).fill(null).map((_, index) => (
+        {notifications.map((notification, index) => (
           <View style={styles.notificationItem} key={index}>
             <Text style={styles.notificationTitle} numberOfLines={1}>
-              {index % 3 === 0 ? "Đơn hàng của bạn đã được giao" : index % 3 === 1 ? "Khuyến mãi đặc biệt: Giảm 50% cho đơn hàng mới" : "Mời bạn tham gia chương trình 'Mua hàng cùng bạn bè, nhận ngay quà'"}
+              {notification.title}
             </Text>
-            <Text style={styles.notificationTime}>{index % 3 === 0 ? "1 giờ trước" : index % 3 === 1 ? "2 giờ trước" : "Hôm qua"}</Text>
+            <Text style={styles.notificationTime}>{notification.message}</Text>
           </View>
         ))}
       </ScrollView>
@@ -47,41 +94,3 @@ const styles = StyleSheet.create({
     color: '#999',
   },
 });
-
-     // Khi gắn api
-// const BodyNotification = () => {
-//   const [notifications, setNotifications] = useState([]);
-
-//   useEffect(() => {
-//     // Giả sử đây là URL của API của bạn
-//     const apiURL = 'https://api.example.com/notifications';
-
-//     // Hàm lấy dữ liệu từ API
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch(apiURL);
-//         const data = await response.json();
-//         setNotifications(data); // Cập nhật state với dữ liệu từ API
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   return (
-//     <View style={styles.container}>
-//       <ScrollView contentContainerStyle={styles.scrollView}>
-//         {notifications.map((notification, index) => (
-//           <View style={styles.notificationItem} key={index}>
-//             <Text style={styles.notificationTitle} numberOfLines={1}>
-//               {notification.title}
-//             </Text>
-//             <Text style={styles.notificationTime}>{notification.time}</Text>
-//           </View>
-//         ))}
-//       </ScrollView>
-//     </View>
-//   );
-// }

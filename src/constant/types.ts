@@ -46,6 +46,9 @@ type Seller = {
   user: any | null;
   products: Product[];
   id: number;
+  provinceId?: number;
+  districtId?: number;
+  wardId?: number;
 };
 
 type Product = {
@@ -54,7 +57,7 @@ type Product = {
   coverImageId: string;
   imagesId: string;
   videoId: string;
-  imageUrl: String;
+  imageUrls: String[];
   industryId: number;
   industry: Industry;
   productSellDetails: any[];
@@ -62,9 +65,10 @@ type Product = {
   sellerId: number;
   seller: Seller;
   minPrice: number;
-  sellerAddress: String;
+  sellerAddress?: String;
   id: number;
 };
+
 // cart
 type CartProductTypes = {
   sellerId: number;
@@ -102,17 +106,25 @@ type CreateOrderDetailCommand = {
 };
 
 type CreateOrderRequest = {
-  userId: number;
-  orderCode: string;
-  totalCost: number;
-  shipCost: number;
-  statusId: number;
-  shipAddressId: number;
-  voucherId: number;
-  paymentId: number;
-  createOrderDetailCommands: CreateOrderDetailCommand[];
+  userId: number | null;
+  totalCost: number | null | undefined;
+  shipCost: number | null;
+  shipAddressId: number | null;
+  createOrderDetailCommands: CreateOrderDetailCommand[] | null;
 };
 // Address
+type ShipAddress = {
+  name: string | null;
+  address: string | null;
+  phoneNumber: string | null;
+  isDefault: boolean;
+  provinceId: number | null;
+  districtId: number | null;
+  wardId: number | null;
+  id?: number | null;
+  userId?: number | null;
+  user?: null;
+};
 type Province = {
   ProvinceID: number;
   ProvinceName: string;
@@ -133,6 +145,21 @@ type District = {
   ProvinceID: number;
   DistrictName: string;
 };
+type Ward = {
+  WardCode: number;
+  DistrictID: number;
+  WardName: string;
+};
+type ServiceShip = {
+  service_id: number;
+  short_name: string;
+  service_type_id: number;
+};
+type FeeShip = {
+  total: number;
+  service_fee: number;
+  insurance_fee: number;
+};
 type ProductSellDetail = {
   productId: string;
   detailId: string;
@@ -146,7 +173,6 @@ type ProductSellCommand = {
   path: string;
   parentNodeId: string;
 };
-
 type CreateProduct = {
   productName: string;
   productDescription: string;
@@ -159,7 +185,80 @@ type CreateProduct = {
   productSellCommand: ProductSellCommand[];
 };
 
+type OrderAllByUserId = {
+  orderCode: string;
+  orderDate: string;
+  payDate: string;
+  shipDate: string;
+  totalCost: number;
+  shipCost: number;
+  cancelDate: any;
+  cancelReason: string;
+  statusId: number;
+  status: Status;
+  userId: number;
+  user: any;
+  shipAddressId: number;
+  shipAddress: any;
+  voucherId: any;
+  voucher: any;
+  paymentId: number;
+  payment: any;
+  orderDetails: OrderDetail[];
+  id: number;
+};
+
+type Status = {
+  name?: string;
+  description: string;
+  orders?: any[];
+  id: number;
+};
+
+type OrderDetail = {
+  quantity: number;
+  productSellDetailId: number;
+  productSellDetail: ProductSellDetailOrder;
+  id: number;
+};
+type ProductSellDetailOrder = {
+  name: string;
+  price: number;
+  inventory: any;
+  inventoryNumber: number;
+  path: string;
+  parentNodeId: any;
+  parentNode: any;
+  localId: number;
+  productId: number;
+  product: Product;
+  feedBacks: any;
+  carts: any;
+  id: number;
+};
+
+type OrderList = {
+  orderCode: string;
+  totalCost: number;
+  shipCost: number;
+  statusId: number;
+  shipAddressId: number;
+  voucherId: number;
+  paymentId: number;
+  createOrderDetailCommands: [
+    {
+      quantity: number;
+      productSellDetailId: number;
+    },
+    {
+      quantity: number;
+      productSellDetailId: number;
+    },
+  ];
+};
+
 export type {
+  CreateOrderDetailCommand,
   ProductTypes,
   ProductProps,
   CartProductTypes,
@@ -170,7 +269,15 @@ export type {
   CreateProduct,
   UpdateCartDetail,
   ProductAddToCart,
+  ShipAddress,
   Province,
   District,
   CreateOrderRequest,
+  Ward,
+  Seller,
+  ServiceShip,
+  OrderList,
+  FeeShip,
+  OrderAllByUserId,
+  Status,
 };

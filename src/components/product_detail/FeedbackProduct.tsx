@@ -3,6 +3,7 @@ import React from 'react';
 import {SIZES} from '../../constant/theme';
 import ImageFeedback from './ImageFeedback';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import RatingStar from '../../reusables/ratting/RattingStart';
 
 interface Feedback {
   userAvt: string;
@@ -10,11 +11,16 @@ interface Feedback {
   rate: number;
   images: string[];
   description: string;
-  postTime: Date;
+  //postTime: Date;
 }
 
-// const FeedbackProduct: React.FC<Feedback> = ({}: Feedback) => {
-const FeedbackProduct = () => {
+const FeedbackProduct: React.FC<Feedback> = ({
+  rate,
+  userAvt,
+  userName,
+  images,
+  description,
+}: Feedback) => {
   return (
     <View style={styles.container}>
       <Image
@@ -23,7 +29,7 @@ const FeedbackProduct = () => {
       />
       <View style={{marginLeft: 5}}>
         <Text style={{fontSize: 14, fontWeight: '700'}}>Toi ne</Text>
-        <Ionicons name="star" color="#EAC452" size={12} />
+        <RatingStar star={rate} size={12} />
         <View>
           <Text style={{fontSize: 12, marginVertical: 3}}>
             Toi thay san pham qua tuyet voi hay ban them nhieu loai nua nhe

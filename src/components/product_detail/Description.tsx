@@ -26,7 +26,7 @@ const Description: React.FC<Item> = ({description}: Item) => {
         <View style={{marginRight: 10, marginVertical: 3}}>
           <TouchableOpacity
             style={{
-              height: '80%',
+              height: SIZES.height / 34,
               backgroundColor: '#E9BB45',
               justifyContent: 'center',
               marginRight: 10,
@@ -40,8 +40,7 @@ const Description: React.FC<Item> = ({description}: Item) => {
           </TouchableOpacity>
         </View>
       </View>
-
-      <Text>{description}</Text>
+      <Text style={{height: 'auto'}}>{description}</Text>
     </View>
   );
 };

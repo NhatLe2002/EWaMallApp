@@ -1,8 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller';
 import { color } from 'react-native-elements/dist/helpers';
 import { COLORS } from '../../constant/theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { InterfaceProductState } from '../../constant/interface/productInterface';
+import { getProductsBySellerId, setProductListRenderRedux } from '../../redux/slice/seller/productSellerSlice';
+import { Product } from '../../constant/types/productType';
 
 const productStatuss = [
     { id: 1, name: 'Còn hàng', quantity: 7 },
@@ -28,12 +32,35 @@ const renderRecentItems = (selectedId: any) => {
     }
 };
 
+
 const HeaderProductSeller = () => {
+    const dispatch = useDispatch<any>();
     const [selectedId, setSelectedId] = useState(1);
     const [selectedRecentItemId, setSelectedRecentItemId] = useState(1);
+    const { productList, productListRenderRedux } = useSelector(
+        (state: InterfaceProductState) => state.productSellerReducer,
+    );
+    const [productListFilter, setProductListFilter] = useState<Product[]>();
 
+    useEffect(() => {
+        const activeProducts = filterProductsByStatus(selectedId);
+        setProductListFilter(activeProducts);
+        // console.log(JSON.stringify(productListFilter, null, 2));
+        console.log(productListFilter?.length);
+        dispatch(setProductListRenderRedux(activeProducts));
+        // console.log(JSON.stringify(productListRenderRedux, null, 2));
+    }, [selectedId, productList])
+
+    useEffect(() => {
+        dispatch(getProductsBySellerId(2));
+    }, []);
+
+    //filter product
+    const filterProductsByStatus = (status: number) => {
+        return productList.filter((product: Product) => product.productStatus === status);
+    };
     return (
-        <View  style={styles.container}>
+        <View style={styles.container}>
             <View style={{ marginTop: 15 }}>
                 <HeaderTitleSeller text={'Sản phẩm của tôi'} />
             </View>
@@ -59,7 +86,7 @@ const HeaderProductSeller = () => {
                                 styles.text,
                                 selectedId === product.id && styles.selectedText
                             ]}>
-                                {product.quantity}
+                                {filterProductsByStatus(product.id)?.length}
                             </Text>
                             {selectedId === product.id && <View style={styles.underline} />}
                         </TouchableOpacity>
@@ -79,7 +106,7 @@ const HeaderProductSeller = () => {
                                 ]}
                                 onPress={() => setSelectedRecentItemId(item.id)} // Cập nhật ID của mục "Gần đây" được chọn
                             >
-                                <Text style={[styles.text, selectedRecentItemId === item.id && { color: COLORS.white } ]}>{item.name}</Text>
+                                <Text style={[styles.text, selectedRecentItemId === item.id && { color: COLORS.white }]}>{item.name}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>

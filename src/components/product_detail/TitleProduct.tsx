@@ -6,11 +6,11 @@ import {formatPriceToVND} from '../../config/FixPrice';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingHorizontal: '3%',
-    paddingVertical: '3%',
+    paddingHorizontal: '4%',
+    paddingVertical: 3,
     flexDirection: 'column',
     gap: 5,
-    marginBottom: '1%',
+    marginVertical: 3,
   },
 
   productPrice: {

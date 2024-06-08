@@ -7,7 +7,7 @@ import CheckBox from '../../reusables/checkbox/CheckBox';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {formatPriceToVND} from '../../config/FixPrice';
 import {useDispatch} from 'react-redux';
-import {decreaseQuantity, increaseQuantity, setProductBuy} from '../../redux/slice/cartSlice';
+import { decreaseQuantity, increaseQuantity, setProductBuy} from '../../redux/slice/cartSlice';
 
 
 interface Props {
@@ -22,6 +22,7 @@ const ProductInCart: React.FC<Props> = ({item}) => {
     [key: number]: boolean;
   }>({});
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]); 
+  //handle Checkbox
   const handleToggleSellerCheckbox = (sellerId: number) => {
     const sellerProducts = item.products.filter(
       product => product.sellerId === sellerId,
@@ -42,8 +43,6 @@ const ProductInCart: React.FC<Props> = ({item}) => {
     setProductCheckboxStates(newProductCheckboxStates);
     setSelectedProducts(newSelectedProducts);
   };
-  
-
   const handleToggleProductCheckbox = (productSellDetailId: number) => {
     setProductCheckboxStates(prevState => ({
       ...prevState,
@@ -68,12 +67,19 @@ const ProductInCart: React.FC<Props> = ({item}) => {
     dispatch(setProductBuy(selectedProducts));
   }, [productCheckboxStates]);
 
-  const decrease_Quantity = (cartId: number, quantity: number) => {
-    dispatch(decreaseQuantity({cartId, quantity}));
+  // const decrease_Quantity = (cartId: number, quantity: number) => {
+  //   dispatch(decreaseQuantity({cartId, quantity}));
+  // };
+  // const increase_Quantity = (cartId: number, quantity: number) => {
+  //   dispatch(increaseQuantity({cartId, quantity}));
+  // };
+  const handleIncreaseQuantity = (cartId: number, quantity: number) => {
+    dispatch(increaseQuantity({ cartId, quantity }));
   };
-  const increase_Quantity = (cartId: number, quantity: number) => {
-    dispatch(increaseQuantity({cartId, quantity}));
+  const handleDecreaseQuantity = (cartId: number, quantity: number) => {
+    dispatch(decreaseQuantity({ cartId, quantity }));
   };
+  
   return (
     <View style={styles.container}>
       <View style={styles.headerShop}>
@@ -116,7 +122,7 @@ const ProductInCart: React.FC<Props> = ({item}) => {
                 <TouchableOpacity
                   style={styles.buttonQuantity}
                   onPress={() => {
-                    decrease_Quantity(product.cartId, product.quantity);
+                    handleDecreaseQuantity(product.cartId, product.quantity);
                   }}>
                   <Text>-</Text>
                 </TouchableOpacity>
@@ -124,7 +130,7 @@ const ProductInCart: React.FC<Props> = ({item}) => {
                 <TouchableOpacity
                   style={styles.buttonQuantity}
                   onPress={() =>
-                    increase_Quantity(product.cartId, product.quantity)
+                    handleIncreaseQuantity(product.cartId, product.quantity)
                   }>
                   <Text>+</Text>
                 </TouchableOpacity>

@@ -34,15 +34,7 @@ const CategoryGroup: React.FC<Category> = ({name, miniCates}: Category) => {
           flexWrap: 'wrap',
         }}>
         {miniCates.map((item, i) => (
-          <View style={styles.cate}>
-            <CategoryCard
-              key={i + 100}
-              fontsize={16}
-              heightI={SIZES.height / 14}
-              name={item.name}
-              imgUrl="https://suckhoedoisong.qltns.mediacdn.vn/Images/quangcao/2018/01/25/suckhoedoisong.vn-_Tin_thng-_Thng_o.jpg"
-            />
-          </View>
+          <View></View>
         ))}
       </ScrollView>
     </View>
