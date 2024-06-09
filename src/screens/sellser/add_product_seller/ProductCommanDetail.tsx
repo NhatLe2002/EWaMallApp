@@ -98,6 +98,8 @@ const ProductCommanDetail = () => {
     const handleInputChange = (outnerIndex: number, innerIndex: number, field: ProductSellCommandField, value: string) => {
         const updatedList = [...productCommanList];
         const combinedIndex = innerIndex + outnerIndex + classification.length + classification[0].value.length + (outnerIndex === 1 ? classification[1].value.length -1  : 0);
+        console.log(combinedIndex);
+        console.log(value);
         // console.log(combinedIndex);
         // console.log(innerIndex, outnerIndex)
         // console.log(field);

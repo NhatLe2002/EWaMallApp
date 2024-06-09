@@ -136,10 +136,12 @@ const AddProductSeller = () => {
       if (seller?.id) {
         // console.log("Co")
         dispatch(setProductCreateField({ sellerId: seller?.seller?.id }));
+        // console.log(JSON.stringify(productCreate, null, 2));
       }
       // console.log("upcreat")
       dispatch(createProduct(data));
       uploadImagesToFirebase(imageProductList, productCreate.imagesId)
+      // console.log(productCreate.imagesId)
       setModalVisible(true);
     }
     // console.log("sellerid",seller?.id);
