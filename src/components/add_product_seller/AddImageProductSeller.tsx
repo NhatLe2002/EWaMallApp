@@ -40,7 +40,8 @@ const AddImageProductSeller = () => {
                     const uri = response.assets[0].uri;
                     if (uri) {
                         const guiId = uuid.v4();
-                        setImageUris([...imageUris, uri]);
+                        // setImageUris([...imageUris, uri]);
+                        dispatch(setImageUrisArray([...imageProductList, uri]));
                         dispatch(setProductCreateField({ imagesId: guiId.toString() }));
                         dispatch(setProductCreateField({ coverImageId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));
                         dispatch(setProductCreateField({ videoId: "CC1FE2B1-5136-4E56-96C4-4FDF97A31D06" }));

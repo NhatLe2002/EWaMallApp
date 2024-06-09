@@ -5,6 +5,7 @@ import { ProductCreate } from '../../constant/types/productType';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
 import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
+import { COLORS } from '../../constant/theme';
 
 
 
@@ -52,6 +53,9 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     labelText: {
+        color: COLORS.black,
+        fontSize: 18
+
     },
     inputContainer: {
         borderWidth: 1,
@@ -60,6 +64,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
     },
     input: {
+        color: COLORS.black,
         height: 40,
     },
     error: {

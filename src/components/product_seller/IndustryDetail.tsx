@@ -15,6 +15,7 @@ import { setProductCreateField } from '../../redux/slice/form/formCreateProductB
 import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
 import { InterfaceIndustryState } from '../../constant/interface/industryInterface';
 import { IndustryDetailType } from '../../constant/types/industryDetailtype';
+import { COLORS } from '../../constant/theme';
 
 const IndustryDetail = () => {
     const navigation = useNavigation();
@@ -30,7 +31,7 @@ const IndustryDetail = () => {
     const [productDetail, setProductDetail] = useState<ProductSellDetail[]>([]);
     const [detailsList, setDetailsList] = useState<Detail[]>([]);
 
-    
+
 
     useEffect(() => {
         if (industryById) {
@@ -64,7 +65,7 @@ const IndustryDetail = () => {
     const renderDetailItem = ({ item }: { item: Detail }) => (
         <View style={styles.industryContainer}>
             <View style={styles.industryItem}>
-                <SimpleLineIcons name='note' size={20} />
+                <SimpleLineIcons name='note' size={20} color={COLORS.gray_1} />
                 <Text style={styles.text}>{item.detailName}</Text>
             </View>
             <TextInput
@@ -79,14 +80,14 @@ const IndustryDetail = () => {
         <View>
             <TouchableOpacity
                 onPress={() => navigation.navigate("Industry" as never)}
-                style={styles.industryContainer}>
+                style={styles.industryTitleContainer}>
                 <View style={styles.industryItem}>
-                    <AntDesign name='menuunfold' size={20} />
-                    <Text style={styles.text}>Ngành hàng</Text>
+                    <AntDesign name='menuunfold' size={20} color={COLORS.gray_1} />
+                    <Text style={styles.textTitle}>Ngành hàng</Text>
                 </View>
                 {productCreate.industryId ? (
-                    <Text >{productCreate.industryId}</Text>
-                ) : <MaterialIcons name='navigate-next' size={20} />}
+                    <Text style = {{color: COLORS.gray_1, marginRight: 5}}>{productCreate.industryId}</Text>
+                ) : <MaterialIcons name='navigate-next' size={20} color={COLORS.gray_1} />}
             </TouchableOpacity>
             {productCreate.industryId !== '' ? (
                 <FlatList
@@ -103,25 +104,41 @@ const IndustryDetail = () => {
 export default IndustryDetail
 
 const styles = StyleSheet.create({
-    industryContainer: {
+    industryTitleContainer: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#8f8f8fb5'
+    },
+    industryContainer: {
+        flexDirection: 'column',
         justifyContent: 'space-between',
         paddingVertical: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#8f8f8fb5'
     },
     industryItem: {
+        marginTop: 10,
+        marginBottom: 10,
         flexDirection: 'row',
     },
     text: {
+        color: COLORS.black,
         marginLeft: 10
     },
+    textTitle: {
+        color: COLORS.yellow,
+        marginLeft: 10,
+        fontSize: 15,
+    },
     textInput: {
+        color: COLORS.black,
         textAlign: 'right',
         borderWidth: 1,
         borderColor: '#8f8f8fb5',
         padding: 5,
         borderRadius: 5,
-        width: '50%',
     }
 })
