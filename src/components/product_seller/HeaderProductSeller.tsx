@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { InterfaceProductState } from '../../constant/interface/productInterface';
 import { getProductsBySellerId, setProductListRenderRedux } from '../../redux/slice/seller/productSellerSlice';
 import { Product } from '../../constant/types/productType';
+import { ISellerState } from '../../constant/interface/sellerInterface';
 
 const productStatuss = [
     { id: 1, name: 'Còn hàng', quantity: 7 },
@@ -40,7 +41,10 @@ const HeaderProductSeller = () => {
     const { productList, productListRenderRedux } = useSelector(
         (state: InterfaceProductState) => state.productSellerReducer,
     );
-    const [productListFilter, setProductListFilter] = useState<Product[]>();
+    const { seller } = useSelector(
+        (state: ISellerState) => state.sellerReducer,
+    );
+    const [productListFilter, setProductListFilter] = useState<Product[]>([]);
 
     useEffect(() => {
         const activeProducts = filterProductsByStatus(selectedId);
@@ -52,12 +56,12 @@ const HeaderProductSeller = () => {
     }, [selectedId, productList])
 
     useEffect(() => {
-        dispatch(getProductsBySellerId(2));
+        dispatch(getProductsBySellerId(seller?.seller?.id));
     }, []);
 
     //filter product
     const filterProductsByStatus = (status: number) => {
-        return productList.filter((product: Product) => product.productStatus === status);
+        return productList?.filter((product: Product) => product.productStatus === status);
     };
     return (
         <View style={styles.container}>

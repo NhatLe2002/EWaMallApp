@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   oderStatus:{
-    marginTop: 15,
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
