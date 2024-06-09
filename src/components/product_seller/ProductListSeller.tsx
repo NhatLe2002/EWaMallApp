@@ -27,8 +27,9 @@ const ProductListSeller = () => {
         (state: ISellerState) => state.sellerReducer,
     );
     useEffect(() => {
-        console.log(seller?.seller?.id);
+        // console.log(seller?.seller?.id);
         dispatch(getProductsBySellerId(seller?.seller?.id));
+        // console.log(productList);
     }, [seller]);
 
 
@@ -37,7 +38,7 @@ const ProductListSeller = () => {
             <TouchableOpacity
                 style={styles.productItem}
                 onPress={() => {
-                    navigation.navigate('ProductDetail' as never);
+                    // navigation.navigate('ProductDetail' as never);
                 }}>
                 <Image source={{ uri: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' }} style={styles.productImage} />
                 <View style={styles.detailProductList}>

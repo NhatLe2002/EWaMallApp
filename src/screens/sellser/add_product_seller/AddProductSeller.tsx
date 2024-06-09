@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import IndustryDetail from '../../../components/product_seller/IndustryDetail';
 import {
   createProduct,
+  resetProductCreate,
   setProductCreateError,
   setProductCreateField,
 } from '../../../redux/slice/form/formCreateProductBySellerSlice';
@@ -140,6 +141,7 @@ const AddProductSeller = () => {
       dispatch(createProduct(data));
       uploadImagesToFirebase(imageProductList, productCreate.imagesId)
       dispatch(getProductsBySellerId(seller?.seller?.id));
+      dispatch(resetProductCreate());
       // console.log(productCreate.imagesId)
       setModalVisible(true);
     }

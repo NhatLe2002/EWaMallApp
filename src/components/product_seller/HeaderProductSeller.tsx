@@ -48,19 +48,24 @@ const HeaderProductSeller = () => {
 
     useEffect(() => {
         const activeProducts = filterProductsByStatus(selectedId);
+        console.log(selectedId);
+        console.log(activeProducts);
+        // console.log(JSON.stringify(productList, null, 2));
         setProductListFilter(activeProducts);
-        // console.log(JSON.stringify(productListFilter, null, 2));
-        console.log(productListFilter?.length);
+        // console.log(activeProducts);
+        // console.log("check header",JSON.stringify(productList, null, 2));
+        // console.log(productListFilter?.length);
         dispatch(setProductListRenderRedux(activeProducts));
         // console.log(JSON.stringify(productListRenderRedux, null, 2));
     }, [selectedId, productList])
-
     useEffect(() => {
         dispatch(getProductsBySellerId(seller?.seller?.id));
     }, []);
 
     //filter product
     const filterProductsByStatus = (status: number) => {
+        // console.log("check in filter", JSON.stringify(productList, null, 2));
+        // console.log(productList?.filter((product: Product) => product.productStatus === status))
         return productList?.filter((product: Product) => product.productStatus === status);
     };
     return (

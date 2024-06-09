@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
 
     },
     input: {
+        color: COLORS.black,
         borderColor: 'red',
         borderWidth: 0.5,
         height: 40

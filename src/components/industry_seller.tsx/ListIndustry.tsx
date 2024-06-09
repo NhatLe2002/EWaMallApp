@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { InterfaceProductState } from '../../constant/interface/productInterface';
 import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
 import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
+import { COLORS } from '../../constant/theme';
 
 
 
@@ -119,7 +120,7 @@ const ListIndustry = () => {
                         key={industry.id}
                         onPress={() => { handleSelectIndustry(industry); }}
                     >
-                        <Text>
+                        <Text style = {{color : COLORS.black}}>
                             {industry.industryName}
                         </Text>
                         <MaterialIcons name='navigate-next' size={20} />
