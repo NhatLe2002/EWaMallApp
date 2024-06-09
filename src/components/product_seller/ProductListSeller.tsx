@@ -37,7 +37,7 @@ const ProductListSeller = () => {
             <TouchableOpacity
                 style={styles.productItem}
                 onPress={() => {
-                    // navigation.navigate('ProductDetail', { productId: item.id });
+                    navigation.navigate('ProductDetail' as never);
                 }}>
                 <Image source={{ uri: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' }} style={styles.productImage} />
                 <View style={styles.detailProductList}>

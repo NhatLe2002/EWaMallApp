@@ -109,6 +109,9 @@ const AddProductSeller = () => {
   const { seller } = useSelector(
     (state: ISellerState) => state.sellerReducer,
   );
+  useEffect(() => {
+    dispatch(setProductCreateField({ sellerId: seller?.seller?.id }));
+  }, [seller]);
   // console.log("sdsd", imageProductList)
   const handleSubmit = async (data: ProductCreate) => {
     // console.log("ok")
@@ -132,12 +135,6 @@ const AddProductSeller = () => {
       );
     }
     if (productCreateError && areAllFieldsEmpty(productCreateError)) {
-      // console.log(data);
-      if (seller?.id) {
-        // console.log("Co")
-        dispatch(setProductCreateField({ sellerId: seller?.seller?.id }));
-        // console.log(JSON.stringify(productCreate, null, 2));
-      }
       // console.log("upcreat")
       dispatch(createProduct(data));
       uploadImagesToFirebase(imageProductList, productCreate.imagesId)
