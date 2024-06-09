@@ -1,33 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import DiscountItem from './DiscountItem';
-import { useSelector } from 'react-redux';
-import { IVoucher, IVoucherState } from '../../constant/interface/IVoucherState';
+import { IVoucher } from '../../constant/interface/IVoucherState';
 
-interface Discount {
-  id: number;
-  title: string;
-  conditions: string;
-  code: string;
+interface DiscountListProps {
+  vouchers: IVoucher[];
 }
 
-
-const DiscountList = () => {
-  // const [voucher, setVoucher] = useState<IVoucher>();
-  const { voucherList } = useSelector(
-    (state: IVoucherState) => state.voucherReducer,
-  );
-
+const DiscountList: React.FC<DiscountListProps> = ({ vouchers }) => {
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
-        data={voucherList}
-        keyExtractor={(item) => item?.voucherCode}
+        data={vouchers}
+        keyExtractor={(item) => item.voucherCode}
         renderItem={({ item }) => (
           <DiscountItem
-            title={item?.name}
-            conditions={item?.maxDiscount}
-            code={item?.voucherCode}
+            title={item.name}
+            conditions={`Đơn tối thiểu đ${item.minOrder}`}
+            description={item.description}
           />
         )}
         contentContainerStyle={styles.listContainer}
@@ -37,8 +27,12 @@ const DiscountList = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
   listContainer: {
-    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
 });
 

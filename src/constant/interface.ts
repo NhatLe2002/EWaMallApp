@@ -5,6 +5,7 @@ import {
   District,
   FeeShip,
   Industry,
+  OrderAllByUserId,
   OrderList,
   Product,
   ProductAddToCart,
@@ -15,6 +16,7 @@ import {
   UpdateCartDetail,
   Ward,
 } from './types';
+import { OrderGetBySellerId } from './types/orderType';
 
 interface InterfaceAccountState {
   accountReducer?: any;
@@ -30,8 +32,7 @@ interface InterfaceAccountState {
   success: boolean;
 }
 
-
-export interface InterfaceNotification{
+export interface InterfaceNotification {
   notificationReducer?: any;
   newNotificationReceived: boolean | undefined;
 }
@@ -39,7 +40,16 @@ export interface InterfaceNotification{
 interface InterfaceOrderState {
   orderReducer?: any;
   orderList: OrderList | null;
+  orderListBySellerIdRenderRedux: OrderGetBySellerId[] | null;
+  orderListBySellerId: OrderGetBySellerId [] | null;
   info_order: CreateOrderRequest | null;
+  orderAllByUser: OrderAllByUserId[] | null;
+  pendingOrders: OrderAllByUserId[] | null;
+  waitingOrders: OrderAllByUserId[]| null;
+  deliveryOrders: OrderAllByUserId[] | null;
+  successOrders: OrderAllByUserId[] | null;
+  cancelOrders: OrderAllByUserId[] | null;
+  refundOrders: OrderAllByUserId[] | null;
 }
 //Phần này lỡ tạo mà lười xóa ko nhớ xóa chỗ nào nên để tạm đây nha
 

@@ -7,6 +7,7 @@ interface IFormProductCreateState {
   productCreate: ProductCreate | null | undefined;
   productCreateError: ProductCreateError;
   error: string | null;
+  imageProductList:String[] | null
   loading: boolean
 }
 

@@ -18,6 +18,7 @@ const initialState: IFormProductCreateState = {
     productSellDetails: [],
     productSellCommand: []
   },
+  imageProductList:[],
   productCreateError: {},
   error: null,
   loading: false,
@@ -29,6 +30,7 @@ export const createProduct = createAsyncThunk(
       const response = await productApi.createProductBySeller(productData);
       return response.data;
     } catch (error) {
+      console.log("object")
       console.log(error);
     }
   }
@@ -38,6 +40,10 @@ const formCreateProductSlice = createSlice({
   name: 'formCreateProduct',
   initialState,
   reducers: {
+    setImageUrisArray: (state, action: PayloadAction<string[]>) => {
+      console.log("img", action.payload)
+      state.imageProductList = action.payload;
+    },
     setProductCreateField: (state, action: PayloadAction<Partial<ProductCreate>>) => {
       state.productCreate = { ...state.productCreate!, ...action.payload };
     },
@@ -74,5 +80,5 @@ const formCreateProductSlice = createSlice({
 
   }
 })
-export const { setProductCreateField, setError, setProductCreateError, setClassificationRedux } = formCreateProductSlice.actions;
+export const {setImageUrisArray, setProductCreateField, setError, setProductCreateError, setClassificationRedux } = formCreateProductSlice.actions;
 export default formCreateProductSlice.reducer

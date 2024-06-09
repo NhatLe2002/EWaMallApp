@@ -5,7 +5,7 @@ import productSellerReducer from './slice/seller/productSellerSlice';
 import voucherReducer from './slice/customer/voucherSlice';
 import notificationReducer from './slice/notificationSlice'
 import formCreateProductReducer from './slice/form/formCreateProductBySellerSlice';
-import productReducer from './slice/productSlice';
+import productReducer from './slice/productSlices';
 import industryReducer from './slice/industrySlice';
 import cartReducer from './slice/cartSlice';
 import addressReducer from './slice/addressSlice';

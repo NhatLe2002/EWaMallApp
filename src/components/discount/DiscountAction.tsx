@@ -16,12 +16,12 @@ const DiscountAction: React.FC = () => {
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-          <Feather name="credit-card" size={16} color={COLORS.primary} />
+          <Feather name="credit-card" size={14} color={COLORS.primary} />
           <Text style={styles.buttonText}>Nhập mã voucher</Text>
         </TouchableOpacity>
         <View style={styles.divider} />
         <TouchableOpacity style={styles.button}>
-          <Feather name="percent" size={16} color={COLORS.primary} />
+          <Feather name="percent" size={14} color={COLORS.primary} />
           <Text style={styles.buttonText}>Tìm thêm voucher</Text>
         </TouchableOpacity>
       </View>
@@ -58,8 +58,8 @@ const DiscountAction: React.FC = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   container: {
     flexDirection: 'row',
@@ -73,23 +73,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: FONTS.roboto_regular,
     color: COLORS.black,
     marginLeft: 5,
   },
   divider: {
-    width: 0.5,
+    width: 1,
     height: '60%',
     backgroundColor: COLORS.gray,
   },

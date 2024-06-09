@@ -2,9 +2,6 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IVoucher, IVoucherState } from "../../../constant/interface/IVoucherState";
 import voucherApi from "../../../api/voucherApi";
 
-
-
-
 export const fetchAllVoucher = createAsyncThunk(
     'vouchers/fetchAll',
     async () => {
@@ -17,22 +14,16 @@ export const fetchAllVoucher = createAsyncThunk(
     },
 );
 
-
-
-
 const initialState: IVoucherState = {
     voucherList: [],
     error: null,
     loading: false,
 }
 
-
 const voucherSlice = createSlice({
     name: 'voucher',
     initialState,
-    reducers: {
-        
-    },
+    reducers: {},
     extraReducers: builder => {
         builder.addCase(
             fetchAllVoucher.fulfilled,
@@ -48,4 +39,4 @@ const voucherSlice = createSlice({
     }
 })
 
-export default voucherSlice.reducer
+export default voucherSlice.reducer;

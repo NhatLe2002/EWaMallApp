@@ -2,8 +2,8 @@ import { getDownloadURL, listAll, ref } from 'firebase/storage';
 import { storage } from '../config/FirbaseConfig';
 import { Product } from '../constant/types';
 
-export const listFilesInProductFolder = async (productId: number): Promise<string[]> => {
-    const productFolderRef = ref(storage, `products/${productId}/`);
+export const listFilesInProductFolder = async (imagesId: string): Promise<string[]> => {
+    const productFolderRef = ref(storage, `products/${imagesId}/`);
   
     try {
       const listResult = await listAll(productFolderRef);
@@ -21,12 +21,10 @@ export const listFilesInProductFolder = async (productId: number): Promise<strin
   export const updateProductListWithImages = async (productList: Product[]) => {
     const updatedProductList = await Promise.all(productList.map(async (product) => {
       try {
-        const imageUrls = await listFilesInProductFolder(product.id);
-        // Lấy URL đầu tiên trong danh sách URL hình ảnh
-        const imageUrl = imageUrls.length > 0 ? imageUrls[0] : 'defaultImageUrl';
-        return { ...product, imageUrl };
+        const imageUrls = await listFilesInProductFolder(product.imagesId);
+        return { ...product, imageUrls };
       } catch (error) {
-        console.error(`Error updating product with ID ${product.id}:`, error);
+        console.error(`Error updating product with ID ${product.imagesId}:`, error);
         // Trong trường hợp lỗi, trả về sản phẩm ban đầu không thay đổi
         return product;
       }
@@ -35,4 +33,14 @@ export const listFilesInProductFolder = async (productId: number): Promise<strin
     return updatedProductList;
   };
   
-listFilesInProductFolder(5);
+  export const updateProductDetailWithImages = async (product: Product) => {
+    try {
+      const imageUrls = await listFilesInProductFolder(product.imagesId);
+
+      return { ...product, imageUrls };
+    } catch (error) {
+      console.error(`Error updating product with ID ${product.imagesId}:`, error);
+      // Trong trường hợp lỗi, trả về sản phẩm ban đầu không thay đổi
+      return product;
+    }
+  };
