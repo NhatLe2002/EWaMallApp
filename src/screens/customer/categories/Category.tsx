@@ -1,4 +1,5 @@
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,13 +20,22 @@ import {Industry} from '../../../constant/types/industryType';
 import {yellow100} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 
+interface Category {
+  name: string;
+  id: number;
+  localId: number;
+  child: MiniCategory[];
+}
+interface MiniCategory {
+  id: number;
+  name: string;
+}
 const Category = () => {
   var dispatch = useDispatch<any>();
   var {industryListAll} = useSelector(
     (state: InterfaceIndustryState) => state.industrySellerReducer,
   );
-  // const [industryLv1, setIndustry1] = useState<Industry[]>([]);
-  // const [industryLv2, setIndustry2] = useState<Industry[]>([]);
+  const [industryLv2, setIndustryLv2] = useState<Category[]>([]);
   useEffect(() => {
     dispatch(fetchAllIndustry());
   }, [dispatch]);
@@ -55,36 +65,46 @@ const Category = () => {
   }
   const navigation = useNavigation();
   useEffect(() => {
-    console.log(ilv1);
+    industry2 = [];
+    var count = 0;
     if (Array.isArray(industryListAll)) {
       industryListAll.forEach((element: any) => {
         if (element.level == 2 && element.parentNodeId == ilv1) {
+          count++;
           var industry3: any[] = [];
-          console.log('first');
           industryListAll.forEach((element1: any) => {
-            var split = element1.path.split('/');
-            if (split[2] == element.localId) {
-              industry3.push({
-                id: element1.id,
-                industryName: element1.industryName,
-              });
+            if (element1.level == 3 && element1.parentNodeId == ilv1) {
+              var split = element1.path.split('/');
+              if (split[2] == element.localId) {
+                industry3.push({
+                  id: element1.id,
+                  name: element1.industryName,
+                });
+              }
             }
           });
           industry2.push({
             id: element.id,
-            industryName: element.industryName,
+            name: element.industryName,
+            localId: element.localId,
             child: industry3,
           });
         }
       });
     }
+    setIndustryLv2(industry2);
   }, [ilv1]);
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: 'row'}}>
+      <View
+        style={{
+          width: SIZES.width,
+          backgroundColor: COLORS.yellowMain,
+          padding: 5,
+        }}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.goBack()}>
+          onPress={() => navigation.navigate('Home' as never)}>
           <FontAwesome6Icon
             name="arrow-left-long"
             size={20}
@@ -92,31 +112,40 @@ const Category = () => {
           />
         </TouchableOpacity>
       </View>
-      {/* <ScrollView style={styles.content}>
-        {industry1.map((item, i) => (
-          <CategoryCard
-            key={item.id}
-            id={item.id}
-            name={item.industryName}
-            child={item.child}
-          />
-        ))}
-      </ScrollView> */}
-      <View style={{flexDirection: 'row'}}>
-        <View style={{width: SIZES.width / 5, borderWidth: 1}}>
-          <ScrollView>
+      <View
+        style={{
+          flexDirection: 'row',
+          height: SIZES.height * 0.9,
+          marginTop: 4,
+        }}>
+        <View style={{width: (SIZES.width * 2) / 7}}>
+          <ScrollView style={{backgroundColor: 'white'}}>
             {industry1.map((item, i) => (
               <TouchableOpacity
                 onPress={() => {
                   setIlv1(item.id);
                 }}
-                style={{height: SIZES.height / 7}}>
+                style={{
+                  height: SIZES.height / 6,
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  margin: 2,
+                  borderBottomColor: '#dbdbdb8b',
+                  borderBottomWidth: 1,
+                }}>
+                <Image
+                  style={{height: SIZES.height / 10}}
+                  source={{
+                    uri: 'https://picsum.photos/200/300?random=' + (15 + i),
+                  }}
+                />
                 <Text
                   style={{
                     textAlign: 'center',
                     fontSize: 17,
                     textAlignVertical: 'center',
                     fontWeight: 'bold',
+                    padding: 6,
                   }}>
                   {item.industryName}
                 </Text>
@@ -124,15 +153,63 @@ const Category = () => {
             ))}
           </ScrollView>
         </View>
-        <View style={{width: (SIZES.width * 4) / 5, borderWidth: 1}}>
+        <View style={{width: (SIZES.width * 5) / 7}}>
           <ScrollView>
-            {industry2.map((item, i) => (
-              <View>
-                <Text>{item.industryName}</Text>
-                <View>
-                  {/* {
-                    industry2.child.map()
-                  } */}
+            {industryLv2.map((item, i) => (
+              <View
+                key={item.id}
+                style={{
+                  backgroundColor: 'white',
+                  marginBottom: 4,
+                  marginLeft: 5,
+                }}>
+                <Image
+                  source={{
+                    uri: 'https://picsum.photos/200/300?random=' + (3 + i),
+                  }}
+                  style={{height: SIZES.height / 7}}
+                />
+                <Text
+                  style={{
+                    width: '100%',
+                    fontSize: 17,
+                    paddingLeft: 5,
+                    fontWeight: '500',
+                    height: SIZES.height / 20,
+                    textAlignVertical: 'center',
+                  }}>
+                  {item.name}
+                </Text>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    margin: 5,
+                    justifyContent: 'center',
+                  }}>
+                  {item.child &&
+                    item.child.map(child => (
+                      <View
+                        style={{
+                          marginHorizontal: 5,
+                          marginBottom: 5,
+                          backgroundColor: '#f7f8b9cc',
+                          borderRadius: 15,
+                        }}>
+                        <Text
+                          style={{
+                            width: SIZES.width / 5,
+                            height: SIZES.height / 14,
+                            textAlign: 'center',
+                            textAlignVertical: 'center',
+                            padding: 5,
+                          }}
+                          key={child.id}>
+                          {child.name}
+                        </Text>
+                      </View>
+                    ))}
                 </View>
               </View>
             ))}
@@ -151,8 +228,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ececece4',
   },
   button: {
-    marginTop: 10,
-    marginLeft: 10,
     backgroundColor: '#5f5f5ca4',
     borderRadius: 50,
     padding: '2%',
