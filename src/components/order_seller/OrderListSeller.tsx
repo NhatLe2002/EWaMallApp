@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Button,
   FlatList,
   Image,
@@ -25,7 +26,6 @@ import {
 import {ISellerState} from '../../constant/interface/sellerInterface';
 
 const OrderListSeller = ({selectedId}: any) => {
-  // console.log(selectedId);
   const dispatch = useDispatch<any>();
   const {orderListBySellerId, orderListBySellerIdRenderRedux} = useSelector(
     (state: InterfaceOrderState) => state.orderReducer,
@@ -36,19 +36,35 @@ const OrderListSeller = ({selectedId}: any) => {
   const fetchProductImages = async (product: Product) => {
     const updatedList = await updateProductDetailWithImages(product);
     return updatedList.imageUrls;
-    // setUpdatedProduct(updatedList);
   };
+
   const handleAcceptOrder = async (orderId: number, statusCode: string) => {
     setIsLoading(true);
     await dispatch(
       updateOrderStatus({orderId: orderId, statusCode: statusCode}),
     );
     dispatch(getAllOrderBySellerId(seller?.seller?.id));
-    // console.log('after : ', orderListBySellerId);
     setIsLoading(false);
   };
 
-  //   console.log(JSON.stringify(orderListBySellerIdRenderRedux, null, 2));
+  const confirmAcceptOrder = (orderId: number, statusCode: string) => {
+    Alert.alert(
+      "Chào bạn",
+      "Đồng ý làm người yêu tớ nhé?",
+      [
+        
+        {
+          text: "Đồng ý",
+          onPress: () => handleAcceptOrder(orderId, statusCode)
+        },
+        {
+          text: "Hủy",
+          style: "cancel"
+        }
+      ]
+    );
+  };
+
   const renderItem = ({item}: {item: OrderGetBySellerId}) => (
     <View>
       <HeightSpacerSeller height={10} color="#b1b1b1" />
@@ -84,13 +100,13 @@ const OrderListSeller = ({selectedId}: any) => {
         <View style={styles.buttonContainner}>
           {selectedId === 1 && (
             <TouchableOpacity
-              onPress={() => handleAcceptOrder(item.id, 'WAITING')}>
+              onPress={() => confirmAcceptOrder(item.id, 'WAITING')}>
               <Text>Chấp nhận đơn hàng</Text>
             </TouchableOpacity>
           )}
           {selectedId === 2 && (
             <TouchableOpacity
-              onPress={() => handleAcceptOrder(item.id, 'DELIVERY')}>
+              onPress={() => confirmAcceptOrder(item.id, 'DELIVERY')}>
               <Text>Giao hàng</Text>
             </TouchableOpacity>
           )}
