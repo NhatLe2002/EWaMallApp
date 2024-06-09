@@ -41,6 +41,23 @@ export const getAllOrderBySellerId = createAsyncThunk(
     }
   },
 );
+export const updateOrderStatus = createAsyncThunk(
+  'order/updateOrderStatus',
+  async ({
+    orderId,
+    statusCode,
+  }: {
+    orderId: number;
+    statusCode: string;
+  }) => {
+    try {
+      const response = await orderApi.updateStatusOrder({orderId,statusCode});
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 export const createOrder = createAsyncThunk(
   'cart/createOrder',
   async (orderRequest: CreateOrderRequest) => {
@@ -154,13 +171,27 @@ const orderSlice = createSlice({
         state.refundOrders = action.payload.filter(
           order => order.status.id === 6,
         );
+        state.refundOrders = action.payload.filter(
+          order => order.status.id === 7,
+        );
+        state.refundOrders = action.payload.filter(
+          order => order.status.id === 8,
+        );
         return state;
       },
     );
     builder.addCase(getOrderByUserId.rejected, (state, action) => {
       return {...state, error: action.payload as string};
     });
-   
+    builder.addCase(
+      updateOrderStatus.fulfilled,
+      (state, action) => {
+        return { ...state,error: '' };
+      },
+    );
+    builder.addCase(updateOrderStatus.rejected, (state, action) => {
+      return { ...state, error: action.payload as string };
+    });
   },
 });
 export const {

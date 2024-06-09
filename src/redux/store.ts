@@ -11,6 +11,7 @@ import cartReducer from './slice/cartSlice';
 import addressReducer from './slice/addressSlice';
 import orderReducer from './slice/orderSlice';
 import sellerReducer from './slice/seller/accountSellerSlice';
+import orderStatusReducer from './slice/statusOrderSlice'
 
 const store = configureStore({
   reducer: {
@@ -26,10 +27,11 @@ const store = configureStore({
     voucherReducer,
     orderReducer,
     sellerReducer,
+    orderStatusReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 export default store;
-
+//orderStatusReducer
