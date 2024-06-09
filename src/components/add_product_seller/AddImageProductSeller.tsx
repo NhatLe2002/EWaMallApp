@@ -77,11 +77,12 @@ const AddImageProductSeller = () => {
     };
     const handleDeleteImage = (deletedImageUri: string) => {
         const indexToDelete = imageProductList.indexOf(deletedImageUri);
-        const updatedImageUris = [...imageUris];
+        const updatedImageUris = [...imageProductList];
         if (indexToDelete !== -1) {
             updatedImageUris.splice(indexToDelete, 1);
         }
-        setImageUris(updatedImageUris);
+        dispatch(setImageUrisArray(updatedImageUris));
+        // setImageUris(updatedImageUris);
         if (imageUris.length === 1) {
             dispatch(setProductCreateField({ imagesId: "" }));
             dispatch(setProductCreateField({ coverImageId: "" }));
@@ -91,12 +92,13 @@ const AddImageProductSeller = () => {
     };
     const handleSelectCoverImage = () => {
         if (selectedCoverImage) {
-            const selectedIndex = imageUris.findIndex(uri => uri === selectedCoverImage);
+            const selectedIndex = imageProductList.findIndex((uri: string) => uri === selectedCoverImage);
             if (selectedIndex !== -1) {
-                const updatedImageUris = [...imageUris];
+                const updatedImageUris = [...imageProductList];
                 updatedImageUris.splice(selectedIndex, 1);
                 updatedImageUris.unshift(selectedCoverImage);
-                setImageUris(updatedImageUris);
+                dispatch(setImageUrisArray(updatedImageUris));
+                // setImageUris(updatedImageUris);
             }
             setSelectedCoverImage(null);
             setModalVisibleCoverImage(false);

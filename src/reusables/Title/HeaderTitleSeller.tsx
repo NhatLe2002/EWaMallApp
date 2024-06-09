@@ -19,26 +19,27 @@ const HeaderTitleSeller: React.FC<props> = ({ text }) => {
       {
         route.name === 'SellerHome' ? (
           <View style={styles.containerHome}>
-            <TouchableOpacity onPress={() => navigation.navigate('BottomTab' as never)}>
+            <TouchableOpacity onPress={() =>
+              navigation.navigate('BottomTab' as never)}>
               <Iconions name="arrow-back" color="white" size={25} />
             </TouchableOpacity>
             <Text style={styles.textHome}>Shop của tôi</Text>
           </View>
         ) : (
           <View style={styles.containerProduct}>
-            <TouchableOpacity onPress={() =>  navigation.navigate('BottomTab' as never)}>
-              <Iconions name="arrow-back" style = {styles.iconItem}/>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Iconions name="arrow-back" style={styles.iconItem} />
             </TouchableOpacity>
             <View>
               <Text style={styles.textProduct}>{text}</Text>
             </View>
-            <View style = {styles.icon}>
-              <Feather name="search" style = {styles.iconItem} />
+            <View style={styles.icon}>
+              <Feather name="search" style={styles.iconItem} />
               <Iconions
                 name="chatbubble-ellipses-outline"
                 color="white"
                 size={25}
-                style = {styles.iconItem}
+                style={styles.iconItem}
               />
             </View>
           </View>
@@ -72,11 +73,11 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.roboto_bold,
     color: COLORS.black,
   },
-  icon:{
+  icon: {
     flexDirection: 'row',
     justifyContent: 'flex-end'
   },
-  iconItem:{
+  iconItem: {
     color: '#E9BB45',
     fontSize: 25
   }
