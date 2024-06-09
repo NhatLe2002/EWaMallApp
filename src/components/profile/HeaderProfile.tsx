@@ -25,7 +25,7 @@ const HeaderProfile = () => {
   const {seller} = useSelector((state: ISellerState) => state.sellerReducer);
   // console.log(seller.seller);
   return (
-    <View style={{ position: 'relative' }}>
+    <View style={styles.container}>
       {route.name === 'ShopHome' ? (
         <Image
           style={styles.image}
@@ -124,6 +124,10 @@ const HeaderProfile = () => {
 export default HeaderProfile;
 
 const styles = StyleSheet.create({
+  container:{
+    position: 'relative',
+    width: '100%'
+  },
   containerProfile: {
     zIndex: 10,
     paddingHorizontal: '5%',
