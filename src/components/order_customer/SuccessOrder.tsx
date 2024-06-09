@@ -15,7 +15,7 @@ const SuccessOrder: React.FC<Props> = ({item}) => {  const totalQuantity = item?
       <View style={styles.container}>
         <View style={styles.headerShop}>
           <Text style={{fontFamily: FONTS.inter_SemiBold, fontSize: 16}}>
-            Teen Shoop
+          {item?.orderDetails[0].productSellDetail.product.seller.shopName}
           </Text>
           <Text style={{fontFamily: FONTS.inter_regular, color: '#dd2504'}}>
             Chờ thanh toán

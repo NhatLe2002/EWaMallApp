@@ -17,7 +17,7 @@ const WaitingOrder: React.FC<Props> = ({item}) => {
     <View style={styles.container}>
       <View style={styles.headerShop}>
         <Text style={{fontFamily: FONTS.inter_SemiBold, fontSize: 16}}>
-          Teen Shoop
+          {item?.orderDetails[0].productSellDetail.product.seller.shopName}
         </Text>
         <Text style={{fontFamily: FONTS.inter_regular, color: '#dd2504'}}>
           Chờ thanh toán
@@ -86,7 +86,8 @@ const WaitingOrder: React.FC<Props> = ({item}) => {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          paddingBottom: '2%',  marginBottom: '2%',
+          paddingBottom: '2%',
+          marginBottom: '2%',
           borderBottomWidth: 1,
           gap: 10,
           borderColor: COLORS.border_gray,
