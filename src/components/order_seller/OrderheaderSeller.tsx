@@ -10,6 +10,7 @@ import OrderListSeller from './OrderListSeller';
 import { OrderGetBySellerId } from '../../constant/types/orderType';
 import { updateProductDetailWithImages } from '../../features/GetImage';
 import { Product } from '../../constant/types';
+import { ISellerState } from '../../constant/interface/sellerInterface';
 
 const orderStatuss = [
     { id: 1, name: 'Chờ xác nhận', quantity: 7 },
@@ -44,14 +45,20 @@ const OrderheaderSeller = () => {
     const { orderListBySellerId } = useSelector(
         (state: InterfaceOrderState) => state.orderReducer,
     );
+    const { seller } = useSelector(
+        (state: ISellerState) => state.sellerReducer,
+      );
     useEffect(() => {
-        dispatch(getAllOrderBySellerId(2));
+        // dispatch(getAllOrderBySellerId(seller?.id));
+        console.log(JSON.stringify(seller, null, 2))
+        // console.log(seller?.seller?.id)
+        dispatch(getAllOrderBySellerId(seller?.seller?.id));
         // console.log(JSON.stringify(orderListBySellerId, null, 2))
     }, []);
     useEffect(() => {
         const activeProducts = filterOrderByStatus(selectedId);
         setProductListFilter(activeProducts);
-        console.log(ordertListFilter?.length);
+        // console.log(ordertListFilter?.length);
         dispatch(setOrderListBySellerIDRenderRedux(activeProducts));
     }, [selectedId, orderListBySellerId])
     const filterOrderByStatus = (status: number) => {

@@ -91,7 +91,7 @@ export interface ISeller_2 {
   email: string;
   description: string;
   userId: number;
-  
+  id: number;
 }
 // Giao diện cho Product
 export interface IProduct {

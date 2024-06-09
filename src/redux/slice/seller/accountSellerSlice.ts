@@ -14,6 +14,7 @@ const initialState: ISellerState = {
     email: '',
     description: '',
     userId: 0,
+    id: 0,
   },
   error: '',
   loading: false,
