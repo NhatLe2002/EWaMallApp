@@ -38,7 +38,7 @@ const ProductListSearch = (props: ProductTypes) => {
         <Image
           style={styles.image}
           source={{
-            uri: item.imageUrl ? String(item.imageUrl) : 'defaultImageUrl',
+            uri: item.imageUrls ? String(item.imageUrls) : 'defaultImageUrl',
           }}
         />
         <View style={styles.containter}>

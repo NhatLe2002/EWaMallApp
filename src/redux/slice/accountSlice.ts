@@ -1,7 +1,8 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {InterfaceAccountState} from '../../constant/interface';
 import accountApi from '../../api/accountApi';
-import { Seller } from '../../constant/types';
+import {RegisterUser, Seller} from '../../constant/types';
+import {Alert} from 'react-native';
 const initialState: InterfaceAccountState = {
   currentUser: null,
   isLogin: false,
@@ -13,6 +14,7 @@ const initialState: InterfaceAccountState = {
   error: null,
   success: false,
   sellerProfile: null,
+  registerUsser: false,
 };
 export const getSellerById = createAsyncThunk(
   'products/getSellerById',
@@ -25,6 +27,18 @@ export const getSellerById = createAsyncThunk(
     }
   },
 );
+export const registerUser = createAsyncThunk(
+  'account/register',
+  async (data: RegisterUser, {rejectWithValue}) => {
+    try {
+      const response = await accountApi.register(data);
+      return response.data; // Trả về dữ liệu từ phản hồi thành công của API
+    } catch (error) {
+      return rejectWithValue(error); // Trả về lỗi từ phản hồi không thành công của API
+    }
+  },
+);
+
 const accountSlice = createSlice({
   name: 'account',
   initialState,
@@ -50,6 +64,17 @@ const accountSlice = createSlice({
       },
     );
     builder.addCase(getSellerById.rejected, (state, action) => {
+      return {...state, error: action.payload as string};
+    });
+    builder.addCase(
+      registerUser.fulfilled,
+      (state, action: PayloadAction<RegisterUser>) => {
+        Alert.alert('Thông báo!', 'Bạn đã đăng ký  thành công!');
+        return {...state, registerUsser: true, error: ''};
+      },
+    );
+    builder.addCase(registerUser.rejected, (state, action) => {
+      Alert.alert('Thông báo!', 'Đăng ký thất bại!');
       return {...state, error: action.payload as string};
     });
   },

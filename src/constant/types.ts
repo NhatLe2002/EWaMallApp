@@ -1,3 +1,18 @@
+type UserInformation = {
+  name: string;
+  dateOfBirth: string;
+  gender: number; 
+  address: string;
+  imageId: string; 
+};
+
+type RegisterUser = {
+  email: string;
+  password: string;
+  emailConfirmed: string;
+  phoneNumber: string;
+  userInformation: UserInformation;
+};
 type ProductTypes = {
   id: number;
   name: string;
@@ -280,4 +295,5 @@ export type {
   FeeShip,
   OrderAllByUserId,
   Status,
+  RegisterUser,
 };

@@ -5,15 +5,28 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { InterfaceAccountState } from '../../constant/interface';
 
 const SearchHome: React.FC = () => {
-  var navigation = useNavigation();
+  const {isLogin} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+  const navigation = useNavigation<any>()
+  const handleCart = () => {
+    if (isLogin) {
+   
+      navigation.navigate('SearchPage');
+    } else {
+    
+      navigation.navigate('Login');
+    }
+  };
   return (
     <TouchableHighlight 
     style={styles.container}
     underlayColor={COLORS.white}
-    onPress={() =>
-      navigation.navigate('SearchPage' as never)}
+    onPress={handleCart}
     >
     <View style={styles.container}>
       <View style={styles.content}>

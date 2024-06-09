@@ -8,14 +8,25 @@ import ProductSale from './ProductSale';
 import {productsFormatted} from '../../data/Product';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {InterfaceAccountState} from '../../constant/interface';
 const FlashSaleHome: React.FC = () => {
+  const {isLogin} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
   const navigation = useNavigation<any>();
   const handleNavigate = () => {
-    navigation.navigate('flashsale');
+    if (isLogin) {
+      navigation.navigate('flashsale');
+    } else {
+      navigation.navigate('Login');
+    }
   };
   return (
     <View>
-      <TouchableOpacity onPress={()=> handleNavigate()} style={styles.container}>
+      <TouchableOpacity
+        onPress={() => handleNavigate()}
+        style={styles.container}>
         <View style={styles.content}>
           <View style={styles.contentSub}>
             <Text style={styles.text}>F</Text>

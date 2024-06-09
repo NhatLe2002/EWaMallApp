@@ -1,26 +1,49 @@
 import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
-
+import React, {useEffect, useState} from 'react';
+import {Picker} from '@react-native-picker/picker';
 import Feather from 'react-native-vector-icons/Feather';
 import {Input} from 'react-native-elements';
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import HeightSpacer from '../../../reusables/height_spacer/HeightSpacer';
-import { COLORS, FONTS, SIZES } from '../../../constant/theme';
-type Inputs = {
-  email: string;
-  password: string;
-};
+import {COLORS, FONTS, SIZES} from '../../../constant/theme';
+import {RegisterUser} from '../../../constant/types';
+import uuid from 'react-native-uuid';
+import {Alert} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {registerUser} from '../../../redux/slice/accountSlice';
+import {InterfaceAccountState} from '../../../constant/interface';
 const RegisterScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const {control, handleSubmit} = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log('Form submitted:', data);
+  const navigation = useNavigation<any>();
+  const dispatch = useDispatch<any>();
+  const {control, handleSubmit, setValue} = useForm<RegisterUser>();
+  const {registerUsser} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+
+  const onSubmit: SubmitHandler<RegisterUser> = data => {
+    const newData = {...data};
+    const guiId = uuid.v4();
+    const date = new Date();
+    const formattedDate = date.toISOString().slice(0, 10);
+    newData.emailConfirmed = data.email;
+    newData.userInformation.gender = 0;
+    newData.userInformation.address = 'a';
+    newData.userInformation.dateOfBirth = formattedDate;
+    newData.userInformation.imageId = guiId.toString();
+
+    dispatch(registerUser(newData));
   };
   const handleBack = () => {
     navigation.navigate('HomeGuest' as never);
   };
+  useEffect(() => {
+    console.log('tét')
+    if (registerUsser) {
+      navigation.navigate('Login');
+    }
+  }, [dispatch,registerUsser]);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => handleBack()} style={styles.backButton}>
@@ -36,6 +59,20 @@ const RegisterScreen: React.FC = () => {
         <Text style={styles.textHeader}>Đăng ký</Text>
         <HeightSpacer height={SIZES.height / 20} />
         <View>
+          <Controller
+            control={control}
+            name="userInformation.name"
+            render={({field: {value, onChange, onBlur}}) => (
+              <Input
+                placeholder="Name"
+                value={value}
+                inputStyle={{fontSize: 15}}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                leftIcon={<AntDesign name="user" size={20} color="#929292" />}
+              />
+            )}
+          />
           <Controller
             control={control}
             name="email"
@@ -65,32 +102,28 @@ const RegisterScreen: React.FC = () => {
               />
             )}
           />
-
+          <Controller
+            control={control}
+            name="phoneNumber"
+            render={({field: {value, onChange, onBlur}}) => (
+              <Input
+                placeholder="Số điện thoại"
+                inputStyle={{fontSize: 15}}
+                secureTextEntry={true}
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                leftIcon={<Feather name="phone" size={20} color="#929292" />}
+              />
+            )}
+          />
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.textButton}>Đăng Nhập</Text>
+            <Text style={styles.textButton}>Đăng ký</Text>
           </TouchableOpacity>
         </View>
         <HeightSpacer height={SIZES.height / 25} />
-        <View style={styles.containerLoginWith}>
-          <View style={styles.orContainer}>
-            <View style={styles.orLine} />
-            <Text style={styles.orText}>Hoặc</Text>
-            <View style={styles.orLine} />
-          </View>
-          <HeightSpacer height={SIZES.height / 50} />
-          <View style={styles.iconContainer}>
-            <Image
-              style={styles.icon}
-              source={require('../../../assets/images/google.png')}
-            />
-            <Image
-              style={styles.icon}
-              source={require('../../../assets/images/facebook.png')}
-            />
-          </View>
-        </View>
       </View>
       <View style={styles.registrationView}>
         <Text style={styles.registrationText}>
@@ -98,7 +131,7 @@ const RegisterScreen: React.FC = () => {
           <Text
             onPress={() => navigation.navigate('Login' as never)}
             style={styles.registrationLink}>
-            Đăng nhập ngay
+            Đăng ký
           </Text>
         </Text>
       </View>
