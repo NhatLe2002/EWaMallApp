@@ -6,32 +6,33 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderTitleSeller from '../../../reusables/Title/HeaderTitleSeller';
 import AddImageProductSeller from '../../../components/add_product_seller/AddImageProductSeller';
-import {ScrollView} from 'react-native';
+import { ScrollView } from 'react-native';
 import ProductName from '../../../components/add_product_seller/ProductName';
 import ProductDescription from '../../../components/add_product_seller/ProductDescription';
 import HeightSpacerSeller from '../../../reusables/height_spacer/HeightSpacerSeller';
 import ProductInfor from '../../../components/product_seller/ProductInfor';
-import {COLORS} from '../../../constant/theme';
-import {ProductCreate} from '../../../constant/types/productType';
-import {ProductSellDetail} from '../../../constant/types/productSellDetail';
-import {ProductSellCommand} from '../../../constant/types/productSellCommand';
-import {useDispatch, useSelector} from 'react-redux';
+import { COLORS } from '../../../constant/theme';
+import { ProductCreate } from '../../../constant/types/productType';
+import { ProductSellDetail } from '../../../constant/types/productSellDetail';
+import { ProductSellCommand } from '../../../constant/types/productSellCommand';
+import { useDispatch, useSelector } from 'react-redux';
 import IndustryDetail from '../../../components/product_seller/IndustryDetail';
 import {
   createProduct,
   setProductCreateError,
   setProductCreateField,
 } from '../../../redux/slice/form/formCreateProductBySellerSlice';
-import {IFormProductCreateState} from '../../../constant/interface/formCreateProductInterface';
+import { IFormProductCreateState } from '../../../constant/interface/formCreateProductInterface';
 import {
   productDescriptionSchema,
   productNameSchema,
 } from '../../../constant/validate/productvalidate';
-import {uploadImagesToFirebase} from '../../../features/UploadImg';
-import {useNavigation} from '@react-navigation/native';
+import { uploadImagesToFirebase } from '../../../features/UploadImg';
+import { useNavigation } from '@react-navigation/native';
+import { ISellerState } from '../../../constant/interface/sellerInterface';
 const productSellDetails: ProductSellDetail[] = [
   {
     detailId: '1',
@@ -102,23 +103,29 @@ const AddProductSeller = () => {
   const dispatch = useDispatch<any>();
   const navigation = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
-  const {productCreate, productCreateError, loading, product,imageProductList} = useSelector(
+  const { productCreate, productCreateError, loading, product, imageProductList } = useSelector(
     (state: IFormProductCreateState) => state.formCreateProductReducer,
   );
-  console.log("sdsd",imageProductList)
+  const { seller } = useSelector(
+    (state: ISellerState) => state.sellerReducer,
+  );
+  useEffect(() => {
+    dispatch(setProductCreateField({ sellerId: seller?.seller?.id }));
+  }, [seller]);
+  // console.log("sdsd", imageProductList)
   const handleSubmit = async (data: ProductCreate) => {
-    console.log("ok")
+    // console.log("ok")
     try {
       await productNameSchema.validate(data.productName);
-      dispatch(setProductCreateError({field: 'productName', error: ''}));
+      dispatch(setProductCreateError({ field: 'productName', error: '' }));
     } catch (error: any) {
       dispatch(
-        setProductCreateError({field: 'productName', error: error.message}),
+        setProductCreateError({ field: 'productName', error: error.message }),
       );
     }
     try {
       await productDescriptionSchema.validate(data.productDescription);
-      dispatch(setProductCreateError({field: 'productDescription', error: ''}));
+      dispatch(setProductCreateError({ field: 'productDescription', error: '' }));
     } catch (error: any) {
       dispatch(
         setProductCreateError({
@@ -128,15 +135,15 @@ const AddProductSeller = () => {
       );
     }
     if (productCreateError && areAllFieldsEmpty(productCreateError)) {
-      // console.log(data);
-      dispatch(setProductCreateField({sellerId: '2'}));
-    console.log("upcreat")
+      // console.log("upcreat")
       dispatch(createProduct(data));
-      uploadImagesToFirebase(imageProductList,productCreate.imagesId)
+      uploadImagesToFirebase(imageProductList, productCreate.imagesId)
+      // console.log(productCreate.imagesId)
       setModalVisible(true);
     }
+    // console.log("sellerid",seller?.id);
     // console.log(JSON.stringify(data, null, 2));
-    console.log(JSON.stringify(productCreate, null, 2));
+    // console.log(JSON.stringify(productCreate, null, 2));
     // console.log(JSON.stringify(data, null, 2));
 
     // console.log(JSON.stringify(data, null, 2));
@@ -152,7 +159,7 @@ const AddProductSeller = () => {
     navigation.navigate('ProductSeller' as never);
   };
   return (
-    <View style={{flex: 1, backgroundColor: COLORS.white}}>
+    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.header}>
         <HeaderTitleSeller text={'Thêm sản phẩm'} />
       </View>

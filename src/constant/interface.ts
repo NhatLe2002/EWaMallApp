@@ -17,6 +17,7 @@ import {
   UpdateCartDetail,
   Ward,
 } from './types';
+import { OrderGetBySellerId } from './types/orderType';
 
 interface InterfaceAccountState {
   accountReducer?: any;
@@ -41,6 +42,8 @@ export interface InterfaceNotification {
 interface InterfaceOrderState {
   orderReducer?: any;
   orderList: OrderList | null;
+  orderListBySellerIdRenderRedux: OrderGetBySellerId[] | null;
+  orderListBySellerId: OrderGetBySellerId [] | null;
   info_order: CreateOrderRequest | null;
   orderAllByUser: OrderAllByUserId[] | null;
   pendingOrders: OrderAllByUserId[] | null;
@@ -68,6 +71,9 @@ export interface IIndustry {
 export interface ISeller {
   shopName: string;
   address: string;
+  provinceId: number;
+  districtId: number;
+  wardId: number;
   phoneNumber: string;
   email: string;
   description: string;
@@ -77,7 +83,18 @@ export interface ISeller {
   products: any[];
   id: number;
 }
-
+export interface ISeller_2 {
+  shopName: string;
+  address: string;
+  provinceId: number;
+  districtId: number;
+  wardId: number;
+  phoneNumber: string;
+  email: string;
+  description: string;
+  userId: number;
+  id: number;
+}
 // Giao diện cho Product
 export interface IProduct {
   productName: string;

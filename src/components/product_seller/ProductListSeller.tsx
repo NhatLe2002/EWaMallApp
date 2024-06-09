@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProductsBySellerId } from '../../redux/slice/seller/productSellerSlice';
 import { InterfaceProductState } from '../../constant/interface/productInterface';
 import { Product } from '../../constant/types/productType';
+import { ISellerState } from '../../constant/interface/sellerInterface';
 
 // const productsList = [
 //     { id: 1, name: 'Ghế công thái học', rating: 4.5, price: 100, quantity: 10, image: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' },
@@ -19,13 +20,16 @@ const ProductListSeller = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch<any>();
 
-    const { productList,  productListRenderRedux} = useSelector(
+    const { productList, productListRenderRedux } = useSelector(
         (state: InterfaceProductState) => state.productSellerReducer,
     );
-
+    const { seller } = useSelector(
+        (state: ISellerState) => state.sellerReducer,
+    );
     useEffect(() => {
-        dispatch(getProductsBySellerId(2));
-    }, []);
+        console.log(seller?.seller?.id);
+        dispatch(getProductsBySellerId(seller?.seller?.id));
+    }, [seller]);
 
 
     const renderItem = ({ item }: { item: Product }) => (
@@ -33,7 +37,7 @@ const ProductListSeller = () => {
             <TouchableOpacity
                 style={styles.productItem}
                 onPress={() => {
-                    // navigation.navigate('ProductDetail', { productId: item.id });
+                    navigation.navigate('ProductDetail' as never);
                 }}>
                 <Image source={{ uri: 'https://congthaihoc.vn/wp-content/uploads/2021/10/Sihoo-m93-2.png' }} style={styles.productImage} />
                 <View style={styles.detailProductList}>

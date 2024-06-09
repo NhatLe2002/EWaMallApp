@@ -7,25 +7,35 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {COLORS, FONTS, SIZES} from '../../constant/theme';
-import {Badge} from 'react-native-elements';
+import { COLORS, FONTS, SIZES } from '../../constant/theme';
+import { Badge } from 'react-native-elements';
 import Iconions from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller';
+import {useSelector} from 'react-redux';
+import {ISellerState} from '../../constant/interface/sellerInterface';
 
 const HeaderProfile = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const {seller} = useSelector((state: ISellerState) => state.sellerReducer);
+  // console.log(seller.seller);
   return (
-    <View style={{position: 'relative'}}>
-      <Image
-        style={styles.image}
-        source={require('../../assets/images/BackGround.png')}
-      />
+    <View style={styles.container}>
+      {route.name === 'ShopHome' ? (
+        <Image
+          style={styles.image}
+          source={require('../../assets/images/BackGround.png')}
+        />) : (
+        <Image
+          style={styles.image}
+          source={require('../../assets/images/BackGround.png')}
+        />)}
+
       <View
         style={{
           position: 'absolute',
@@ -33,7 +43,7 @@ const HeaderProfile = () => {
           top: '25%',
           right: 0,
         }}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View>
             {route.name === 'SellerHome' ? <HeaderTitleSeller text={''} /> : ''}
           </View>
@@ -53,7 +63,7 @@ const HeaderProfile = () => {
                   width: 15,
                   height: 15,
                 }}
-                textStyle={{fontSize: 9}}
+                textStyle={{ fontSize: 9 }}
                 containerStyle={{
                   position: 'absolute',
                   top: -5,
@@ -78,12 +88,12 @@ const HeaderProfile = () => {
                 alignItems: 'center',
               }}>
               <View style={styles.infor}>
-                <Text style={styles.textName}>Shop Name</Text>
+                <Text style={styles.textName}>{seller.seller.shopName}</Text>
                 <Text style={styles.textFollow}>Đang theo dõi</Text>
               </View>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Home' as never)}
-                style={{marginLeft: '20%', backgroundColor: '#9DB410'}}>
+                style={{ marginLeft: '20%', backgroundColor: '#9DB410' }}>
                 <Text style={styles.buttonText}>Trang chủ</Text>
               </TouchableOpacity>
             </View>
@@ -99,7 +109,7 @@ const HeaderProfile = () => {
               <Text style={styles.textFollow}>
                 Đang theo dõi
                 <Text
-                  style={{fontFamily: FONTS.roboto_bold, fontWeight: '800'}}>
+                  style={{ fontFamily: FONTS.roboto_bold, fontWeight: '800' }}>
                   20
                 </Text>
               </Text>
@@ -114,6 +124,10 @@ const HeaderProfile = () => {
 export default HeaderProfile;
 
 const styles = StyleSheet.create({
+  container:{
+    position: 'relative',
+    width: '100%'
+  },
   containerProfile: {
     zIndex: 10,
     paddingHorizontal: '5%',
@@ -157,7 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     gap: 5,
   },
-  memberText: {color: COLORS.white, fontSize: 10},
+  memberText: { color: COLORS.white, fontSize: 10 },
 
   textFollow: {
     fontSize: 11,

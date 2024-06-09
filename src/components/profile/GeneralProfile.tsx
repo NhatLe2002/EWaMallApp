@@ -1,18 +1,17 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TitleReusable from '../../reusables/Text/TitleReusable';
-import {COLORS, FONTS, SIZES} from '../../constant/theme';
+import { COLORS, FONTS, SIZES } from '../../constant/theme';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { InterfaceAccountState } from '../../constant/interface';
+import { getAccount } from '../../redux/slice/seller/accountSellerSlice';
+import { ISellerState } from '../../constant/interface/sellerInterface';
 
 const options = [
   {
@@ -66,12 +65,29 @@ const options = [
 ];
 
 const GeneralProfile = () => {
+  const dispatch = useDispatch<any>();
+  const { userId } = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
+  const { seller } = useSelector((state: ISellerState) => state.sellerReducer);
   const [showMore, setShowMore] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const navigation = useNavigation();
+  useEffect(() => {
+    dispatch(getAccount(userId));
+  }, [dispatch]);
+
+  useEffect(() => {
+    // console.log(userId);
+    // console.log("seller",seller?.seller);
+    // console.log("seller check",seller?.seller != null);
+    if (seller?.seller != null) setIsSeller(true);
+  }, [seller]);
+
   return (
     <View>
       <View style={styles.container}>
-        <View style={{paddingHorizontal: '4%'}}>
+        <View style={{ paddingHorizontal: '4%' }}>
           <TitleReusable
             text="Tổng hợp"
             size={18}
@@ -85,12 +101,16 @@ const GeneralProfile = () => {
             item.title === 'Bán hàng cùng Ewamall' ? (
               <TouchableOpacity
                 key={item.id}
-                onPress={() => navigation.navigate('SellerHome' as never)}>
+                onPress={() =>
+                  isSeller
+                    ? navigation.navigate('SellerHome' as never)
+                    : navigation.navigate('RegistrationSellerScreen' as never)
+                }>
                 <LinearGradient
                   key={item.id}
                   style={styles.optionSeller}
-                  start={{x: 0, y: 0.5}}
-                  end={{x: 1, y: 0.5}}
+                  start={{ x: 0, y: 0.5 }}
+                  end={{ x: 1, y: 0.5 }}
                   colors={['#DDDDB2', '#DDDDB2', '#78A7D7']}
                   locations={[0, 0.3, 1]}>
                   <View style={styles.structureOption}>
@@ -159,14 +179,14 @@ const styles = StyleSheet.create({
     borderRightWidth: SIZES.width / 36,
     borderRightColor: 'transparent',
     borderStyle: 'solid',
-    transform: [{rotate: '180deg'}],
+    transform: [{ rotate: '180deg' }],
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   icon: {
     position: 'absolute',
     top: '50%',
-    transform: [{translateX: 14}, {translateY: 2}],
+    transform: [{ translateX: 14 }, { translateY: 2 }],
     zIndex: 9999,
   },
   containerOptions: {

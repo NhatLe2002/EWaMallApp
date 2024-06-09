@@ -1,5 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {InterfaceOrderState} from '../../constant/interface';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { InterfaceOrderState } from '../../constant/interface';
 
 import {
   CreateOrderDetailCommand,
@@ -8,9 +8,12 @@ import {
 } from '../../constant/types';
 import cartApi from '../../api/cartApi';
 import orderApi from '../../api/orderApi';
+import { OrderGetBySellerId } from '../../constant/types/orderType';
 
 const initialState: InterfaceOrderState = {
   orderList: null,
+  orderListBySellerId: null,
+  orderListBySellerIdRenderRedux: null,
   info_order: {
     userId: 0,
     totalCost: 0,
@@ -26,6 +29,35 @@ const initialState: InterfaceOrderState = {
   cancelOrders:null,
   refundOrders:null
 };
+
+export const getAllOrderBySellerId = createAsyncThunk(
+  'order/getAllOrderBySellerId',
+  async (sellerId: number) => {
+    try {
+      const response = await orderApi.getAllOrderBySellerId(sellerId);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
+export const updateOrderStatus = createAsyncThunk(
+  'order/updateOrderStatus',
+  async ({
+    orderId,
+    statusCode,
+  }: {
+    orderId: number;
+    statusCode: string;
+  }) => {
+    try {
+      const response = await orderApi.updateStatusOrder({orderId,statusCode});
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 export const createOrder = createAsyncThunk(
   'cart/createOrder',
   async (orderRequest: CreateOrderRequest) => {
@@ -50,6 +82,7 @@ export const createOrder = createAsyncThunk(
         paymentId: 1,
       };
 
+ 
       const response = await cartApi.createOrder(requestWithOrderCode);
 
       return response.data;
@@ -93,7 +126,10 @@ const orderSlice = createSlice({
     ) => {
       state.info_order!.createOrderDetailCommands = action.payload;
     },
-
+    setOrderListBySellerIDRenderRedux: (state, action: PayloadAction<OrderGetBySellerId[] | null>) => {
+      state.orderListBySellerIdRenderRedux = action.payload;
+    },
+   
   },
   extraReducers: builder => {
     builder.addCase(
@@ -103,7 +139,16 @@ const orderSlice = createSlice({
       },
     );
     builder.addCase(createOrder.rejected, (state, action) => {
-      return {...state, error: action.payload as string};
+      return { ...state, error: action.payload as string };
+    });
+    builder.addCase(
+      getAllOrderBySellerId.fulfilled,
+      (state, action: PayloadAction<OrderGetBySellerId[]>) => {
+        return { ...state, orderListBySellerId: action.payload, error: '' };
+      },
+    );
+    builder.addCase(getAllOrderBySellerId.rejected, (state, action) => {
+      return { ...state, error: action.payload as string };
     });
     builder.addCase(
       getOrderByUserId.fulfilled,
@@ -126,11 +171,26 @@ const orderSlice = createSlice({
         state.refundOrders = action.payload.filter(
           order => order.status.id === 6,
         );
+        state.refundOrders = action.payload.filter(
+          order => order.status.id === 7,
+        );
+        state.refundOrders = action.payload.filter(
+          order => order.status.id === 8,
+        );
         return state;
       },
     );
     builder.addCase(getOrderByUserId.rejected, (state, action) => {
       return {...state, error: action.payload as string};
+    });
+    builder.addCase(
+      updateOrderStatus.fulfilled,
+      (state, action) => {
+        return { ...state,error: '' };
+      },
+    );
+    builder.addCase(updateOrderStatus.rejected, (state, action) => {
+      return { ...state, error: action.payload as string };
     });
   },
 });
@@ -140,5 +200,6 @@ export const {
   setShipCostt,
   setShipAddressId,
   setCreateOrderDetailCommands,
+  setOrderListBySellerIDRenderRedux
 } = orderSlice.actions;
 export default orderSlice.reducer;

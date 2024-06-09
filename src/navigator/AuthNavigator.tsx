@@ -19,13 +19,19 @@ import AddAddress from '../screens/customer/address/AddAddress';
 import SelectAddress from '../components/address/SelectAddress';
 import Industry from '../screens/sellser/add_product_seller/Industry';
 import ProductComman from '../screens/sellser/add_product_seller/ProductComman';
+
+import Category from '../screens/customer/categories/Category';
+
 import ProductCommanDetail from '../screens/sellser/add_product_seller/ProductCommanDetail';
 import RegistrationScreen1 from '../components/register_seller/RegistrationScreen1';
 import RegisterForm from '../components/register_seller/RegisterForm';
 import CartScreen from '../screens/customer/cart/Cart';
 import DeliveryScreen from '../screens/customer/delivery/DeliveryScreen';
 import PurchaseSuccesful from '../screens/customer/purchase/PurchaseSuccesful';
+import ShopHome from '../screens/customer/shop_home/ShopHome';
 import OrderScreen from '../screens/customer/order/OrderScreen';
+import ChatHomeScreen from '../screens/customer/chat/ChatHomeScreen';
+import ChatBox from '../screens/customer/chat/ChatBox';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -35,6 +41,7 @@ const AuthNavigator: React.FC = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="BottomTab" component={BottomTabNavigation} />
+      <Stack.Screen name="Category" component={Category} />
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
       <Stack.Screen name="Cart" component={CartScreen} />
       <Stack.Screen name="Purchase" component={PurchaseScreen} />
@@ -43,11 +50,17 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="Address" component={AddressScreen} />
       <Stack.Screen name="add_address" component={AddAddress} />
       <Stack.Screen name="SelectProvince" component={SelectAddress} />
+
       <Stack.Screen name="methodDeliveryList" component={DeliveryScreen} />
       <Stack.Screen name="SearchPageResult" component={SearchPageResult} />
+      <Stack.Screen name="ChatHomeScreen" component={ChatHomeScreen} />
       <Stack.Screen name="SearchPage" component={SearchPage} />
+      <Stack.Screen name="ShopHome" component={ShopHome} />
+      
       <Stack.Screen name="OrderScreen" component={OrderScreen} />
 
+      <Stack.Screen name="ChatBox" component={ChatBox} />
+      
       {/* Seller navigator */}
       <Stack.Screen name="SellerHome" component={SellerHome} />
       <Stack.Screen name="ProductSeller" component={ProductSeller} />

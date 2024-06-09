@@ -42,6 +42,10 @@ const HeaderHome: React.FC = () => {
       <View style={styles.headerContent}>
         <SearchHome />
         <View>
+          <TouchableOpacity
+          onPress={() => navigation.navigate("ChatHomeScreen" as never)}
+          >
+            <>
           <Iconions
             name="chatbubble-ellipses-outline"
             color="white"
@@ -62,6 +66,8 @@ const HeaderHome: React.FC = () => {
               right: -5,
             }}
           />
+          </>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={handleNaviSearch}>
           <Feather name="shopping-cart" size={25} color="white" />

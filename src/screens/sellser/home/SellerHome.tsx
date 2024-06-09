@@ -10,11 +10,12 @@ import BodyTitle from '../../../reusables/Title/BodyTitle';
 import { SIZES } from '../../../constant/theme';
 
 
+
 const SellerHome = () => {
   const check = useRoute();
   return (
-    <ScrollView style={{ }}>
-      <View style={{ height: SIZES.height/3.8 }}>
+    <ScrollView style={{}}>
+      <View style={{ height: SIZES.height / 3.8 }}>
         {/* <HeaderSeller /> */}
         <HeaderProfile />
       </View >
@@ -27,7 +28,7 @@ const SellerHome = () => {
         </View>
 
       </View>
-      <View style={{ marginTop: 10 }}>
+      <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
         <BodyTitle titleLeft='Phân tích' titleRight='Hôm nay >' />
       </View>
     </ScrollView>

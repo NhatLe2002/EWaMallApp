@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { InterfaceProductState } from '../../../constant/interface';
 import { Product } from '../../../constant/types';
-import { setProductFilterList } from '../../../redux/slice/productSlice';
+import { setProductFilterList } from '../../../redux/slice/productSlices';
 
 const SearchCategory: React.FC<{ data: { name: string, active: boolean }[] }> = (data) => {
     const page = Math.round(data.data.length / 2)

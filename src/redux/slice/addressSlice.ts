@@ -52,7 +52,6 @@ export const getServiceShip = createAsyncThunk(
   'address/getServiceShip',
   async (data: {from_district: number; to_district: number}) => {
     try {
-    
       const response = await addressApi.getService(
         data.from_district,
         data?.to_district,
@@ -192,7 +191,14 @@ export const fetchWardByDistrictId = createAsyncThunk(
 const addressSlice = createSlice({
   name: 'adress',
   initialState,
-  reducers: {},
+  reducers: {
+    // //   province: [],
+    // // district: [],
+    // // ward: [],
+    // setProvince: (state, action: PayloadAction<string>) => {
+    //   state.province = action.payload;
+    // },
+  },
   extraReducers: builder => {
     builder.addCase(
       shipAddressByUserId.fulfilled,

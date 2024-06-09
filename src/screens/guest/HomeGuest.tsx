@@ -15,10 +15,10 @@ const HomeGuest: React.FC = () => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <HeaderHome />
-        <HeightSpacer height={SIZES.height / 18} />
+        <HeightSpacer height={SIZES.height / 18}/>
         <CategoryHome />
         <FlashSaleHome />
-        <HeightSpacer height={SIZES.height / 70} />
+        <HeightSpacer height={SIZES.height / 70}/>
         <ReusableText
           text="Có thể bạn thích"
           size={20}
