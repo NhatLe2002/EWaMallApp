@@ -20,7 +20,7 @@ const SuggestProduct = () => {
   const getItem = (productsListFormatted: ProductTypes[], index: number) =>
     productsListFormatted[index];
   const Item = ({item}: {item: ProductTypes}) => (
-    <View style={{width: SIZES.width / 2.9}}>
+    <View style={{width: SIZES.width / 2.9, height: 'auto'}}>
       <Product
         imgUrl={item.imgUrl}
         name={item.name}
@@ -35,11 +35,12 @@ const SuggestProduct = () => {
     <View style={styles.container}>
       <Text
         style={{
-          height: '15%',
+          height: 'auto',
           fontSize: 16,
           color: 'black',
           fontWeight: '700',
           paddingTop: 5,
+          marginBottom: 5,
         }}>
         Gợi ý thêm từ shop
       </Text>
@@ -65,6 +66,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: '4%',
     paddingBottom: 4,
     marginVertical: 3,
-    height: SIZES.height / 3.5,
+    height: 'auto',
   },
 });

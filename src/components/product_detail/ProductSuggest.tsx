@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '60%',
+    height: SIZES.height / 6,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
