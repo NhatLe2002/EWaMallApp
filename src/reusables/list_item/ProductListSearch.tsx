@@ -26,7 +26,7 @@ const ProductListSearch = (props: ProductTypes) => {
     };
 
     fetchProductImages();
-  }, [props.products]);
+  }, [props.products]); 
 
   const renderItem = ({ item }: { item: Product }) => (
     <View style={styles.product}>

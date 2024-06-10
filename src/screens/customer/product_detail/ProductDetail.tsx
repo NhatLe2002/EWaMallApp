@@ -29,7 +29,7 @@ import {
 import {BottomSheetDefaultFooterProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types';
 import {formatPriceToVND} from '../../../config/FixPrice';
 import {addToCart} from '../../../redux/slice/cartSlice';
-import {Product} from '../../../constant/types';
+import {Product, productSellerDetails} from '../../../constant/types';
 import {
   listFilesInProductFolder,
   updateProductDetailWithImages,
@@ -111,7 +111,8 @@ const ProductDetail = () => {
       closeModal();
     }
   };
-  console.log(updatedProduct?.imageUrls);
+  // console.log(updatedProduct?.imageUrls);
+  const priceProp = product?.productSellerDetails.length > 1 ? product?.productSellerDetails.find((s: productSellerDetails) => s.path === '/B/1').price : product?.productSellerDetails[0].price
   const footerAddProduct = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -157,12 +158,12 @@ const ProductDetail = () => {
 
           <TitleProduct
             productName={product?.productName}
-            price={product?.productSellerDetails[0]?.price}
+            price={priceProp}
           />
           <DeliveryPrice />
-          <ShopInfor />
+          <ShopInfor seller={product?.seller}/>
           <SuggestProduct />
-          <Description description="Hom nay la mot nay dep troi nen la hay mua toi di! Chan thanh va cam on <3" />
+          <Description description={product?.productDescription} />
           <RatingProduct />
           <View>
             <Text
@@ -181,7 +182,7 @@ const ProductDetail = () => {
             <ProductList />
           </View>
         </ScrollView>
-        <FooterProductDetail openBottomSheet={handlePresentModalPress} />
+        <FooterProductDetail openBottomSheet={handlePresentModalPress}  seller={product?.seller} price={priceProp}/>
 
         <View style={styles.container}>
           <BottomSheetModal

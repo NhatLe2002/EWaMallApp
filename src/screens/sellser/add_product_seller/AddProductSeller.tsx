@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import IndustryDetail from '../../../components/product_seller/IndustryDetail';
 import {
   createProduct,
+  resetProductCreate,
+  setImageUrisArray,
   setProductCreateError,
   setProductCreateField,
 } from '../../../redux/slice/form/formCreateProductBySellerSlice';
@@ -33,6 +35,7 @@ import {
 import { uploadImagesToFirebase } from '../../../features/UploadImg';
 import { useNavigation } from '@react-navigation/native';
 import { ISellerState } from '../../../constant/interface/sellerInterface';
+import { getProductsBySellerId } from '../../../redux/slice/seller/productSellerSlice';
 const productSellDetails: ProductSellDetail[] = [
   {
     detailId: '1',
@@ -103,7 +106,7 @@ const AddProductSeller = () => {
   const dispatch = useDispatch<any>();
   const navigation = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
-  const { productCreate, productCreateError, loading, product, imageProductList } = useSelector(
+  const { productCreate, productCreateError, loading, product, imageProductList, error } = useSelector(
     (state: IFormProductCreateState) => state.formCreateProductReducer,
   );
   const { seller } = useSelector(
@@ -135,10 +138,12 @@ const AddProductSeller = () => {
       );
     }
     if (productCreateError && areAllFieldsEmpty(productCreateError)) {
-      // console.log("upcreat")
+      console.log(productCreateError);
+      console.log(areAllFieldsEmpty(productCreateError));
       dispatch(createProduct(data));
       uploadImagesToFirebase(imageProductList, productCreate.imagesId)
-      // console.log(productCreate.imagesId)
+      dispatch(setImageUrisArray([]));
+      dispatch(resetProductCreate());
       setModalVisible(true);
     }
     // console.log("sellerid",seller?.id);
@@ -154,8 +159,9 @@ const AddProductSeller = () => {
     const errorValues = Object.values(errorObject);
     return errorValues.every(value => value === '');
   };
-  const handleSubmitCreate = () => {
+  const handleSubmitCreate = async () => {
     setModalVisible(false);
+    await dispatch(getProductsBySellerId(seller?.seller?.id));
     navigation.navigate('ProductSeller' as never);
   };
   return (
@@ -189,10 +195,10 @@ const AddProductSeller = () => {
         <TouchableOpacity
           onPress={() => handleSubmit(productCreate)}
           style={styles.buttomBot}>
-          <Text>Lưu</Text>
+          <Text style={styles.buttonText}>Lưu</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttomBot}>
-          <Text>Hiển thị</Text>
+          <Text style={styles.buttonText}>Hiển thị</Text>
         </TouchableOpacity>
         <Modal
           visible={isModalVisible}
@@ -202,7 +208,7 @@ const AddProductSeller = () => {
           <View style={styles.modalBackground}>
             <View style={styles.modalContent}>
               <Text style={styles.modalText}>
-                Product created successfully!
+                {error !== null ? ("Tạo sản phẩm lỗi") : ("Tạo sản phẩm thành công")}
               </Text>
               <TouchableOpacity
                 style={styles.okButton}
@@ -284,4 +290,8 @@ const styles = StyleSheet.create({
     color: COLORS.blue,
     fontSize: 16,
   },
+  buttonText: {
+    color: COLORS.yellow,
+    fontSize: 20
+  }
 });

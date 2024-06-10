@@ -26,8 +26,8 @@ const ProductComman = () => {
     const [newType, setNewType] = useState('');
     const [newValue, setNewValue] = useState('');
     const [selectedTypeIndex, setSelectedTypeIndex] = useState<number | null>(null);
-
-
+    const [selectedValueIndex, setSelectedValueIndex] = useState<number | null>(null);
+    const [isEditingType, setIsEditingType] = useState(false);
 
     const handleAddClassification = () => {
         setIsTypeModalVisible(true);
@@ -36,23 +36,39 @@ const ProductComman = () => {
         if (selectedTypeIndex !== null) {
             const updatedClassification = classification.map((item, index) => {
                 if (index === selectedTypeIndex) {
-                    // Tạo bản sao của đối tượng cần chỉnh sửa và mảng value
+                    const updatedValues = selectedValueIndex !== null
+                        ? item.value.map((val, valIndex) => valIndex === selectedValueIndex ? newValue : val)
+                        : [...item.value, newValue];
                     return {
                         ...item,
-                        value: [...item.value, newValue]
+                        value: updatedValues
                     };
                 }
                 return item;
             });
 
-            // Cập nhật state với bản sao đã chỉnh sửa
             setClassification(updatedClassification);
             setNewValue('');
+            setSelectedValueIndex(null);
             setIsValueModalVisible(false);
         }
     };
     const handleTypeSubmit = () => {
-        setClassification([...classification, { type: newType, value: [] }]);
+        if (isEditingType && selectedTypeIndex !== null) {
+            const updatedClassification = classification.map((item, index) => {
+                if (index === selectedTypeIndex) {
+                    return {
+                        ...item,
+                        type: newType
+                    };
+                }
+                return item;
+            });
+
+            setClassification(updatedClassification);
+        } else {
+            setClassification([...classification, { type: newType, value: [] }]);
+        }
         setNewType('');
         setIsTypeModalVisible(false);
     };
@@ -69,6 +85,34 @@ const ProductComman = () => {
         navigation.navigate("ProductCommanDetail" as never)
         // console.log(JSON.stringify(classificationRedux, null, 2))
     };
+    const handleDeleteType = (index: number) => {
+        const updatedClassification = classification.filter((_, i) => i !== index);
+        setClassification(updatedClassification);
+    };
+    const handleDeleteValue = (typeIndex: number, valIndex: number) => {
+        const updatedClassification = classification.map((item, index) => {
+            if (index === typeIndex) {
+                return {
+                    ...item,
+                    value: item.value.filter((_, i) => i !== valIndex)
+                };
+            }
+            return item;
+        });
+        setClassification(updatedClassification);
+    };
+    const handleEditValue = (typeIndex: number, valIndex: number) => {
+        setSelectedTypeIndex(typeIndex);
+        setSelectedValueIndex(valIndex);
+        setNewValue(classification[typeIndex].value[valIndex]);
+        setIsValueModalVisible(true);
+    };
+    const handleEditType = (index: number) => {
+        setSelectedTypeIndex(index);
+        setIsEditingType(true);
+        setNewType(classification[index].type);
+        setIsTypeModalVisible(true);
+    };
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -81,11 +125,12 @@ const ProductComman = () => {
                         <View style={styles.title}>
                             <View style={styles.titleItem}>
                                 <Text style={styles.text}>{item.type}</Text>
-                                <TouchableOpacity style={styles.titleIcon}>
+                                <TouchableOpacity style={styles.titleIcon}
+                                    onPress={() => handleEditType(index)}>
                                     <SimpleLineIcons name='note' size={20} color='red' />
                                 </TouchableOpacity>
                             </View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleDeleteType(index)}>
                                 <Text style={styles.titleText}>Xóa</Text>
                             </TouchableOpacity>
                         </View>
@@ -95,10 +140,12 @@ const ProductComman = () => {
                                     <Text style={styles.text}>{value}</Text>
                                 </View>
                                 <View style={styles.containerIcon}>
-                                    <TouchableOpacity style={styles.icon}>
+                                    <TouchableOpacity style={styles.icon}
+                                        onPress={() => handleEditValue(index, valIndex)}>
                                         <SimpleLineIcons name='note' size={20} color='#9290908d' />
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.icon}>
+                                    <TouchableOpacity style={styles.icon}
+                                        onPress={() => handleDeleteValue(index, valIndex)}>
                                         <MaterialIcons name='cancel' size={20} color='#9290908d' />
                                     </TouchableOpacity>
                                 </View>
@@ -145,18 +192,29 @@ const ProductComman = () => {
                             onChangeText={setNewType}
                             style={styles.input}
                         />
-                        <TouchableOpacity
-                            onPress={handleTypeSubmit}
-                        >
-                            <Text>
-                                Thêm
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setIsTypeModalVisible(false)}>
-                            <Text>
-                                Hủy
-                            </Text>
-                        </TouchableOpacity>
+                        <View
+                            style={{
+                                width: '100%',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-around'
+                            }}>
+                            <TouchableOpacity
+                                style={styles.buttonModal}
+                                onPress={handleTypeSubmit}
+                            >
+                                <Text style={{ color: COLORS.black }}>
+                                    Thêm
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttonModal}
+                                onPress={() => setIsTypeModalVisible(false)}>
+                                <Text style={{ color: COLORS.black }}>
+                                    Hủy
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -169,18 +227,29 @@ const ProductComman = () => {
                             onChangeText={setNewValue}
                             style={styles.input}
                         />
-                        <TouchableOpacity
-                            onPress={handleValueSubmit}
-                        >
-                            <Text>
-                                Thêm
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setIsValueModalVisible(false)}>
-                            <Text>
-                                Hủy
-                            </Text>
-                        </TouchableOpacity>
+                        <View
+                            style={{
+                                width: '100%',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-around'
+                            }}>
+                            <TouchableOpacity
+                                style={styles.buttonModal}
+                                onPress={handleValueSubmit}
+                            >
+                                <Text style={{ color: COLORS.black }}>
+                                    Thêm
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttonModal}
+                                onPress={() => setIsValueModalVisible(false)}>
+                                <Text style={{ color: COLORS.black }}>
+                                    Hủy
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -281,6 +350,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     input: {
+        color: COLORS.black,
         width: '100%',
         borderWidth: 1,
         borderColor: '#ddd',
@@ -298,5 +368,10 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 20,
         color: 'red',
+    },
+    buttonModal: {
+        paddingVertical: 10,
+        paddingHorizontal: 25,
+        backgroundColor: COLORS.yellow,
     }
 })

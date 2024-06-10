@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {Icon} from 'react-native-elements';
-import {COLORS, FONTS, SIZES} from '../../constant/theme';
-import {formatPriceToVND} from '../../config/FixPrice';
+import React, { Component } from 'react';
+import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { COLORS, FONTS, SIZES } from '../../constant/theme';
+import { formatPriceToVND } from '../../config/FixPrice';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
@@ -26,12 +26,12 @@ interface TitleProductProps {
   productName: string;
   price: number;
 }
-const TitleProduct: React.FC<TitleProductProps> = ({productName, price}) => {
+const TitleProduct: React.FC<TitleProductProps> = ({ productName, price }) => {
   const formattedPrice = formatPriceToVND(price);
   return (
     <View style={styles.container}>
       <Text
-        style={{fontFamily: FONTS.roboto_regular, fontSize: 16}}
+        style={{ fontFamily: FONTS.roboto_regular, fontSize: 16, color: COLORS.black }}
         numberOfLines={2}>
         {productName}
       </Text>
@@ -47,12 +47,12 @@ const TitleProduct: React.FC<TitleProductProps> = ({productName, price}) => {
         </Text>
       </View>
       <View style={styles.rate}>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 2}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
           <Icon name="grade" color={COLORS.yellowMain} size={17} />
-          <Text style={{fontFamily: FONTS.inter_regular, fontSize: 13}}>5</Text>
+          <Text style={{ fontFamily: FONTS.inter_regular, fontSize: 13, color: COLORS.gray_2 }}>5</Text>
         </View>
-        <Text style={{color: 'rgba(216, 216, 216, 0.77)'}}>|</Text>
-        <Text>Đã bán 299</Text>
+        <Text style={{ color: 'rgba(216, 216, 216, 0.77)' }}>|</Text>
+        <Text style={{ color: COLORS.gray_2 }}>Đã bán 299</Text>
       </View>
     </View>
   );

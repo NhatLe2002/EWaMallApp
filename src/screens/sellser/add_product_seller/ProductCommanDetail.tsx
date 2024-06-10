@@ -21,10 +21,10 @@ const ProductCommanDetail = () => {
     const [classification, setClassification] = useState<Classification[]>([]);
     useEffect(() => {
         setClassification(classificationRedux);
-        console.log(classificationRedux)
+        // console.log(classificationRedux)
     }, [classificationRedux])
     useEffect(() => {
-        console.log(classificationRedux)
+        // console.log(classificationRedux)
         setProductCommanList([]);
         if (classification.length === 2) {
             const newProductCommanList: ProductSellCommand[] = [];
@@ -88,8 +88,8 @@ const ProductCommanDetail = () => {
     const handleSummit = () => {
         dispatch(setProductCreateField({ productSellCommand: productCommanList }));
         navigation.navigate('AddProductSeller' as never)
-        console.log(JSON.stringify(classificationRedux, null, 2));
-        console.log(JSON.stringify(productCommanList, null, 2));
+        // console.log(JSON.stringify(classificationRedux, null, 2));
+        // console.log(JSON.stringify(productCommanList, null, 2));
         // console.log(productCommanList.length)
         // console.log(JSON.stringify(productCreate, null, 2));
     }
@@ -97,16 +97,16 @@ const ProductCommanDetail = () => {
     type ProductSellCommandField = keyof ProductSellCommand;
     const handleInputChange = (outnerIndex: number, innerIndex: number, field: ProductSellCommandField, value: string) => {
         const updatedList = [...productCommanList];
-        const combinedIndex = innerIndex + outnerIndex + classification.length + classification[0].value.length + (outnerIndex === 1 ? classification[1].value.length -1  : 0);
-        console.log(combinedIndex);
-        console.log(value);
+        const combinedIndex = innerIndex + outnerIndex + classification.length + classification[0].value.length + (outnerIndex >= 1 ? outnerIndex * classification[1].value.length - outnerIndex : 0);
+        // console.log(combinedIndex);
+        // console.log(value);
         // console.log(combinedIndex);
         // console.log(innerIndex, outnerIndex)
         // console.log(field);
         // console.log(classification.length + classification[0].value.length)
         // console.log(innerIndex);
         updatedList[combinedIndex][field] = value;
-        // console.log(updatedList);
+        // console.log(JSON.stringify(updatedList, null,2));
         setProductCommanList(updatedList);
         // console.log(JSON.stringify(productCommanList, null, 2));
     };
@@ -182,7 +182,7 @@ const ProductCommanDetail = () => {
                     <TextInput style={styles.input}
                         onChangeText={(value) => handleInputChange(outerIndex, innerIndex, 'price', value)}
                         // onChange={(value) => handleInputChange(outerIndex, 'price', value)}
-                        value={productCommanList[innerIndex + outerIndex + classification.length + classification[0].value.length + (outerIndex === 1 ? classification[1].value.length -1 : 0)]?.price}
+                        value={productCommanList[innerIndex + outerIndex + classification.length + classification[0].value.length + (outerIndex >= 1 ? outerIndex * classification[1].value.length - outerIndex : 0)]?.price}
                     ></TextInput>
                     <View style={styles.validateContainer}>
                         {/* <Text style={styles.validateText}>sfasdfsadf</Text> */}
@@ -194,7 +194,7 @@ const ProductCommanDetail = () => {
                     </Text>
                     <TextInput
                         onChangeText={(value) => handleInputChange(outerIndex, innerIndex, 'inventoryNumber', value)}
-                        value={productCommanList[innerIndex + outerIndex + classification.length + classification[0].value.length + (outerIndex === 1 ? classification[1].value.length -1 : 0)]?.inventoryNumber}
+                        value={productCommanList[innerIndex + outerIndex + classification.length + classification[0].value.length + (outerIndex >= 1 ? outerIndex * classification[1].value.length - outerIndex : 0)]?.inventoryNumber}
                         style={styles.input}>
                     </TextInput>
                     <View style={styles.validateContainer}>
@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
 
     },
     input: {
+        color: COLORS.black,
         borderColor: 'red',
         borderWidth: 0.5,
         height: 40

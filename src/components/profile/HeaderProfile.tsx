@@ -18,11 +18,15 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import HeaderTitleSeller from '../../reusables/Title/HeaderTitleSeller';
 import {useSelector} from 'react-redux';
 import {ISellerState} from '../../constant/interface/sellerInterface';
+import { InterfaceAccountState } from '../../constant/interface';
 
 const HeaderProfile = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const {seller} = useSelector((state: ISellerState) => state.sellerReducer);
+  const {username} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
   // console.log(seller.seller);
   return (
     <View style={styles.container}>
@@ -99,7 +103,7 @@ const HeaderProfile = () => {
             </View>
           ) : (
             <View style={styles.infor}>
-              <Text style={styles.textName}>Quang Vinh</Text>
+              <Text style={styles.textName}>{username}</Text>
               <View style={styles.member}>
                 <FontAwesome5 name="crown" size={12} color="white" />
 

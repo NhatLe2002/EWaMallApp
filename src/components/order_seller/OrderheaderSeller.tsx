@@ -94,7 +94,7 @@ const OrderheaderSeller = () => {
         <ScrollView
           horizontal={true}
           contentContainerStyle={styles.scrollViewContent}>
-          {orderStatuss.map(product => (
+          {orderStatuss?.map(product => (
             <TouchableOpacity
               key={product.id}
               style={[

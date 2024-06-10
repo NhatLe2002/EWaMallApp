@@ -1,19 +1,24 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useCallback, useMemo, useRef} from 'react';
-import {COLORS, FONTS, SIZES} from '../../constant/theme';
-import {useNavigation} from '@react-navigation/native';
-import {formatPriceToVND} from '../../config/FixPrice';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { COLORS, FONTS, SIZES } from '../../constant/theme';
+import { useNavigation } from '@react-navigation/native';
+import { formatPriceToVND } from '../../config/FixPrice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useDispatch, useSelector } from 'react-redux';
+import { InterfaceAccountState } from '../../constant/interface';
+import { Seller } from '../../constant/types';
 
-const FooterProductDetail: React.FC<{openBottomSheet: () => void}> = ({
+const FooterProductDetail: React.FC<{ openBottomSheet: () => void, seller: Seller, price: number }> = ({ seller, price,
   openBottomSheet,
 }) => {
-  const price = 200000;
   const formattedPrice = formatPriceToVND(price);
   const navigation = useNavigation();
-
+  const dispath = useDispatch<any>();
+  const { userId } = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
   return (
     <View style={styles.container}>
       <View style={styles.containerBuy}>
@@ -39,7 +44,20 @@ const FooterProductDetail: React.FC<{openBottomSheet: () => void}> = ({
               size={18}
               color="#605F5F"
             />
-            <Text style={styles.textIcon}>Chat ngay</Text>
+            <TouchableOpacity
+              disabled={seller?.userId == userId}
+              onPress={() => navigation.navigate({
+                name: "ChatBox",
+                params: {
+                  chatInput: {
+                    userId: userId,
+                    chatId: seller.userId,
+                    username: seller.shopName
+                  },
+                }
+              } as never)}>
+              <Text style={styles.textIcon}>Chat ngay</Text>
+            </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={openBottomSheet} style={styles.containerIcon}>
             <FontAwesome5 name="cart-plus" size={18} color="#605F5F" />
@@ -50,7 +68,7 @@ const FooterProductDetail: React.FC<{openBottomSheet: () => void}> = ({
           style={styles.buttonBuy}
           onPress={ openBottomSheet}>
           <Text style={styles.textBuy}>Mua ngay</Text>
-          <Text style={{color: 'white'}}>{formattedPrice}</Text>
+          <Text style={{ color: 'white' }}>{formattedPrice}</Text>
         </TouchableOpacity>
       </View>
     </View>

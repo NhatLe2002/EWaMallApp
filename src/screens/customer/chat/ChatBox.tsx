@@ -7,7 +7,7 @@ import { getFirestore } from '@react-native-firebase/firestore'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AntDesign from "react-native-vector-icons/AntDesign"
-import { SIZES } from '../../../constant/theme'
+import { COLORS, SIZES } from '../../../constant/theme'
 import { Image } from 'react-native-elements'
 
 interface ChatSchema { _id: number; text: string; createdAt: Date; sendBy: Number; sendTo: Number; user: { _id: number; name: string; avatar: string; }; }
@@ -116,6 +116,7 @@ export default ChatBox
 
 const styles = StyleSheet.create({
     header: {
+        backgroundColor: COLORS.yellowMain,
         width: "100%",
         elevation: 5,
         height: SIZES.height / 15,
@@ -131,8 +132,8 @@ const styles = StyleSheet.create({
         borderRadius: 40,
     },
     textname : {
+        color: "black",
         marginLeft: "1%",
         fontSize: 20,
-        fontWeight: "500"
     }
 })

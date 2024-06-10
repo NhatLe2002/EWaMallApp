@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SIZES } from '../../../constant/theme'
+import { COLORS, SIZES } from '../../../constant/theme'
 import { FlatList } from 'react-native-gesture-handler'
 import { Image } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native'
@@ -22,8 +22,10 @@ const ChatHomeScreen = () => {
     storageService.getId().then(s => {
         setUserId(Number.parseInt(s?s:'' as string))
     })
+  
     const [userName, SetUserName] = useState([] as User[]);
     useEffect(() => {
+       
         const subcriber = firestore.collection("chats").doc(""+userId)
         .collection("messages").orderBy("createdAt", "desc").onSnapshot((snap) => {
             // const allMessage= snap.map(item => {
@@ -32,7 +34,6 @@ const ChatHomeScreen = () => {
             var message= snap.docs.map(item => {
                 return{...item.data(), } as ChatSchema
             }) 
-            console.log(message)
             var indexSendToId = [] as Number[]
             var distincArray = [] as ChatSchema[]
             message.forEach(element => {
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     header: {
+        backgroundColor: COLORS.yellowMain,
         width: "100%",
         elevation: 5,
         height: SIZES.height / 15,
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
         color: "black",
         fontSize: 30,
         fontWeight: '300',
-        marginLeft: "35%"
+        marginLeft: "30%"
     },
     chatItem: {
         width: SIZES.width * 0.9,
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
         fontWeight:"500",
     },
     subtext:{
-
+        color:"gray",
     },
     textcontainer : {
         marginLeft:10,

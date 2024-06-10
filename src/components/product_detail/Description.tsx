@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {SIZES} from '../../constant/theme';
+import {COLORS, SIZES} from '../../constant/theme';
 import React from 'react';
 interface Item {
   description: string;
@@ -40,7 +40,7 @@ const Description: React.FC<Item> = ({description}: Item) => {
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={{height: 'auto'}}>{description}</Text>
+      <Text style={{height: 'auto', color: COLORS.gray_1}}>{description}</Text>
     </View>
   );
 };

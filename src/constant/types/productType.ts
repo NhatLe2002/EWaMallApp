@@ -4,6 +4,7 @@ import { ProductSellDetail } from "./productSellDetail"
 type Product = {
   productName: string
   productDescription: string
+  imageUrls: string[];
   coverImageId: string
   imagesId: string
   videoId: string
@@ -12,9 +13,11 @@ type Product = {
   productSellDetails: any[]
   productSellerDetails: any[]
   productStatus: number
+  minPrice: number
   sellerId: number
   seller: any
   id: number
+  totalQuantity : number
 }
 
 type ProductCreate = {
