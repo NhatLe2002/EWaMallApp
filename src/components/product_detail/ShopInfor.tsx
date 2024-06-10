@@ -1,15 +1,17 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import { COLORS, FONTS, SIZES } from '../../constant/theme';
-import { Button, Icon } from 'react-native-elements';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {COLORS, FONTS, SIZES} from '../../constant/theme';
+import {Button, Icon} from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-const ShopInfor: React.FC = () => {
+import { Seller } from '../../constant/types';
+const ShopInfor: React.FC<{ seller: Seller }> = (seller) => {
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => navigation.navigate("ShopHome" as never)}
       >
         <View style={styles.title}>
@@ -27,16 +29,16 @@ const ShopInfor: React.FC = () => {
           <View style={styles.body_left}>
             <Image
               style={styles.avt_shop}
-              source={{ uri: 'https://picsum.photos/200/300?random=1' }}
+              source={{uri: 'https://picsum.photos/200/300?random=1'}}
             />
-            <View style={{ flexDirection: 'column', gap: 2 }}>
+            <View style={{flexDirection: 'column', gap: 2}}>
               <Text
                 style={{
                   fontSize: 15,
                   fontFamily: FONTS.inter_medium,
                   color: 'black',
                 }}>
-                Ewamall Shop
+                {seller?.seller?.shopName}
               </Text>
               <Text
                 style={{
@@ -46,7 +48,7 @@ const ShopInfor: React.FC = () => {
                 }}>
                 Online <Text>12 phút</Text> trước
               </Text>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{flexDirection: 'row'}}>
                 <Icon name="room" size={12} color="#735656" />
                 <Text
                   style={{
@@ -54,7 +56,7 @@ const ShopInfor: React.FC = () => {
                     fontFamily: FONTS.inter_regular,
                     color: '#735656',
                   }}>
-                  TP. Hồ Chí Minh
+                   {seller?.seller?.address}
                 </Text>
               </View>
             </View>
@@ -68,27 +70,27 @@ const ShopInfor: React.FC = () => {
         </View>
       </TouchableOpacity>
       <View style={styles.footer}>
-        <View style={{ flexDirection: 'row', marginRight: 20 }}>
-          <Text style={{ fontSize: 13, color: '#EAC452', fontWeight: '600' }}>
+        <View style={{flexDirection: 'row', marginRight: 20}}>
+          <Text style={{fontSize: 13, color: '#EAC452', fontWeight: '600'}}>
             99
           </Text>
-          <Text style={{ fontSize: 13, paddingLeft: 8, color: 'black' }}>
+          <Text style={{fontSize: 13, paddingLeft: 8, color: 'black'}}>
             Sản phẩm
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', marginRight: 20 }}>
-          <Text style={{ fontSize: 13, color: '#EAC452', fontWeight: '600' }}>
+        <View style={{flexDirection: 'row', marginRight: 20}}>
+          <Text style={{fontSize: 13, color: '#EAC452', fontWeight: '600'}}>
             4.9
           </Text>
-          <Text style={{ fontSize: 13, paddingLeft: 8, color: 'black' }}>
+          <Text style={{fontSize: 13, paddingLeft: 8, color: 'black'}}>
             Đánh giá
           </Text>
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={{ fontSize: 13, color: '#EAC452', fontWeight: '600' }}>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{fontSize: 13, color: '#EAC452', fontWeight: '600'}}>
             100%
           </Text>
-          <Text style={{ fontSize: 13, paddingLeft: 8, color: 'black' }}>
+          <Text style={{fontSize: 13, paddingLeft: 8, color: 'black'}}>
             Phản hồi
           </Text>
         </View>

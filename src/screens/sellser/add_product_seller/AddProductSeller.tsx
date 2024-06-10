@@ -142,7 +142,6 @@ const AddProductSeller = () => {
       console.log(areAllFieldsEmpty(productCreateError));
       dispatch(createProduct(data));
       uploadImagesToFirebase(imageProductList, productCreate.imagesId)
-      dispatch(getProductsBySellerId(seller?.seller?.id));
       dispatch(setImageUrisArray([]));
       dispatch(resetProductCreate());
       setModalVisible(true);
@@ -160,8 +159,9 @@ const AddProductSeller = () => {
     const errorValues = Object.values(errorObject);
     return errorValues.every(value => value === '');
   };
-  const handleSubmitCreate = () => {
+  const handleSubmitCreate = async () => {
     setModalVisible(false);
+    await dispatch(getProductsBySellerId(seller?.seller?.id));
     navigation.navigate('ProductSeller' as never);
   };
   return (

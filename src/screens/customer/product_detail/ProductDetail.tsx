@@ -1,24 +1,24 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { COLORS, FONTS, SIZES } from '../../../constant/theme';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {COLORS, FONTS, SIZES} from '../../../constant/theme';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import TitleProduct from '../../../components/product_detail/TitleProduct';
 import DeliveryPrice from '../../../components/product_detail/DeliveryPrice';
 import ShopInfor from '../../../components/product_detail/ShopInfor';
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import ProductList from '../../../reusables/list_item/ProductList';
 import SuggestProduct from '../../../components/product_detail/SuggestProduct';
 import Description from '../../../components/product_detail/Description';
 import RatingProduct from '../../../components/product_detail/RatingProduct';
 import HeaderSearch from '../../../components/product_detail/HeaderSearch';
 import FooterProductDetail from '../../../components/product_detail/FooterProductDetail';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {
   InterfaceAccountState,
   InterfaceProductState,
 } from '../../../constant/interface';
-import { getProductById } from '../../../redux/slice/productSlices';
+import {getProductById} from '../../../redux/slice/productSlices';
 
 import {
   BottomSheetModal,
@@ -26,10 +26,10 @@ import {
   BottomSheetModalProvider,
   BottomSheetFooter,
 } from '@gorhom/bottom-sheet';
-import { BottomSheetDefaultFooterProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types';
-import { formatPriceToVND } from '../../../config/FixPrice';
-import { addToCart } from '../../../redux/slice/cartSlice';
-import { Product, productSellerDetails } from '../../../constant/types';
+import {BottomSheetDefaultFooterProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types';
+import {formatPriceToVND} from '../../../config/FixPrice';
+import {addToCart} from '../../../redux/slice/cartSlice';
+import {Product, productSellerDetails} from '../../../constant/types';
 import {
   listFilesInProductFolder,
   updateProductDetailWithImages,
@@ -38,12 +38,12 @@ import {
 
 const ProductDetail = () => {
   const route = useRoute<any>();
-  const { productId } = route.params;
+  const {productId} = route.params;
   const scrollViewRef = useRef<ScrollView>(null);
-  const { product } = useSelector(
+  const {product} = useSelector(
     (state: InterfaceProductState) => state.productReducer,
   );
-  const { userId } = useSelector(
+  const {userId} = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
   );
 
@@ -59,12 +59,11 @@ const ProductDetail = () => {
   } | null>(null);
   const [updatedProduct, setUpdatedProduct] = useState<Product>();
   const updateSelectedProduct = (id: number, quantity: number) => {
-    setSelectedProduct({ id, quantity });
+    setSelectedProduct({id, quantity});
   };
   useEffect(() => {
     dispatch(getProductById(productId));
-    // console.log(productId, JSON.stringify(product, null,2));
-    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+    scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: true});
   }, [productId]);
 
   useEffect(() => {
@@ -82,7 +81,7 @@ const ProductDetail = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   let totalInventoryNumber = 0;
-  product?.productSellerDetails?.map((item: { inventoryNumber: number }) => {
+  product?.productSellerDetails?.map((item: {inventoryNumber: number}) => {
     totalInventoryNumber += item.inventoryNumber;
   });
   // callbacks
@@ -111,7 +110,8 @@ const ProductDetail = () => {
       closeModal();
     }
   };
-  console.log(updatedProduct?.imageUrls);
+  // console.log(updatedProduct?.imageUrls);
+  const priceProp = product?.productSellerDetails.length > 1 ? product?.productSellerDetails.find((s: productSellerDetails) => s.path === '/B/1').price : product?.productSellerDetails[0].price
   const footerAddProduct = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -121,7 +121,7 @@ const ProductDetail = () => {
               handleAddToCart();
             }}
             style={styles.buttonFooterAddProduct}>
-            <Text style={{ color: 'white', fontSize: 17 }}>
+            <Text style={{color: 'white', fontSize: 17}}>
               Thêm vào Giỏ hàng
             </Text>
           </TouchableOpacity>
@@ -157,12 +157,12 @@ const ProductDetail = () => {
 
           <TitleProduct
             productName={product?.productName}
-            price={product?.productSellerDetails.length > 1 ? product?.productSellerDetails.find((s: productSellerDetails) => s.path === '/B/1').price : product?.productSellerDetails[0].price}
+            price={priceProp}
           />
           <DeliveryPrice />
-          <ShopInfor />
+          <ShopInfor seller={product?.seller}/>
           <SuggestProduct />
-          <Description description= {product?.productDescription} />
+          <Description description={product?.productDescription} />
           <RatingProduct />
           <View>
             <Text
@@ -181,7 +181,7 @@ const ProductDetail = () => {
             <ProductList />
           </View>
         </ScrollView>
-        <FooterProductDetail openBottomSheet={handlePresentModalPress} />
+        <FooterProductDetail openBottomSheet={handlePresentModalPress}  seller={product?.seller} price={priceProp}/>
 
         <View style={styles.container}>
           <BottomSheetModal
@@ -204,17 +204,17 @@ const ProductDetail = () => {
                     paddingBottom: '3%',
                   }}>
                   <Image
-                    source={{ uri: 'https://picsum.photos/200/300?random=1' }}
-                    style={{ width: SIZES.width / 6, height: SIZES.height / 10 }}
+                    source={{uri: 'https://picsum.photos/200/300?random=1'}}
+                    style={{width: SIZES.width / 6, height: SIZES.height / 10}}
                   />
                   <View>
-                    <Text style={{ color: COLORS.price_red }}>
+                    <Text style={{color: COLORS.price_red}}>
                       {selectedPrice !== null
                         ? formatPriceToVND(selectedPrice)
                         : ''}
                     </Text>
 
-                    <Text style={{ color: COLORS.gray_2 }}>
+                    <Text style={{color: COLORS.gray_2}}>
                       Kho: {totalInventoryNumber}
                     </Text>
                   </View>
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '3%',
     paddingVertical: '2%',
     shadowColor: COLORS.border_product,
-    shadowOffset: { width: 0, height: -4 },
+    shadowOffset: {width: 0, height: -4},
     shadowOpacity: 1,
     shadowRadius: 5,
     flex: 1,

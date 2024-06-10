@@ -15,7 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {InterfaceAccountState} from '../../constant/interface';
 const HeaderHome: React.FC = () => {
-  const {isLogin, username} = useSelector(
+  const {isLogin, username, userId} = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
   );
   const navigation = useNavigation<any>();
@@ -30,7 +30,7 @@ const HeaderHome: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>
         <ReusableText
-          text={isLogin ? `Xin chào, ${username}` : 'Chào mừng bạn'}
+          text={isLogin ?  `Xin chào, ${username}`: "Chào mừng bạn"}
           size={23}
           color={COLORS.white}
           font={FONTS.inter_bold}
