@@ -45,7 +45,7 @@ const FooterProductDetail: React.FC<{ openBottomSheet: () => void, seller: Selle
               color="#605F5F"
             />
             <TouchableOpacity
-              disabled={seller.userId == userId}
+              disabled={seller?.userId == userId}
               onPress={() => navigation.navigate({
                 name: "ChatBox",
                 params: {

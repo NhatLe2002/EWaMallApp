@@ -54,14 +54,14 @@ export const updateProductDetailWithImages = async (product: ProductVinh) => {
 
     return { ...product, imageUrls };
   } catch (error) {
-    console.error(`Error updating product with ID ${product.imagesId}:`, error);
+    console.error(`Error updating product with ID ${product?.imagesId}:`, error);
     // Trong trường hợp lỗi, trả về sản phẩm ban đầu không thay đổi
     return product;
   }
 };
 export const updateProductDetaiNhatlWithImages = async (product: ProductNhat) => {
   try {
-    const imageUrls = await listFilesInProductFolder(product.imagesId);
+    const imageUrls = await listFilesInProductFolder(product?.imagesId);
 
     return { ...product, imageUrls };
   } catch (error) {
