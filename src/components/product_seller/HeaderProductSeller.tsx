@@ -56,7 +56,7 @@ const HeaderProductSeller = () => {
     const activeProducts = filterProductsByStatus(selectedId);
     setProductListFilter(activeProducts);
     // console.log(JSON.stringify(productListFilter, null, 2));
-    console.log(productListFilter?.length);
+    // console.log(productListFilter?.length);
     dispatch(setProductListRenderRedux(activeProducts));
     // console.log(JSON.stringify(productListRenderRedux, null, 2));
   }, [selectedId, productList]);

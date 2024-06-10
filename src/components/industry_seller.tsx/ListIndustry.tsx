@@ -120,10 +120,10 @@ const ListIndustry = () => {
                         key={industry.id}
                         onPress={() => { handleSelectIndustry(industry); }}
                     >
-                        <Text style = {{color : COLORS.black}}>
+                        <Text style={{ color: COLORS.black }}>
                             {industry.industryName}
                         </Text>
-                        <MaterialIcons name='navigate-next' size={20} />
+                        {industry.isLeaf === false ? (<MaterialIcons name='navigate-next' size={20} />) : ('')}
                     </TouchableOpacity>
                 ))}
             </ScrollView>
@@ -135,6 +135,8 @@ export default ListIndustry
 
 const styles = StyleSheet.create({
     container: {
+        marginHorizontal: 10,
+
         flexDirection: 'column'
     },
     headerList: {
@@ -146,6 +148,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     touchable: {
+        minWidth: 100,
         marginRight: 20,
         padding: 10,
         backgroundColor: '#f0f0f0',
@@ -173,7 +176,8 @@ const styles = StyleSheet.create({
     touchableDetail: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingVertical: 10,
+        paddingBottom: 10,
+        paddingTop: 20,
         borderBottomWidth: 1,
         borderBottomColor: '#cececeb5'
     },
