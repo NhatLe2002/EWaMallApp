@@ -15,6 +15,9 @@ type Product = {
   sellerId: number
   seller: any
   id: number
+  minPrice : number
+  totalQuantity : number
+  imageUrls : string
 }
 
 type ProductCreate = {
