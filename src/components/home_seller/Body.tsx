@@ -10,7 +10,9 @@ const Body = () => {
   const navigation = useNavigation();
   return (
     <View>
-      <BodyTitle titleLeft='Tiện ích' titleRight='' />
+      <View style = {{marginBottom: 5}}>
+        <BodyTitle titleLeft='Tiện ích' titleRight='' />
+      </View>
       <View>
         <TouchableOpacity
           style={styles.item}

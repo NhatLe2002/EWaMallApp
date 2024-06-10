@@ -20,13 +20,12 @@ const SellerHome = () => {
         <HeaderProfile />
       </View >
       <View style={styles.body}>
-        <View style={{ height: '20%' }}>
+        <View >
           <OrderStatusList />
         </View>
-        <View style={{ height: '55%', marginTop: 20 }}>
+        <View style={{ marginTop: 20 }}>
           <Body />
         </View>
-
       </View>
       <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
         <BodyTitle titleLeft='Phân tích' titleRight='Hôm nay >' />
@@ -43,7 +42,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   body: {
-    height: SIZES.height / 2.2,
     marginHorizontal: 15,
     flexDirection: 'column',
   }

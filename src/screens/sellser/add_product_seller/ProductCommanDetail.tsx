@@ -21,10 +21,10 @@ const ProductCommanDetail = () => {
     const [classification, setClassification] = useState<Classification[]>([]);
     useEffect(() => {
         setClassification(classificationRedux);
-        console.log(classificationRedux)
+        // console.log(classificationRedux)
     }, [classificationRedux])
     useEffect(() => {
-        console.log(classificationRedux)
+        // console.log(classificationRedux)
         setProductCommanList([]);
         if (classification.length === 2) {
             const newProductCommanList: ProductSellCommand[] = [];
@@ -106,7 +106,7 @@ const ProductCommanDetail = () => {
         // console.log(classification.length + classification[0].value.length)
         // console.log(innerIndex);
         updatedList[combinedIndex][field] = value;
-        console.log(JSON.stringify(updatedList, null,2));
+        // console.log(JSON.stringify(updatedList, null,2));
         setProductCommanList(updatedList);
         // console.log(JSON.stringify(productCommanList, null, 2));
     };
