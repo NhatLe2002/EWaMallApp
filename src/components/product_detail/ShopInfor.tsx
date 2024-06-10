@@ -8,16 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Seller } from '../../constant/types';
 const ShopInfor: React.FC<{ seller: Seller }> = (seller) => {
   const navigation = useNavigation();
-  var dispatch = useDispatch<any>();
-  const {product} = useSelector(
-    (state: InterfaceProductState) => state.productReducer,
-  );
-  const [product1, setProduct1] = useState<Product>();
-
-  useEffect(() => {
-    dispatch(getProductById(id));
-    setProduct1(product);
-  }, [dispatch]);
 
   return (
     <View style={styles.container}>
@@ -48,7 +38,7 @@ const ShopInfor: React.FC<{ seller: Seller }> = (seller) => {
                   fontFamily: FONTS.inter_medium,
                   color: 'black',
                 }}>
-                {seller.seller.shopName}
+                {seller?.seller?.shopName}
               </Text>
               <Text
                 style={{
@@ -66,7 +56,7 @@ const ShopInfor: React.FC<{ seller: Seller }> = (seller) => {
                     fontFamily: FONTS.inter_regular,
                     color: '#735656',
                   }}>
-                   {seller.seller.address}
+                   {seller?.seller?.address}
                 </Text>
               </View>
             </View>
