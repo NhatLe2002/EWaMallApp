@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { InterfaceAccountState } from '../../constant/interface';
 import { Seller } from '../../constant/types';
 
-const FooterProductDetail: React.FC<{ openBottomSheet: () => void, seller : Seller, price: number  }> = ({ seller, price,
+const FooterProductDetail: React.FC<{ openBottomSheet: () => void, seller: Seller, price: number }> = ({ seller, price,
   openBottomSheet,
 }) => {
   const formattedPrice = formatPriceToVND(price);
@@ -45,6 +45,7 @@ const FooterProductDetail: React.FC<{ openBottomSheet: () => void, seller : Sell
               color="#605F5F"
             />
             <TouchableOpacity
+              disabled={seller.userId == userId}
               onPress={() => navigation.navigate({
                 name: "ChatBox",
                 params: {

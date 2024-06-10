@@ -13,6 +13,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {InterfaceProductState} from '../../constant/interface/productInterface';
 import {
   getProductsBySellerId,
+  setProductListFilterRedux,
   setProductListRenderRedux,
 } from '../../redux/slice/seller/productSellerSlice';
 import {Product} from '../../constant/types/productType';
@@ -58,12 +59,15 @@ const HeaderProductSeller = () => {
     // console.log(JSON.stringify(productListFilter, null, 2));
     // console.log(productListFilter?.length);
     dispatch(setProductListRenderRedux(activeProducts));
+
+    dispatch(setProductListFilterRedux(productListFilter));
     // console.log(JSON.stringify(productListRenderRedux, null, 2));
   }, [selectedId, productList]);
 
   useEffect(() => {
     dispatch(getProductsBySellerId(seller?.seller?.id));
-  }, []);
+    
+  }, [dispatch]);
 
   //filter product
   const filterProductsByStatus = (status: number): Product[] => {

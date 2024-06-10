@@ -59,19 +59,19 @@ const ProductListSeller = () => {
         ]);
     };
 
-    useEffect(() => {
-        const fetchProductImages = async () => {
-            if (productList) {
-                const filteredList = productList.filter(
-                    (product: Product) => product.productStatus === 1,
-                );
-                const updatedList = await updateProductListWithImages(filteredList);
-                setUpdatedProductList(updatedList);
-            }
-        };
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      if (productListRenderRedux) {
+        const filteredList = productListRenderRedux.filter(
+          (product: Product) => product.productStatus === 1,
+        );
+        const updatedList = await updateProductListWithImages(filteredList);
+        setUpdatedProductList(updatedList);
+      }
+    };
 
-        fetchProductImages();
-    }, [productList]);
+    fetchProductImages();
+  }, [productListRenderRedux]);
 
     const renderItem = ({ item }: { item: Product }) => (
         <View>
@@ -91,7 +91,7 @@ const ProductListSeller = () => {
                         <View style={styles.productNameContainer}>
                             <Text style={styles.productName}>{item.productName}</Text>
                         </View>
-                        <TouchableOpacity onPress={() => confirmBox(item.id, 0)}>
+                        <TouchableOpacity onPress={() => confirmBox(item.id, 5)}>
                             <Iconions name="trash" color={COLORS.black} size={25} />
                         </TouchableOpacity>
                     </View>

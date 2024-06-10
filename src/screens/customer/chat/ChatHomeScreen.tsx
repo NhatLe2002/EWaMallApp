@@ -22,8 +22,10 @@ const ChatHomeScreen = () => {
     storageService.getId().then(s => {
         setUserId(Number.parseInt(s?s:'' as string))
     })
+  
     const [userName, SetUserName] = useState([] as User[]);
     useEffect(() => {
+       
         const subcriber = firestore.collection("chats").doc(""+userId)
         .collection("messages").orderBy("createdAt", "desc").onSnapshot((snap) => {
             // const allMessage= snap.map(item => {
@@ -32,7 +34,6 @@ const ChatHomeScreen = () => {
             var message= snap.docs.map(item => {
                 return{...item.data(), } as ChatSchema
             }) 
-            console.log(message)
             var indexSendToId = [] as Number[]
             var distincArray = [] as ChatSchema[]
             message.forEach(element => {

@@ -20,6 +20,7 @@ const initialState: InterfaceProductState = {
     productSellDetails: [],
     productSellCommand: [],
   },
+  productListFilter : null,
   product: null,
   error: null,
   loading: false,
@@ -91,6 +92,12 @@ const productSellerSlice = createSlice({
     ) => {
       state.productListRenderRedux = action.payload;
     },
+    setProductListFilterRedux: (
+      state,
+      action: PayloadAction<Product[] | null>,
+    ) => {
+      state.productListFilter = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -119,5 +126,5 @@ const productSellerSlice = createSlice({
     });
   },
 });
-export const {setProductListRenderRedux} = productSellerSlice.actions;
+export const {setProductListRenderRedux,setProductListFilterRedux} = productSellerSlice.actions;
 export default productSellerSlice.reducer;
