@@ -44,7 +44,7 @@ const ProductList = () => {
       const updatedList = await updateProductListWithImages(productList);
       setUpdatedProductList(updatedList);
     };
-
+    // console.log("sdfsd")
     fetchProductImages();
   }, [productList]);
 

@@ -1,6 +1,7 @@
 import { getDownloadURL, listAll, ref } from 'firebase/storage';
 import { storage } from '../config/FirbaseConfig';
-import { Product } from '../constant/types';
+import { Product as ProductVinh } from '../constant/types';
+import { Product as ProductNhat } from '../constant/types/productType';
 
 export const listFilesInProductFolder = async (imagesId: string): Promise<string[]> => {
     const productFolderRef = ref(storage, `products/${imagesId}/`);
@@ -18,7 +19,21 @@ export const listFilesInProductFolder = async (imagesId: string): Promise<string
       return [];
     }
   };
-  export const updateProductListWithImages = async (productList: Product[]) => {
+  export const updateProductListWithImages = async (productList: ProductVinh[]) => {
+    const updatedProductList = await Promise.all(productList.map(async (product) => {
+      try {
+        const imageUrls = await listFilesInProductFolder(product.imagesId);
+        return { ...product, imageUrls };
+      } catch (error) {
+        console.error(`Error updating product with ID ${product.imagesId}:`, error);
+        // Trong trường hợp lỗi, trả về sản phẩm ban đầu không thay đổi
+        return product;
+      }
+    }));
+  
+    return updatedProductList;
+  };
+  export const updateProductListNhatWithImages = async (productList: ProductNhat[]) => {
     const updatedProductList = await Promise.all(productList.map(async (product) => {
       try {
         const imageUrls = await listFilesInProductFolder(product.imagesId);
@@ -33,7 +48,18 @@ export const listFilesInProductFolder = async (imagesId: string): Promise<string
     return updatedProductList;
   };
   
-  export const updateProductDetailWithImages = async (product: Product) => {
+  export const updateProductDetailWithImages = async (product: ProductVinh) => {
+    try {
+      const imageUrls = await listFilesInProductFolder(product.imagesId);
+
+      return { ...product, imageUrls };
+    } catch (error) {
+      console.error(`Error updating product with ID ${product.imagesId}:`, error);
+      // Trong trường hợp lỗi, trả về sản phẩm ban đầu không thay đổi
+      return product;
+    }
+  };
+  export const updateProductDetaiNhatlWithImages = async (product: ProductNhat) => {
     try {
       const imageUrls = await listFilesInProductFolder(product.imagesId);
 

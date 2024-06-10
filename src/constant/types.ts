@@ -1,9 +1,9 @@
 type UserInformation = {
   name: string;
   dateOfBirth: string;
-  gender: number; 
+  gender: number;
   address: string;
-  imageId: string; 
+  imageId: string;
 };
 
 type RegisterUser = {
@@ -76,13 +76,27 @@ type Product = {
   industryId: number;
   industry: Industry;
   productSellDetails: any[];
-  productSellerDetails: any[];
+  productSellerDetails: productSellerDetails[];
   sellerId: number;
   seller: Seller;
   minPrice: number;
   sellerAddress?: String;
   id: number;
 };
+export type productSellerDetails = {
+  name: string
+  price: any
+  inventory: any
+  inventoryNumber: number
+  path: string
+  parentNodeId: any
+  parentNode: any
+  localId: number
+  productId: number
+  feedBacks: any
+  carts: any
+  id: number
+}
 
 // cart
 type CartProductTypes = {

@@ -145,18 +145,29 @@ const ProductComman = () => {
                             onChangeText={setNewType}
                             style={styles.input}
                         />
-                        <TouchableOpacity
-                            onPress={handleTypeSubmit}
-                        >
-                            <Text>
-                                Thêm
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setIsTypeModalVisible(false)}>
-                            <Text>
-                                Hủy
-                            </Text>
-                        </TouchableOpacity>
+                        <View
+                            style={{
+                                width: '100%',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-around'
+                            }}>
+                            <TouchableOpacity
+                                style={styles.buttonModal}
+                                onPress={handleTypeSubmit}
+                            >
+                                <Text style={{ color: COLORS.black }}>
+                                    Thêm
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttonModal}
+                                onPress={() => setIsTypeModalVisible(false)}>
+                                <Text style={{ color: COLORS.black }}>
+                                    Hủy
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -169,18 +180,29 @@ const ProductComman = () => {
                             onChangeText={setNewValue}
                             style={styles.input}
                         />
-                        <TouchableOpacity
-                            onPress={handleValueSubmit}
-                        >
-                            <Text>
-                                Thêm
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setIsValueModalVisible(false)}>
-                            <Text>
-                                Hủy
-                            </Text>
-                        </TouchableOpacity>
+                        <View
+                            style={{
+                                width: '100%',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-around'
+                            }}>
+                            <TouchableOpacity
+                                style={styles.buttonModal}
+                                onPress={handleValueSubmit}
+                            >
+                                <Text style={{ color: COLORS.black }}>
+                                    Thêm
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttonModal}
+                                onPress={() => setIsValueModalVisible(false)}>
+                                <Text style={{ color: COLORS.black }}>
+                                    Hủy
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -281,6 +303,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     input: {
+        color: COLORS.black,
         width: '100%',
         borderWidth: 1,
         borderColor: '#ddd',
@@ -298,5 +321,10 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 20,
         color: 'red',
+    },
+    buttonModal: {
+        paddingVertical: 10,
+        paddingHorizontal: 25,
+        backgroundColor: COLORS.yellow,
     }
 })
