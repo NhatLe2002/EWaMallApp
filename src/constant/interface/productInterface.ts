@@ -5,6 +5,7 @@ interface InterfaceProductState {
   productSellerReducer?: any;
   productList: Product[];
   productListRenderRedux: Product[] | null;
+  productListFilter: Product[] | null;
   productCreate: ProductCreate ;
   product: Product | null;
   error: string | null;

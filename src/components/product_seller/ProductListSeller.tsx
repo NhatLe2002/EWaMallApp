@@ -61,8 +61,8 @@ const ProductListSeller = () => {
 
   useEffect(() => {
     const fetchProductImages = async () => {
-      if (productList) {
-        const filteredList = productList.filter(
+      if (productListRenderRedux) {
+        const filteredList = productListRenderRedux.filter(
           (product: Product) => product.productStatus === 1,
         );
         const updatedList = await updateProductListWithImages(filteredList);
@@ -71,7 +71,7 @@ const ProductListSeller = () => {
     };
 
     fetchProductImages();
-  }, [productList]);
+  }, [productListRenderRedux]);
 
   const renderItem = ({item}: {item: Product}) => (
     <View>
