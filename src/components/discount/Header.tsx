@@ -9,7 +9,7 @@ const Header: React.FC = () => {
 
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.navigate('Home' as never)}>
         <Feather name="arrow-left" size={24} color={COLORS.primary} />
       </TouchableOpacity>
       <Text style={styles.headerTitle}>Mã Giảm Giá</Text>
@@ -18,7 +18,9 @@ const Header: React.FC = () => {
       </TouchableOpacity>
     </View>
   );
-};
+}
+
+export default Header;
 
 const styles = StyleSheet.create({
   header: {
@@ -42,5 +44,3 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
 });
-
-export default Header;

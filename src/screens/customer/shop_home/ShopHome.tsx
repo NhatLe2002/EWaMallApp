@@ -43,9 +43,9 @@ const ShopHome = () => {
             </TouchableOpacity>
         );
     };
-    const renderProductItem = ({ item }: { item: Product }) => (
 
-        <View>
+    const renderProductItem = ({ item }: { item: Product }) => (
+        <View style={styles.productItemWrapper}>
             <TouchableOpacity
                 style={styles.productItem}
                 onPress={() => {
@@ -55,23 +55,21 @@ const ShopHome = () => {
                     style={styles.productImage}
                     source={require('../../../assets/images/ProductShopHome.png')}
                 />
-                <View>
-                    <View>
-                        <Text style={{ color: COLORS.black, fontFamily: FONTS.inter_medium, }}>
-                            {item.productName}
-                        </Text>
-                    </View>
+                <View style={styles.productTextContainer}>
+                    <Text
+                        style={{ color: COLORS.black, fontFamily: FONTS.inter_medium }}
+                        numberOfLines={2}
+                        ellipsizeMode="tail"
+                    >
+                        {item.productName}
+                    </Text>
                     <View style={styles.detailProductContainner}>
-                        <View>
-                            <Text style={{ color: COLORS.price, fontSize: 15 }}>
-                                Giá: 123123
-                            </Text>
-                        </View>
-                        <View style={{ marginLeft: 20 }}>
-                            <Text style={{ color: COLORS.black, fontFamily: FONTS.inter_medium, fontSize: 12 }}>
-                                Đá bán: 25
-                            </Text>
-                        </View>
+                        <Text style={{ color: COLORS.price, fontSize: 15 }}>
+                            Giá: {item.price}
+                        </Text>
+                        <Text style={{ color: COLORS.black, fontFamily: FONTS.inter_medium, fontSize: 12 }}>
+                            Đã bán: {item.sold}
+                        </Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -112,7 +110,7 @@ const ShopHome = () => {
                         </Text>
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
-                        <View style = {{marginVertical: 5}}>
+                        <View style={{ marginVertical: 5 }}>
                             <BodyTitle titleLeft='Sản phẩm bán chạy' titleRight='Xem tất cả' />
                         </View>
                         <FlatList
@@ -161,8 +159,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         paddingVertical: 10,
     },
-    avatar: {
-    },
+    avatar: {},
     descriptionContainner: {
         height: 150,
         backgroundColor: '#BBAC87',
@@ -186,21 +183,31 @@ const styles = StyleSheet.create({
         color: COLORS.black,
     },
 
-    //product iteam
+    //product item
+    productItemWrapper: {
+        margin: 5,
+    },
     productItem: {
         backgroundColor: COLORS.white,
         flexDirection: 'column',
         alignItems: 'flex-start',
-        margin: 5,
         borderWidth: 0.5,
         borderColor: COLORS.gray_1,
         padding: 3,
+        width: 150, // Đặt chiều rộng cố định cho các mục sản phẩm
+        height: 250, // Đặt chiều cao cố định cho các mục sản phẩm
+        justifyContent: 'space-between',
+    },
+    productTextContainer: {
+        padding: 5,
+        maxWidth: 150, // Giới hạn chiều rộng cho văn bản sản phẩm
     },
     detailProductContainner: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     productImage: {
         height: 150,
+        width: 150, // Đặt chiều rộng cố định cho hình ảnh
     }
 });
