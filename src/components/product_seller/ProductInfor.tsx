@@ -10,6 +10,7 @@ import { InterfaceProductState } from '../../constant/interface/productInterface
 import { ProductSellCommand } from '../../constant/types/productSellCommand';
 import { setProductCreateField } from '../../redux/slice/form/formCreateProductBySellerSlice';
 import { IFormProductCreateState } from '../../constant/interface/formCreateProductInterface';
+import { COLORS } from '../../constant/theme';
 
 const DefaultProductSellCommand: ProductSellCommand[] = [
     {
@@ -63,19 +64,19 @@ const ProductInfor = () => {
                 onPress={() => navigation.navigate("ProductComman" as never)}
                 style={styles.industryContainer}>
                 <View style={styles.industryItem}>
-                    <AntDesign name='menuunfold' size={20} />
+                    <AntDesign name='menuunfold' size={20} color={COLORS.gray_1} />
                     <Text style={styles.text}>Phân loại hàng</Text>
                 </View>
                 {false ? (
-                    <Text >{ }</Text>
-                ) : <MaterialIcons name='navigate-next' size={20} />}
+                    <Text style = {{color: COLORS.black}}> Chỉnh sửa</Text>
+                ) : <MaterialIcons name='navigate-next' size={20}  color={COLORS.gray_1}/>}
             </TouchableOpacity>
 
             {productCommanList.length === 1 && productCommanList[0].name === "Không" ? (
                 <View>
                     <View style={styles.priceContainer}>
                         <View style={styles.industryItem}>
-                            <Ionicons name='pricetags-outline' size={20} />
+                            <Ionicons name='pricetags-outline' size={20} color={COLORS.gray_1}/>
                             <Text style={styles.text}>Giá</Text>
                         </View>
                         <TextInput
@@ -89,7 +90,7 @@ const ProductInfor = () => {
                     </View>
                     <View style={styles.deliveryContainer}>
                         <View style={styles.industryItem}>
-                            <MaterialIcons name='inventory' size={20} />
+                            <MaterialIcons name='inventory' size={20} color={COLORS.gray_1}/>
                             <Text style={styles.text}>Kho hàng</Text>
                         </View>
                         <TextInput
@@ -104,7 +105,7 @@ const ProductInfor = () => {
                 <View>
                     <View style={styles.priceContainer}>
                         <View style={styles.industryItem}>
-                            <Ionicons name='pricetags-outline' size={20} />
+                            <Ionicons name='pricetags-outline' size={20} color={COLORS.gray_1} />
                             <Text style={styles.text}>Giá</Text>
                         </View>
                         <View>
@@ -115,7 +116,7 @@ const ProductInfor = () => {
                     </View>
                     <View style={styles.deliveryContainer}>
                         <View style={styles.industryItem}>
-                            <MaterialIcons name='inventory' size={20} />
+                            <MaterialIcons name='inventory' size={20} color={COLORS.gray_1}/>
                             <Text style={styles.text}>Kho hàng</Text>
                         </View>
                         <View>
@@ -164,9 +165,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     text: {
+        color: COLORS.black,
         marginLeft: 10
     },
     priceInput: {
+        color: COLORS.black,
         textAlign: 'right',
         borderWidth: 1,
         borderColor: '#8f8f8fb5',
@@ -180,6 +183,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     quantityInput: {
+        color: COLORS.black,
         textAlign: 'right',
         borderWidth: 1,
         borderColor: '#8f8f8fb5',

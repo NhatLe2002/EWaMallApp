@@ -13,7 +13,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {InterfaceProductState} from '../../constant/interface';
+import {
+  InterfaceAccountState,
+  InterfaceProductState,
+} from '../../constant/interface';
 import {Product} from '../../constant/types';
 
 import {fetchAllProducts} from '../../redux/slice/productSlices';
@@ -27,7 +30,9 @@ const ProductList = () => {
   const {productList} = useSelector(
     (state: InterfaceProductState) => state.productReducer,
   );
-
+  const {isLogin} = useSelector(
+    (state: InterfaceAccountState) => state.accountReducer,
+  );
   const [updatedProductList, setUpdatedProductList] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -42,13 +47,19 @@ const ProductList = () => {
 
     fetchProductImages();
   }, [productList]);
+
+  const handleNaviProduct = (data:number) => {
+    if (isLogin) {
+      navigation.navigate('ProductDetail', {productId: data});
+    } else {
+      navigation.navigate('Login');
+    }
+  };
   const renderItem = ({item}: {item: Product}) => {
     return (
       <View style={styles.product}>
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('ProductDetail', {productId: item.id});
-          }}>
+          onPress={() => handleNaviProduct(item.id)}>
           <Image
             style={styles.image}
             source={{

@@ -18,7 +18,16 @@ const HeaderHome: React.FC = () => {
   const {isLogin} = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
   );
-  const navigation = useNavigation()
+  const navigation = useNavigation<any>()
+  const handleNaviSearch = () => {
+    if (isLogin) {
+   
+      navigation.navigate('Cart');
+    } else {
+    
+      navigation.navigate('Login');
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>
@@ -60,7 +69,7 @@ const HeaderHome: React.FC = () => {
           </>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('Cart' as never)}>
+        <TouchableOpacity onPress={handleNaviSearch}>
           <Feather name="shopping-cart" size={25} color="white" />
           <Badge
             value={10}

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import HeaderCommon from '../../../reusables/header/HeaderCommon';
 import {COLORS, SIZES} from '../../../constant/theme';
 import {FlatList} from 'react-native-gesture-handler';
@@ -70,17 +70,24 @@ const OrderScreen: React.FC = () => {
       return <DeliveryOrder item={item} />;
     }
     if (activeTabs === 'successOrders') {
-      return <SuccessOrder  item={item}/>;
+      return <SuccessOrder item={item} />;
     }
     if (activeTabs === 'cancelOrd') {
-      return <CancelOrder item={item}/>;
+      return <CancelOrder item={item} />;
     }
     if (activeTabs === 'refundOrders') {
-      return <RefundOrder  item={item}/>;
+      return <RefundOrder item={item} />;
     }
     return null;
   };
-
+  useEffect(() => {}, [
+    pendingOrders,
+    waitingOrders,
+    deliveryOrders,
+    successOrders,
+    cancelOrd,
+    refundOrders,
+  ]);
   return (
     <View style={styles.container}>
       <HeaderCommon
@@ -90,79 +97,91 @@ const OrderScreen: React.FC = () => {
         backgroundColor={COLORS.white}
         icon1="search"
       />
-      <ScrollView
-        horizontal
-        style={{zIndex: 2}}
-        contentContainerStyle={styles.headerList}
-        showsHorizontalScrollIndicator={false}>
-        <TouchableOpacity
-          style={[
-            styles.buttonHeader,
-            activeTabs === 'pendingOrders' && styles.activeTab,
-          ]}
-          onPress={() => handleTabPress('pendingOrders')}>
-          <Text
-            style={[activeTabs === 'pendingOrders' && styles.textActiveTab]}>
-            Chờ xác nhận
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.buttonHeader,
-            activeTabs === 'waitingOrders' && styles.activeTab,
-          ]}
-          onPress={() => handleTabPress('waitingOrders')}>
-          <Text
-            style={[activeTabs === 'waitingOrders' && styles.textActiveTab]}>
-            Chờ lấy hàng
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.buttonHeader,
-            activeTabs === 'deliveryOrders' && styles.activeTab,
-          ]}
-          onPress={() => handleTabPress('deliveryOrders')}>
-          <Text
-            style={[activeTabs === 'deliveryOrders' && styles.textActiveTab]}>
-            Đang giao
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.buttonHeader,
-            activeTabs === 'successOrders' && styles.activeTab,
-          ]}
-          onPress={() => handleTabPress('successOrders')}>
-          <Text
-            style={[activeTabs === 'successOrders' && styles.textActiveTab]}>
-            Đã giao
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.buttonHeader,
-            activeTabs === 'cancelOrd' && styles.activeTab,
-          ]}
-          onPress={() => handleTabPress('cancelOrd')}>
-          <Text style={[activeTabs === 'cancelOrd' && styles.textActiveTab]}>
-            Đã huỷ
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.buttonHeader,
-            activeTabs === 'refundOrders' && styles.activeTab,
-          ]}
-          onPress={() => handleTabPress('refundOrders')}>
-          <Text style={[activeTabs === 'refundOrders' && styles.textActiveTab]}>
-            Trả hàng
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
+      <View
+        style={{
+          backgroundColor: 'white',
+          zIndex: 2,
+          height: SIZES.height / 20,
+        }}>
+        <ScrollView
+          horizontal
+          style={{zIndex: 2}}
+          scrollEnabled
+  
+          showsHorizontalScrollIndicator={false}>
+          <TouchableOpacity
+            style={[
+              styles.buttonHeader,
+              activeTabs === 'pendingOrders' && styles.activeTab,
+            ]}
+            onPress={() => handleTabPress('pendingOrders')}>
+            <Text
+              style={[activeTabs === 'pendingOrders' && styles.textActiveTab]}>
+              Chờ xác nhận
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.buttonHeader,
+              activeTabs === 'waitingOrders' && styles.activeTab,
+            ]}
+            onPress={() => handleTabPress('waitingOrders')}>
+            <Text
+              style={[activeTabs === 'waitingOrders' && styles.textActiveTab]}>
+              Chờ lấy hàng
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.buttonHeader,
+              activeTabs === 'deliveryOrders' && styles.activeTab,
+            ]}
+            onPress={() => handleTabPress('deliveryOrders')}>
+            <Text
+              style={[activeTabs === 'deliveryOrders' && styles.textActiveTab]}>
+              Đang giao
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.buttonHeader,
+              activeTabs === 'successOrders' && styles.activeTab,
+            ]}
+            onPress={() => handleTabPress('successOrders')}>
+            <Text
+              style={[activeTabs === 'successOrders' && styles.textActiveTab]}>
+              Đã giao
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.buttonHeader,
+              activeTabs === 'cancelOrd' && styles.activeTab,
+            ]}
+            onPress={() => handleTabPress('cancelOrd')}>
+            <Text style={[activeTabs === 'cancelOrd' && styles.textActiveTab]}>
+              Đã huỷ
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.buttonHeader,
+              activeTabs === 'refundOrders' && styles.activeTab,
+            ]}
+            onPress={() => handleTabPress('refundOrders')}>
+            <Text
+              style={[activeTabs === 'refundOrders' && styles.textActiveTab]}>
+              Trả hàng
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+
       <FlatList
         data={renderOrders()}
         renderItem={renderItem}
+        scrollEnabled={true}
+        showsVerticalScrollIndicator={false}
         keyExtractor={item => item.orderCode}
       />
     </View>
@@ -173,18 +192,21 @@ export default OrderScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    backgroundColor: 'white',
-    zIndex: 10,
+    flex: 1,
+    backgroundColor: COLORS.background_list,
   },
   headerList: {
     backgroundColor: COLORS.white,
-    zIndex: 10,
+    flexDirection: 'row',
+    paddingTop: '2%',
+    marginBottom: '5%',
   },
   buttonHeader: {
     borderBottomWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: SIZES.width / 30,
-    paddingVertical: SIZES.height / 90,
+    // paddingVertical: SIZES.height / 90,
     borderBottomColor: COLORS.border_gray,
   },
   activeTab: {

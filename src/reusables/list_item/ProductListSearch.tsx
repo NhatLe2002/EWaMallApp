@@ -26,7 +26,7 @@ const ProductListSearch = (props: ProductTypes) => {
     };
 
     fetchProductImages();
-  }, [props.products]);
+  }, [props.products]); 
 
   const renderItem = ({ item }: { item: Product }) => (
     <View style={styles.product}>
@@ -37,7 +37,7 @@ const ProductListSearch = (props: ProductTypes) => {
         <Image
           style={styles.image}
           source={{
-            uri: item.imageUrl ? String(item.imageUrl) : 'defaultImageUrl',
+            uri: item.imageUrls ? String(item.imageUrls) : 'defaultImageUrl',
           }}
         />
         <View style={styles.containter}>

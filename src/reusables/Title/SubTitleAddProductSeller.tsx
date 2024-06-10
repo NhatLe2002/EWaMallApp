@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { COLORS } from '../../constant/theme'
 interface props {
-    title: string
+  title: string
 }
 
-const SubTitleAddProductSeller: React.FC<props> = ({title}) => {
+const SubTitleAddProductSeller: React.FC<props> = ({ title }) => {
   return (
-    <View>
-      <Text>{title}</Text>
+    <View style={styles.container}>
+      <Text style={styles.subTitle}>{title}</Text>
     </View>
   )
 }
@@ -15,11 +16,12 @@ const SubTitleAddProductSeller: React.FC<props> = ({title}) => {
 export default SubTitleAddProductSeller
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'flex-start', 
-    },
-    subTitle: {
-        fontSize: 10, 
-        textAlign: 'left', 
-    },
+  container: {
+    alignItems: 'flex-start',
+  },
+  subTitle: {
+    color: COLORS.black,
+    fontSize: 10,
+    textAlign: 'left',
+  },
 })

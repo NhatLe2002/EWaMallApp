@@ -84,7 +84,7 @@ const SearchPage: React.FC = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{paddingTop:'15%'}}>
       <View style={styles.container_parrent}>
         <TouchableHighlight
           underlayColor={COLORS.white}

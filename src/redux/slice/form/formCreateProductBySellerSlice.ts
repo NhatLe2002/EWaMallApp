@@ -18,7 +18,7 @@ const initialState: IFormProductCreateState = {
     productSellDetails: [],
     productSellCommand: []
   },
-  imageProductList:[],
+  imageProductList: [],
   productCreateError: {},
   error: null,
   loading: false,
@@ -60,6 +60,19 @@ const formCreateProductSlice = createSlice({
       const { field, error } = action.payload;
       state.productCreateError[field] = error;
     },
+    resetProductCreate: (state) => {
+      state.productCreate = {
+        productName: '',
+        productDescription: '',
+        coverImageId: '',
+        imagesId: '',
+        videoId: '',
+        industryId: '',
+        sellerId: '',
+        productSellDetails: [],
+        productSellCommand: []
+      };
+    }
   },
   extraReducers: builder => {
     builder
@@ -80,5 +93,12 @@ const formCreateProductSlice = createSlice({
 
   }
 })
-export const {setImageUrisArray, setProductCreateField, setError, setProductCreateError, setClassificationRedux } = formCreateProductSlice.actions;
+export const {
+  setImageUrisArray,
+  setProductCreateField,
+  setError,
+  setProductCreateError,
+  setClassificationRedux,
+  resetProductCreate
+} = formCreateProductSlice.actions;
 export default formCreateProductSlice.reducer

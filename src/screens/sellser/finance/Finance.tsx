@@ -42,7 +42,7 @@ const Finance = () => {
 
     const renderItem = ({ item }: { item: OrderGetBySellerId }) => (
         <View>
-            <Text>{item.totalCost}</Text>
+            <Text>{item?.totalCost}</Text>
         </View>
     );
     const calculateTotalCost = (orders: OrderGetBySellerId[]) => {

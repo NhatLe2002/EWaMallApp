@@ -10,6 +10,7 @@ import {
   Product,
   ProductAddToCart,
   Province,
+  RegisterUser,
   Seller,
   ServiceShip,
   ShipAddress,
@@ -30,6 +31,7 @@ interface InterfaceAccountState {
   loading: boolean;
   error: string | null;
   success: boolean;
+  registerUsser:boolean
 }
 
 export interface InterfaceNotification {

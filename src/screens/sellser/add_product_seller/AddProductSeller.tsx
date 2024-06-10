@@ -33,6 +33,7 @@ import {
 import { uploadImagesToFirebase } from '../../../features/UploadImg';
 import { useNavigation } from '@react-navigation/native';
 import { ISellerState } from '../../../constant/interface/sellerInterface';
+import { getProductsBySellerId } from '../../../redux/slice/seller/productSellerSlice';
 const productSellDetails: ProductSellDetail[] = [
   {
     detailId: '1',
@@ -109,6 +110,9 @@ const AddProductSeller = () => {
   const { seller } = useSelector(
     (state: ISellerState) => state.sellerReducer,
   );
+  useEffect(() => {
+    dispatch(setProductCreateField({ sellerId: seller?.seller?.id }));
+  }, [seller]);
   // console.log("sdsd", imageProductList)
   const handleSubmit = async (data: ProductCreate) => {
     // console.log("ok")
@@ -132,15 +136,10 @@ const AddProductSeller = () => {
       );
     }
     if (productCreateError && areAllFieldsEmpty(productCreateError)) {
-      // console.log(data);
-      if (seller?.id) {
-        // console.log("Co")
-        dispatch(setProductCreateField({ sellerId: seller?.seller?.id }));
-        // console.log(JSON.stringify(productCreate, null, 2));
-      }
       // console.log("upcreat")
       dispatch(createProduct(data));
       uploadImagesToFirebase(imageProductList, productCreate.imagesId)
+      dispatch(getProductsBySellerId(seller?.seller?.id));
       // console.log(productCreate.imagesId)
       setModalVisible(true);
     }
@@ -192,10 +191,10 @@ const AddProductSeller = () => {
         <TouchableOpacity
           onPress={() => handleSubmit(productCreate)}
           style={styles.buttomBot}>
-          <Text>Lưu</Text>
+          <Text style = {styles.buttonText}>Lưu</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttomBot}>
-          <Text>Hiển thị</Text>
+          <Text style = {styles.buttonText}>Hiển thị</Text>
         </TouchableOpacity>
         <Modal
           visible={isModalVisible}
@@ -287,4 +286,8 @@ const styles = StyleSheet.create({
     color: COLORS.blue,
     fontSize: 16,
   },
+  buttonText:{
+    color: COLORS.yellow,
+    fontSize: 20
+  }
 });
