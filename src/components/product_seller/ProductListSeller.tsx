@@ -57,8 +57,8 @@ const ProductListSeller = () => {
                         <Text style={{ marginLeft: 5 }} ></Text>
                     </View>
                     <View style={styles.botProductList}>
-                        <Text style={styles.prductPridce}>{item.productSellerDetails}đ</Text>
-                        <Text >Quantity: {item.productSellerDetails}</Text>
+                        <Text style={styles.prductPridce}>{item.minPrice} đ</Text>
+                        <Text style = {{color: COLORS.gray_2, fontSize: 12}}>Số lượng: {item.minPrice}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -82,14 +82,14 @@ export default ProductListSeller
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-start',
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         paddingTop: 20,
         width: '100%',
     },
     detailProductList: {
         flexDirection: 'column',
         justifyContent: 'space-around',
-        width: '55%',
+        flex: 1
     },
     productItem: {
         backgroundColor: COLORS.white,
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     productImage: {
-        width: '40%',
-        height: 115,
+        width: '35%',
+        aspectRatio: 10/9,
         marginRight: 10,
         borderRadius: 10,
     },
@@ -119,9 +119,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     botProductList: {
+        width : "100%",
         marginTop: 15,
         justifyContent: 'space-between',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     prductPridce: {
         color: '#CD0000',

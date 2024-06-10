@@ -83,7 +83,7 @@ const formCreateProductSlice = createSlice({
         })
       .addCase(createProduct.fulfilled,
         (state, action: PayloadAction<Product>) => {
-          return { ...state, product: action.payload, error: '', loading: false };
+          return { ...state, product: action.payload, error: null, loading: false };
         })
       .addCase(createProduct.rejected, (state, action) => {
         state.loading = false;

@@ -38,9 +38,14 @@ const HeaderProductSeller = () => {
     const dispatch = useDispatch<any>();
     const [selectedId, setSelectedId] = useState(1);
     const [selectedRecentItemId, setSelectedRecentItemId] = useState(1);
+    const [productListTemp, setproductListTemp] = useState(1);
     const { productList, productListRenderRedux } = useSelector(
         (state: InterfaceProductState) => state.productSellerReducer,
     );
+    useEffect(() =>{
+        setproductListTemp(productList);
+        console.log(JSON.stringify(productListTemp,null,2));
+    }, [productList]);
     const { seller } = useSelector(
         (state: ISellerState) => state.sellerReducer,
     );
@@ -48,9 +53,10 @@ const HeaderProductSeller = () => {
 
     useEffect(() => {
         const activeProducts = filterProductsByStatus(selectedId);
-        console.log(selectedId);
-        console.log(activeProducts);
-        // console.log(JSON.stringify(productList, null, 2));
+        // console.log(selectedId);
+        // console.log(activeProducts);
+        console.log(JSON.stringify(productList, null, 2));
+        console.log("sellerId",JSON.stringify(seller, null,2));
         setProductListFilter(activeProducts);
         // console.log(activeProducts);
         // console.log("check header",JSON.stringify(productList, null, 2));
@@ -58,9 +64,11 @@ const HeaderProductSeller = () => {
         dispatch(setProductListRenderRedux(activeProducts));
         // console.log(JSON.stringify(productListRenderRedux, null, 2));
     }, [selectedId, productList])
+
+
     useEffect(() => {
         dispatch(getProductsBySellerId(seller?.seller?.id));
-    }, []);
+    }, [dispatch]);
 
     //filter product
     const filterProductsByStatus = (status: number) => {
