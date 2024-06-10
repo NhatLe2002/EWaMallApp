@@ -2,7 +2,7 @@ import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from '
 import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import BodyTitle from '../../reusables/Title/BodyTitle';
-import { COLORS } from '../../constant/theme';
+import { COLORS, FONTS } from '../../constant/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { IOrderStatusState } from '../../constant/interface/IStatusOrder';
 import { fetchAllStatus } from '../../redux/slice/statusOrderSlice';
@@ -24,7 +24,7 @@ const OrderStatusList = () => {
   );
   useEffect(() => {
     dispatch(fetchAllStatus());
-    console.log(JSON.stringify(statusList, null, 2));
+    // console.log(JSON.stringify(statusList, null, 2));
   }, []);
   const {orderListBySellerId} = useSelector(
     (state: InterfaceOrderState) => state.orderReducer,
@@ -51,7 +51,7 @@ const OrderStatusList = () => {
               style={[styles.item, { backgroundColor: '#C1BE72' }]}
               onPress={() => navigation.navigate('OrderSeller' as never)}
             >
-              <Text style={styles.text}>{filterOrderByStatus(order.id)?.length}</Text>
+              <Text style={styles.textQuantity}>{filterOrderByStatus(order.id)?.length}</Text>
               <Text style={styles.text}>
                 {order.name}
               </Text>
@@ -90,5 +90,11 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     color: COLORS.white,
-  }
+  },
+  textQuantity: {
+    textAlign: 'left',
+    color: COLORS.white,
+    fontFamily: FONTS.roboto_light,
+    fontSize: 20,
+  },
 })

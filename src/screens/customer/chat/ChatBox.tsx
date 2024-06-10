@@ -7,7 +7,7 @@ import { getFirestore } from '@react-native-firebase/firestore'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AntDesign from "react-native-vector-icons/AntDesign"
-import { COLORS, SIZES } from '../../../constant/theme'
+import { SIZES } from '../../../constant/theme'
 import { Image } from 'react-native-elements'
 
 interface ChatSchema { _id: number; text: string; createdAt: Date; sendBy: Number; sendTo: Number; user: { _id: number; name: string; avatar: string; }; }
@@ -77,7 +77,7 @@ const ChatBox = () => {
                 <TouchableOpacity
                     onPress={() => navigate.goBack()}
                     style={{ marginLeft: "3%" }}>
-                    <AntDesign name='arrowleft' size={35} color={COLORS.gray_1}></AntDesign>
+                    <AntDesign name='arrowleft' size={35}></AntDesign>
                 </TouchableOpacity>
                 <Image
                     style={styles.image}
