@@ -1,14 +1,16 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, View } from 'react-native'
 import React from 'react'
-import { Checkbox } from 'react-native-paper';
 import HeaderNotification from '../../../components/notification/HeaderNotification';
 import BodyNotification from '../../../components/notification/BodyNotification';
 import FooterNotification from '../../../components/notification/FooterNotification';
+
 const NotificationScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <HeaderNotification />
-      <BodyNotification />
+      <View style={styles.bodyContainer}>
+        <BodyNotification />
+      </View>
       <FooterNotification />
     </SafeAreaView>
   )
@@ -20,5 +22,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ddd", // Màu nền của screen
+  },
+  bodyContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
   },
 });
