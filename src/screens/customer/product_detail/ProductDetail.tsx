@@ -35,7 +35,7 @@ import {
   updateProductDetailWithImages,
   updateProductListWithImages,
 } from '../../../features/GetImage';
-
+//() =>  navigation.navigate('Purchase' as never)
 const ProductDetail = () => {
   const route = useRoute<any>();
   const {productId} = route.params;
@@ -60,6 +60,7 @@ const ProductDetail = () => {
   const [updatedProduct, setUpdatedProduct] = useState<Product>();
   const updateSelectedProduct = (id: number, quantity: number) => {
     setSelectedProduct({id, quantity});
+    console.log('id', id);
   };
   useEffect(() => {
     dispatch(getProductById(productId));
@@ -228,40 +229,126 @@ const ProductDetail = () => {
                     flexWrap: 'wrap',
                     gap: 10,
                   }}>
-                  {product?.productSellerDetails?.map((item: any) => (
-                    <TouchableOpacity
-                      key={item.id}
-                      style={{
-                        backgroundColor:
-                          selectedProductId === item.id
-                            ? 'white'
-                            : COLORS.background_list,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '2%',
-                        borderRadius: 2,
-                        borderWidth: selectedProductId === item.id ? 1 : 0,
-                        borderColor:
-                          selectedProductId === item.id ? COLORS.price_red : '',
-                      }}
-                      onPress={() => {
-                        setSelectedProductId(item.id);
-                        setSelectedPrice(item.price);
+ 
 
-                        updateSelectedProduct(item.id, 1);
+                  <View style={{flexDirection: 'column'}}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
                       }}>
-                      <Text
-                        style={{
-                          fontSize: 13,
-                          color:
-                            selectedProductId === item.id
-                              ? COLORS.price_red
-                              : COLORS.black,
-                        }}>
-                        {item.name}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
+                      {product?.productSellerDetails
+                        .filter((item: {path: string}) =>
+                          item.path.startsWith('/A'),
+                        )
+                        .slice(0, 1)
+                        .map((item: {id: any; price: number; name: string}) => (
+                          <View
+                            key={item.id}
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              padding: '2%',
+                              borderRadius: 2,
+                              borderWidth:
+                                selectedProductId === item.id ? 1 : 0,
+                              borderColor:
+                                selectedProductId === item.id
+                                  ? COLORS.price_red
+                                  : '',
+                              marginRight: 5,
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: 13,
+                                color: COLORS.black,
+                              }}>
+                              {item.name}
+                            </Text>
+                          </View>
+                        ))}
+                      <Text>-</Text>
+                      {product?.productSellerDetails
+                        .filter((item: {path: string}) =>
+                          item.path.startsWith('/B'),
+                        )
+                        .slice(0, 1)
+                        .map((item: {id: any; price: number; name: string}) => (
+                          <View
+                            key={item.id}
+                            style={{
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              padding: '2%',
+                              borderRadius: 2,
+                              borderWidth:
+                                selectedProductId === item.id ? 1 : 0,
+                              borderColor:
+                                selectedProductId === item.id
+                                  ? COLORS.price_red
+                                  : '',
+                              marginRight: 5,
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: 13,
+                                color: COLORS.black,
+                              }}>
+                              {item.name}
+                            </Text>
+                          </View>
+                        ))}
+                    </View>
+                    <View style={{flexDirection: 'row',flexWrap:'wrap'}}>
+                      {product?.productSellerDetails
+                        .filter((item: {path: string}) =>
+                          item.path.startsWith('/B'),
+                        )
+                        .slice(1)
+                        .map((item: {id: any; price: number; name: string}) => (
+                          <TouchableOpacity
+                            key={item.id}
+                            style={{
+                              backgroundColor:
+                                selectedProductId === item.id
+                                  ? 'white'
+                                  : COLORS.background_list,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              marginVertical:'2%',
+                              marginRight:'2%',
+                              borderRadius: 2,
+                              borderWidth:
+                                selectedProductId === item.id ? 1 : 0,
+                              borderColor:
+                                selectedProductId === item.id
+                                  ? COLORS.price_red
+                                  : '',
+                              marginLeft: 5,
+                            }}
+                            onPress={() => {
+                              setSelectedProductId(item.id);
+                              setSelectedPrice(item.price);
+                              updateSelectedProduct(item.id, 1);
+                            }}>
+                            <Text
+                              style={{
+                              
+                                fontSize: 13,
+                                paddingHorizontal:'3%',
+                                paddingVertical:'2%',
+                                color:
+                                  selectedProductId === item.id
+                                    ? COLORS.price_red
+                                    : COLORS.black,
+                              }}>
+                              {item.name}
+                            </Text>
+                          </TouchableOpacity>
+                        ))}
+                    </View>
+                  </View>
                 </View>
                 <View
                   style={{
@@ -347,7 +434,7 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   image: {
-    width: SIZES.width ,
+    width: SIZES.width,
     height: SIZES.height / 2.5,
   },
   container: {

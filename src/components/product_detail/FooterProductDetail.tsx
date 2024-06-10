@@ -48,7 +48,7 @@ const FooterProductDetail: React.FC<{openBottomSheet: () => void}> = ({
         </View>
         <TouchableOpacity
           style={styles.buttonBuy}
-          onPress={() => navigation.navigate('Purchase' as never)}>
+          onPress={ openBottomSheet}>
           <Text style={styles.textBuy}>Mua ngay</Text>
           <Text style={{color: 'white'}}>{formattedPrice}</Text>
         </TouchableOpacity>

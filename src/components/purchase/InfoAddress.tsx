@@ -47,6 +47,7 @@ const InfoAddress: React.FC<{listShipAddress: ShipAddress}> = ({
     if (listShipAddress?.id != null) {
       dispatch(setShipAddressId(listShipAddress?.id));
     }
+   
   }, [dispatch, listShipAddress]);
 
   return (

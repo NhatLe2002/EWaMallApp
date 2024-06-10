@@ -13,10 +13,13 @@ import Iconions from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { InterfaceAccountState } from '../../constant/interface';
+import { InterfaceAccountState,InterfaceCartState } from '../../constant/interface';
 const HeaderHome: React.FC = () => {
   const {isLogin} = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
+  );
+  const {cartList} = useSelector(
+    (state: InterfaceCartState) => state.cartReducer,
   );
   const navigation = useNavigation<any>()
   const handleNaviSearch = () => {
@@ -28,6 +31,7 @@ const HeaderHome: React.FC = () => {
       navigation.navigate('Login');
     }
   };
+  console.log("object",cartList)
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>

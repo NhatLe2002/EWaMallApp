@@ -6,40 +6,58 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CheckBox from '../../reusables/checkbox/CheckBox';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {formatPriceToVND} from '../../config/FixPrice';
-import {useDispatch} from 'react-redux';
-import { decreaseQuantity, increaseQuantity, setProductBuy} from '../../redux/slice/cartSlice';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  decreaseQuantity,
+  increaseQuantity,
+  setProductBuy,
+} from '../../redux/slice/cartSlice';
+import {InterfaceOrderState} from '../../constant/interface';
 
 interface Props {
   item: CartProductTypes;
+  sellerCheckboxState: boolean;
+  productCheckboxStates: {[key: number]: boolean};
+  selectedProducts: number[];
+  setSellerCheckboxState: React.Dispatch<React.SetStateAction<boolean>>;
+  setProductCheckboxStates: React.Dispatch<
+    React.SetStateAction<{[key: number]: boolean}>
+  >;
+  setSelectedProducts: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
-const ProductInCart: React.FC<Props> = ({item}) => {
+const ProductInCart: React.FC<Props> = ({
+  item,
+  sellerCheckboxState,
+  productCheckboxStates,
+  selectedProducts,
+  setSellerCheckboxState,
+  setProductCheckboxStates,
+  setSelectedProducts,
+}) => {
   const dispatch = useDispatch<any>();
-  const [sellerCheckboxState, setSellerCheckboxState] =
-    useState<boolean>(false);
-  const [productCheckboxStates, setProductCheckboxStates] = useState<{
-    [key: number]: boolean;
-  }>({});
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]); 
-  //handle Checkbox
+
+  const {product_purchase} = useSelector(
+    (state: InterfaceOrderState) => state.orderReducer,
+  );
   const handleToggleSellerCheckbox = (sellerId: number) => {
     const sellerProducts = item.products.filter(
       product => product.sellerId === sellerId,
     );
     const newProductCheckboxStates = {...productCheckboxStates};
     const newSelectedProducts: React.SetStateAction<number[]> = [];
-  
+
     const newSellerCheckboxState = !sellerCheckboxState;
     setSellerCheckboxState(newSellerCheckboxState);
-  
+
     sellerProducts.forEach(product => {
-      newProductCheckboxStates[product.productSellDetailId] = newSellerCheckboxState;
+      newProductCheckboxStates[product.productSellDetailId] =
+        newSellerCheckboxState;
       if (newSellerCheckboxState) {
         newSelectedProducts.push(product.productSellDetailId);
       }
     });
-  
+
     setProductCheckboxStates(newProductCheckboxStates);
     setSelectedProducts(newSelectedProducts);
   };
@@ -57,8 +75,6 @@ const ProductInCart: React.FC<Props> = ({item}) => {
     });
   };
 
-
-
   useEffect(() => {
     const allProductsSelected = item.products.every(
       product => productCheckboxStates[product.productSellDetailId],
@@ -67,19 +83,13 @@ const ProductInCart: React.FC<Props> = ({item}) => {
     dispatch(setProductBuy(selectedProducts));
   }, [productCheckboxStates]);
 
-  // const decrease_Quantity = (cartId: number, quantity: number) => {
-  //   dispatch(decreaseQuantity({cartId, quantity}));
-  // };
-  // const increase_Quantity = (cartId: number, quantity: number) => {
-  //   dispatch(increaseQuantity({cartId, quantity}));
-  // };
   const handleIncreaseQuantity = (cartId: number, quantity: number) => {
-    dispatch(increaseQuantity({ cartId, quantity }));
+    dispatch(increaseQuantity({cartId, quantity}));
   };
   const handleDecreaseQuantity = (cartId: number, quantity: number) => {
-    dispatch(decreaseQuantity({ cartId, quantity }));
+    dispatch(decreaseQuantity({cartId, quantity}));
   };
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.headerShop}>
@@ -97,8 +107,12 @@ const ProductInCart: React.FC<Props> = ({item}) => {
       {item.products.map(product => (
         <View style={styles.containerProduct} key={product.productSellDetailId}>
           <CheckBox
-            onPress={() => handleToggleProductCheckbox(product.productSellDetailId)}
-            isChecked={productCheckboxStates[product.productSellDetailId] || false}
+            onPress={() =>
+              handleToggleProductCheckbox(product.productSellDetailId)
+            }
+            isChecked={
+              productCheckboxStates[product.productSellDetailId] || false
+            }
           />
           <Image
             style={styles.imageProduct}
