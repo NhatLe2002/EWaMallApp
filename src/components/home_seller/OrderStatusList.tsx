@@ -1,8 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import BodyTitle from '../../reusables/Title/BodyTitle';
 import { COLORS } from '../../constant/theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { IOrderStatusState } from '../../constant/interface/IStatusOrder';
+import { fetchAllStatus } from '../../redux/slice/statusOrderSlice';
 
 
 
@@ -11,7 +14,14 @@ import { COLORS } from '../../constant/theme';
 
 
 const OrderStatusList = () => {
+  const dispatch = useDispatch<any>();
   const navigation = useNavigation();
+  const {statusList} = useSelector(
+    (state: IOrderStatusState) => state.orderStatusReducer,
+  );
+  useEffect(() => {
+    dispatch(fetchAllStatus());
+  }, []);
   return (
     <View style = {[styles.container]}>
         <BodyTitle titleLeft='Đơn hàng' titleRight='Xem tất cả >'/>

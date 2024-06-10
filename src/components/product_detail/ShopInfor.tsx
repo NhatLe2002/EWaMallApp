@@ -5,11 +5,12 @@ import { Button, Icon } from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-const ShopInfor: React.FC = () => {
+import { Seller } from '../../constant/types';
+const ShopInfor: React.FC<{ seller: Seller }> = (seller) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={() => navigation.navigate("ShopHome" as never)}
       >
         <View style={styles.title}>
@@ -36,7 +37,7 @@ const ShopInfor: React.FC = () => {
                   fontFamily: FONTS.inter_medium,
                   color: 'black',
                 }}>
-                Ewamall Shop
+                {seller.seller.shopName}
               </Text>
               <Text
                 style={{
@@ -54,7 +55,7 @@ const ShopInfor: React.FC = () => {
                     fontFamily: FONTS.inter_regular,
                     color: '#735656',
                   }}>
-                  TP. Hồ Chí Minh
+                   {seller.seller.address}
                 </Text>
               </View>
             </View>

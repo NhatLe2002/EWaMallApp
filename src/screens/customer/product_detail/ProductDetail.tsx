@@ -111,7 +111,8 @@ const ProductDetail = () => {
       closeModal();
     }
   };
-  console.log(updatedProduct?.imageUrls);
+  // console.log(updatedProduct?.imageUrls);
+  const priceProp = product?.productSellerDetails.length > 1 ? product?.productSellerDetails.find((s: productSellerDetails) => s.path === '/B/1').price : product?.productSellerDetails[0].price
   const footerAddProduct = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -157,10 +158,10 @@ const ProductDetail = () => {
 
           <TitleProduct
             productName={product?.productName}
-            price={product?.productSellerDetails.length > 1 ? product?.productSellerDetails.find((s: productSellerDetails) => s.path === '/B/1').price : product?.productSellerDetails[0].price}
+            price={priceProp}
           />
           <DeliveryPrice />
-          <ShopInfor />
+          <ShopInfor seller={product?.seller}/>
           <SuggestProduct />
           <Description description= {product?.productDescription} />
           <RatingProduct />
@@ -181,7 +182,7 @@ const ProductDetail = () => {
             <ProductList />
           </View>
         </ScrollView>
-        <FooterProductDetail openBottomSheet={handlePresentModalPress} />
+        <FooterProductDetail openBottomSheet={handlePresentModalPress}  seller={product?.seller} price={priceProp}/>
 
         <View style={styles.container}>
           <BottomSheetModal
