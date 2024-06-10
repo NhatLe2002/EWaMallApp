@@ -53,10 +53,11 @@ const LoginScreen: React.FC = () => {
         dispatch(setIsLogin(true));
         dispatch(setRole(res.data.role.roleName));
         dispatch(setUsername(res.data.user.name));
+        console.log(res.data.user.name);
         dispatch(setUserId(res.data.user.id));
         storageService.setId(res.data.user.id);
         storageService.setRole(res.data.role.roleName);
-        storageService.setRole(res.data.user.name);
+        storageService.setUserName(res.data.user.name);
         if (role === 'User') {
           navigation.navigate('BottomTab' as never);
         }

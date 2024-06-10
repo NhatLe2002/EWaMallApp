@@ -35,6 +35,7 @@ const App: React.FC = () => {
           dispatch(setIsLogin(true));
           dispatch(setRole(role));
           dispatch(setUsername(name));
+          console.log(name);
           dispatch(setUserId(id));
         }
         // storageService.removeInfo()
