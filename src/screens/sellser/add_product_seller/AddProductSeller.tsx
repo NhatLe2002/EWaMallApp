@@ -23,6 +23,7 @@ import IndustryDetail from '../../../components/product_seller/IndustryDetail';
 import {
   createProduct,
   resetProductCreate,
+  setImageUrisArray,
   setProductCreateError,
   setProductCreateField,
 } from '../../../redux/slice/form/formCreateProductBySellerSlice';
@@ -105,7 +106,7 @@ const AddProductSeller = () => {
   const dispatch = useDispatch<any>();
   const navigation = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
-  const { productCreate, productCreateError, loading, product, imageProductList } = useSelector(
+  const { productCreate, productCreateError, loading, product, imageProductList, error } = useSelector(
     (state: IFormProductCreateState) => state.formCreateProductReducer,
   );
   const { seller } = useSelector(
@@ -137,12 +138,13 @@ const AddProductSeller = () => {
       );
     }
     if (productCreateError && areAllFieldsEmpty(productCreateError)) {
-      // console.log("upcreat")
+      console.log(productCreateError);
+      console.log(areAllFieldsEmpty(productCreateError));
       dispatch(createProduct(data));
       uploadImagesToFirebase(imageProductList, productCreate.imagesId)
       dispatch(getProductsBySellerId(seller?.seller?.id));
+      dispatch(setImageUrisArray([]));
       dispatch(resetProductCreate());
-      // console.log(productCreate.imagesId)
       setModalVisible(true);
     }
     // console.log("sellerid",seller?.id);
@@ -193,10 +195,10 @@ const AddProductSeller = () => {
         <TouchableOpacity
           onPress={() => handleSubmit(productCreate)}
           style={styles.buttomBot}>
-          <Text style = {styles.buttonText}>Lưu</Text>
+          <Text style={styles.buttonText}>Lưu</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttomBot}>
-          <Text style = {styles.buttonText}>Hiển thị</Text>
+          <Text style={styles.buttonText}>Hiển thị</Text>
         </TouchableOpacity>
         <Modal
           visible={isModalVisible}
@@ -206,7 +208,7 @@ const AddProductSeller = () => {
           <View style={styles.modalBackground}>
             <View style={styles.modalContent}>
               <Text style={styles.modalText}>
-                Product created successfully!
+                {error !== null ? ("Tạo sản phẩm lỗi") : ("Tạo sản phẩm thành công")}
               </Text>
               <TouchableOpacity
                 style={styles.okButton}
@@ -288,7 +290,7 @@ const styles = StyleSheet.create({
     color: COLORS.blue,
     fontSize: 16,
   },
-  buttonText:{
+  buttonText: {
     color: COLORS.yellow,
     fontSize: 20
   }
