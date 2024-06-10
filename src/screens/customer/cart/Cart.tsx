@@ -124,7 +124,7 @@ const CartScreen: React.FC = () => {
                   activeTab === 'all' && styles.activeTab,
                 ]}
                 onPress={() => handleTabPress('all')}>
-                <Text style={[activeTab === 'all' && styles.textActiveTab]}>
+                <Text style={[activeTab === 'all' && styles.textActiveTab ]}>
                   Tất cả ( 4 )
                 </Text>
               </TouchableOpacity>

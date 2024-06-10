@@ -270,12 +270,14 @@ const styles = StyleSheet.create({
     paddingBottom: '2%',
   },
   registrationText: {
+    color : COLORS.gray_1,
     fontSize: 14,
     fontFamily: FONTS.inter_regular,
     textAlign: 'center',
   },
 
   registrationLink: {
+    color: COLORS.gray_1,
     fontSize: 14,
     fontFamily: FONTS.inter_bold,
   },

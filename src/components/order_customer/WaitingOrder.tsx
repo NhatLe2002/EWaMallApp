@@ -16,7 +16,8 @@ const WaitingOrder: React.FC<Props> = ({item}) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerShop}>
-        <Text style={{fontFamily: FONTS.inter_SemiBold, fontSize: 16}}>
+      <Text style={{fontFamily: FONTS.inter_SemiBold, fontSize: 16, fontWeight: 700,color:'black'}}>
+   
           {item?.orderDetails[0].productSellDetail.product.seller.shopName}
         </Text>
         <Text style={{fontFamily: FONTS.inter_regular, color: '#dd2504'}}>
@@ -32,7 +33,7 @@ const WaitingOrder: React.FC<Props> = ({item}) => {
             backgroundColor: 'red',
           }}></View>
         <View style={styles.contentProduct}>
-          <Text numberOfLines={1} style={{fontSize: 16}}>
+        <Text numberOfLines={1} style={{fontSize: 16,color:'black' }}>
             {item?.orderDetails[0].productSellDetail.product.productName}
           </Text>
           <View
@@ -41,7 +42,7 @@ const WaitingOrder: React.FC<Props> = ({item}) => {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <Text style={{color: COLORS.gray_2, fontSize: 12}}>
+    <Text style={{ fontSize: 12,color:'#848484'}}>
               {item?.orderDetails[0].productSellDetail.name}
             </Text>
             <Text style={{color: COLORS.black, fontSize: 12}}>
@@ -54,7 +55,7 @@ const WaitingOrder: React.FC<Props> = ({item}) => {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <Text>Trả hàng miễn phí 15 ngày</Text>
+              <Text style={{fontSize:10,color:'#3baf49',borderWidth:1, borderColor:'#3baf49',padding:'0.2%'}}>Trả hàng miễn phí 15 ngày</Text>
             <Text>
               {formatPriceToVND(item?.orderDetails[0].productSellDetail.price)}
             </Text>
@@ -72,7 +73,7 @@ const WaitingOrder: React.FC<Props> = ({item}) => {
           paddingVertical: '2%',
           marginVertical: '2%',
         }}>
-        <Text style={{color: COLORS.gray_2, fontSize: 12}}>
+        <Text style={{color: "#848484", fontSize: 12}}>
           {totalQuantity} sản phẩm
         </Text>
         <Text>

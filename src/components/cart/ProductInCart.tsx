@@ -138,7 +138,7 @@ const ProductInCart: React.FC<Props> = ({
                   onPress={() => {
                     handleDecreaseQuantity(product.cartId, product.quantity);
                   }}>
-                  <Text>-</Text>
+                  <Text style = {{color: 'black'}}>-</Text>
                 </TouchableOpacity>
                 <Text style={styles.quantityText}>{product.quantity}</Text>
                 <TouchableOpacity
@@ -146,7 +146,7 @@ const ProductInCart: React.FC<Props> = ({
                   onPress={() =>
                     handleIncreaseQuantity(product.cartId, product.quantity)
                   }>
-                  <Text>+</Text>
+                  <Text style = {{color: 'black'}}>+</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '4%',
   },
   textShop: {
+    color: 'black',
     fontFamily: FONTS.inter_medium,
     fontSize: 16,
   },
@@ -204,6 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   nameProduct: {
+    color: COLORS.black,
     fontSize: 14,
   },
   price: {
