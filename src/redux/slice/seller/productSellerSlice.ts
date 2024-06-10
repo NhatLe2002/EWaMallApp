@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { InterfaceProductState } from '../../../constant/interface/productInterface';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import type {PayloadAction} from '@reduxjs/toolkit';
+import {InterfaceProductState} from '../../../constant/interface/productInterface';
 import productApi from '../../../api/productApi';
-import { Product, ProductCreate } from '../../../constant/types/productType';
-
-import { CreateProduct } from '../../../constant/types';
+import {Product, ProductCreate} from '../../../constant/types/productType';
+import sellerApi from '../../../api/sellerApi';
+import {CreateProduct} from '../../../constant/types';
 
 const initialState: InterfaceProductState = {
   productList: [],
@@ -18,18 +18,29 @@ const initialState: InterfaceProductState = {
     industryId: '',
     sellerId: '',
     productSellDetails: [],
-    productSellCommand: []
+    productSellCommand: [],
   },
   product: null,
   error: null,
   loading: false,
   createProduct: null,
-}
+};
 export const getProductsBySellerId = createAsyncThunk(
   'products/getProductsBySellerId',
   async (sellerId: number) => {
     try {
       const response = await productApi.getProductBySellerId(sellerId);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
+export const updateProductOfSeller = createAsyncThunk(
+  'products/updateProductStatus',
+  async ({productId, status}: {productId: number; status: number}) => {
+    try {
+      const response = await sellerApi.updateProductOfSeller(productId, status);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -74,7 +85,10 @@ const productSellerSlice = createSlice({
   name: 'productSeller',
   initialState,
   reducers: {
-    setProductListRenderRedux: (state, action: PayloadAction<Product[] | null>) => {
+    setProductListRenderRedux: (
+      state,
+      action: PayloadAction<Product[] | null>,
+    ) => {
       state.productListRenderRedux = action.payload;
     },
   },
@@ -82,22 +96,28 @@ const productSellerSlice = createSlice({
     builder.addCase(
       getProductsBySellerId.fulfilled,
       (state, action: PayloadAction<Product[]>) => {
-        return { ...state, productList: action.payload, error: '' };
+        return {...state, productList: action.payload, error: ''};
       },
     );
     builder.addCase(getProductsBySellerId.rejected, (state, action) => {
-      return { ...state, error: action.payload as string };
+      return {...state, error: action.payload as string};
     });
     builder.addCase(
       createProduct.fulfilled,
       (state, action: PayloadAction<CreateProduct>) => {
-        return { ...state, createProduct: action.payload, error: '' };
+        return {...state, createProduct: action.payload, error: ''};
       },
     );
     builder.addCase(createProduct.rejected, (state, action) => {
-      return { ...state, error: action.payload as string };
+      return {...state, error: action.payload as string};
+    });
+    builder.addCase(updateProductOfSeller.fulfilled, (state, action) => {
+      return {...state, productList: action.payload, error: ''};
+    });
+    builder.addCase(updateProductOfSeller.rejected, (state, action) => {
+      return {...state, error: action.payload as string};
     });
   },
 });
-export const { setProductListRenderRedux } = productSellerSlice.actions;
+export const {setProductListRenderRedux} = productSellerSlice.actions;
 export default productSellerSlice.reducer;

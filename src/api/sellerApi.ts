@@ -21,6 +21,10 @@ const sellerApi = {
     const url = `/api/Account/GetUserDetail/${userId}`;
     return axiosClient.get(url);
   },
+  updateProductOfSeller(productId: number, status : number) {
+    const url = `/api/Product/UpdateProductStatus/${productId}?status=${status}`;
+    return axiosClient.put(url);
+  },
 };
 
 export default sellerApi;

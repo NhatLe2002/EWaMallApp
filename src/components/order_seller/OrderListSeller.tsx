@@ -49,7 +49,7 @@ const OrderListSeller = ({selectedId}: any) => {
 
   const confirmAcceptOrder = (orderId: number, statusCode: string) => {
     Alert.alert(
-      "Chào bạn",
+      "Hi cậu",
       "Đồng ý làm người yêu tớ nhé?",
       [
         
