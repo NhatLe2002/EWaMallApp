@@ -45,6 +45,7 @@ const MethodDelivery: React.FC<{totalCost: number}> = ({
     if (feeShip?.total != null) {
       dispatch(setShipCostt(feeShip?.total));
     }
+    console.log(feeShip)
   }, [dispatch,feeShip]);
   return (
     <View style={styles.containerMethodPay}>
