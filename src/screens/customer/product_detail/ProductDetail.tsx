@@ -13,7 +13,7 @@ import RatingProduct from '../../../components/product_detail/RatingProduct';
 import HeaderSearch from '../../../components/product_detail/HeaderSearch';
 import FooterProductDetail from '../../../components/product_detail/FooterProductDetail';
 import {useDispatch, useSelector} from 'react-redux';
-
+import {Modalize} from 'react-native-modalize';
 import {
   InterfaceAccountState,
   InterfaceProductState,
@@ -37,8 +37,9 @@ import {
 } from '../../../features/GetImage';
 //() =>  navigation.navigate('Purchase' as never)
 const ProductDetail = () => {
+  const modalizeRef = useRef<Modalize>(null);
   const route = useRoute<any>();
-  const {productId} = route.params;
+  const {productId} = route?.params;
   const scrollViewRef = useRef<ScrollView>(null);
   const {product} = useSelector(
     (state: InterfaceProductState) => state.productReducer,
@@ -86,6 +87,9 @@ const ProductDetail = () => {
     totalInventoryNumber += item.inventoryNumber;
   });
   // callbacks
+  const handleAddProduct = () => {
+    modalizeRef.current?.open();
+  };
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     setIsOpen(true);
@@ -106,17 +110,292 @@ const ProductDetail = () => {
         }),
       );
 
-      closeModal();
+      modalizeRef.current?.close();
     } else {
-      closeModal();
+      modalizeRef.current?.close();
     }
   };
-  // console.log(updatedProduct?.imageUrls);
-  const priceProp = product?.productSellerDetails.length > 1 ? product?.productSellerDetails.find((s: productSellerDetails) => s.path === '/B/1').price : product?.productSellerDetails[0].price
-  const footerAddProduct = useCallback(
-    (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
-      <BottomSheetFooter {...props}>
-        <View style={styles.containerFooterAddProduct}>
+  console.log(selectedPrice);
+  const priceProp =
+    product?.productSellerDetails.length > 1
+      ? product?.productSellerDetails.find(
+          (s: productSellerDetails) => s.path === '/B/1',
+        ).price
+      : product?.productSellerDetails[0].price;
+  return (
+    <View style={styles.container}>
+      <HeaderSearch />
+      <ScrollView style={styles.content} ref={scrollViewRef}>
+        <ScrollView
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          style={{
+            marginBottom: 2,
+            height: SIZES.height / 2.8,
+          }}>
+          {updatedProduct?.imageUrls?.map((item, i) => (
+            <View key={i} style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={{
+                  uri: item ? String(item) : 'defaultImageUrl',
+                }}
+              />
+            </View>
+          ))}
+        </ScrollView>
+
+        <TitleProduct productName={product?.productName} price={priceProp} />
+        <DeliveryPrice />
+        <ShopInfor seller={product?.seller} />
+        <SuggestProduct />
+        <Description description={product?.productDescription} />
+        <RatingProduct />
+        <View>
+          <Text
+            style={{
+              backgroundColor: 'white',
+              height: 38,
+              fontSize: 16,
+              color: 'black',
+              paddingTop: 5,
+              fontWeight: '600',
+              paddingHorizontal: '4%',
+              marginTop: 5,
+            }}>
+            Có thể bạn cũng thích
+          </Text>
+          <ProductList />
+        </View>
+      </ScrollView>
+      <FooterProductDetail
+        openBottomSheet={handleAddProduct}
+        seller={product?.seller}
+        price={priceProp}
+        modalizeRef={modalizeRef}
+      />
+      <Modalize
+        childrenStyle={{
+          backgroundColor: 'white',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 10,
+        }}
+        modalStyle={{
+          height: SIZES.width / 0.6,
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 10,
+        }}
+        scrollViewProps={{showsVerticalScrollIndicator: false}}
+        snapPoint={SIZES.width / 0.6}
+        withHandle={true}
+        ref={modalizeRef}
+        modalHeight={SIZES.width / 0.6}>
+        <View >
+     
+          <View style={styles.containerAddToCart}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                paddingHorizontal: '4%',
+                gap: 20,
+                alignItems: 'flex-end',
+                borderBottomWidth: 1,
+                borderColor: COLORS.border_gray,
+                paddingBottom: '3%',
+              }}>
+              <Image
+                source={{uri: 'https://picsum.photos/200/300?random=1'}}
+                style={{width: SIZES.width / 6, height: SIZES.height / 10}}
+              />
+              <View>
+                <Text style={{fontSize: 20}}>{product?.productName}</Text>
+                <Text style={{color: COLORS.price_red}}>
+                  {selectedPrice !== null
+                    ? formatPriceToVND(selectedPrice)
+                    : ''}
+                </Text>
+
+                <Text style={{color: COLORS.gray_2}}>
+                  Kho: {totalInventoryNumber}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderColor: COLORS.border_gray,
+                paddingVertical: '3%',
+                paddingHorizontal: '4%',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                gap: 10,
+              }}>
+              <View style={{flexDirection: 'column'}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                  }}>
+                  {product?.productSellerDetails
+                    .filter((item: {path: string}) =>
+                      item.path.startsWith('/A'),
+                    )
+                    .slice(0, 1)
+                    .map((item: {id: any; price: number; name: string}) => (
+                      <View
+                        key={item.id}
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: '2%',
+                          borderRadius: 2,
+                          borderWidth: selectedProductId === item.id ? 1 : 0,
+                          borderColor:
+                            selectedProductId === item.id
+                              ? COLORS.price_red
+                              : '',
+                          marginRight: 5,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            color: COLORS.black,
+                          }}>
+                          {item.name}
+                        </Text>
+                      </View>
+                    ))}
+                  <Text>-</Text>
+                  {product?.productSellerDetails
+                    .filter((item: {path: string}) =>
+                      item.path.startsWith('/B'),
+                    )
+                    .slice(0, 1)
+                    .map((item: {id: any; price: number; name: string}) => (
+                      <View
+                        key={item.id}
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: '2%',
+                          borderRadius: 2,
+                          borderWidth: selectedProductId === item.id ? 1 : 0,
+                          borderColor:
+                            selectedProductId === item.id
+                              ? COLORS.price_red
+                              : '',
+                          marginRight: 5,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            color: COLORS.black,
+                          }}>
+                          {item.name}
+                        </Text>
+                      </View>
+                    ))}
+                </View>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                  {product?.productSellerDetails
+                    .filter((item: {path: string}) =>
+                      item.path.startsWith('/B'),
+                    )
+                    .slice(1)
+                    .map((item: {id: any; price: number; name: string}) => (
+                      <TouchableOpacity
+                        key={item.id}
+                        style={{
+                          backgroundColor:
+                            selectedProductId === item.id
+                              ? 'white'
+                              : COLORS.background_list,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          marginVertical: '2%',
+                          marginRight: '2%',
+                          borderRadius: 2,
+                          borderWidth: selectedProductId === item.id ? 1 : 0,
+                          borderColor:
+                            selectedProductId === item.id
+                              ? COLORS.price_red
+                              : '',
+                          marginLeft: 5,
+                        }}
+                        onPress={() => {
+                          setSelectedProductId(item.id);
+                          setSelectedPrice(item.price);
+                          updateSelectedProduct(item.id, 1);
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 13,
+                            paddingHorizontal: '3%',
+                            paddingVertical: '2%',
+                            color:
+                              selectedProductId === item.id
+                                ? COLORS.price_red
+                                : COLORS.black,
+                          }}>
+                          {item.name}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                borderBottomWidth: 1,
+                borderColor: COLORS.border_gray,
+                paddingVertical: '3%',
+                paddingHorizontal: '4%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: 10,
+              }}>
+              <Text>Số lượng</Text>
+              <View style={styles.quantityContainer}>
+                <TouchableOpacity
+                  style={styles.buttonQuantity}
+                  onPress={() => {
+                    if (selectedProduct) {
+                      updateSelectedProduct(
+                        selectedProduct.id,
+
+                        Math.max(selectedProduct.quantity - 1, 1),
+                      );
+                    }
+                  }}>
+                  <Text>-</Text>
+                </TouchableOpacity>
+                <Text style={styles.quantityText}>
+                  {selectedProduct?.quantity || 1}
+                </Text>
+                <TouchableOpacity
+                  style={styles.buttonQuantity}
+                  onPress={() => {
+                    if (selectedProduct) {
+                      updateSelectedProduct(
+                        selectedProduct.id,
+
+                        selectedProduct.quantity + 1,
+                      );
+                    }
+                  }}>
+                  <Text>+</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          <View style={styles.containerFooterAddProduct}>
           <TouchableOpacity
             onPress={() => {
               handleAddToCart();
@@ -127,295 +406,10 @@ const ProductDetail = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      </BottomSheetFooter>
-    ),
-    [selectedProduct],
-  );
-  return (
-    <BottomSheetModalProvider>
-      <View style={styles.container}>
-        <HeaderSearch />
-        <ScrollView style={styles.content} ref={scrollViewRef}>
-          <ScrollView
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            style={{
-              marginBottom: 2,
-              height: SIZES.height / 2.8,
-            }}>
-            {updatedProduct?.imageUrls?.map((item, i) => (
-              <View key={i} style={styles.imageContainer}>
-                <Image
-                  style={styles.image}
-                  source={{
-                    uri: item ? String(item) : 'defaultImageUrl',
-                  }}
-                />
-              </View>
-            ))}
-          </ScrollView>
-
-          <TitleProduct
-            productName={product?.productName}
-            price={priceProp}
-          />
-          <DeliveryPrice />
-          <ShopInfor seller={product?.seller}/>
-          <SuggestProduct />
-          <Description description={product?.productDescription} />
-          <RatingProduct />
-          <View>
-            <Text
-              style={{
-                backgroundColor: 'white',
-                height: 38,
-                fontSize: 16,
-                color: 'black',
-                paddingTop: 5,
-                fontWeight: '600',
-                paddingHorizontal: '4%',
-                marginTop: 5,
-              }}>
-              Có thể bạn cũng thích
-            </Text>
-            <ProductList />
-          </View>
-        </ScrollView>
-        <FooterProductDetail openBottomSheet={handlePresentModalPress}  seller={product?.seller} price={priceProp}/>
-
-        <View style={styles.container}>
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={1}
-            snapPoints={snapPoints}
-            onDismiss={() => setIsOpen(false)}
-            footerComponent={footerAddProduct}>
-            <BottomSheetView>
-              <ScrollView style={styles.containerAddToCart}>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    paddingHorizontal: '4%',
-                    gap: 20,
-                    alignItems: 'flex-end',
-                    borderBottomWidth: 1,
-                    borderColor: COLORS.border_gray,
-                    paddingBottom: '3%',
-                  }}>
-                  <Image
-                    source={{uri: 'https://picsum.photos/200/300?random=1'}}
-                    style={{width: SIZES.width / 6, height: SIZES.height / 10}}
-                  />
-                  <View>
-                    <Text style={{color: COLORS.price_red}}>
-                      {selectedPrice !== null
-                        ? formatPriceToVND(selectedPrice)
-                        : ''}
-                    </Text>
-
-                    <Text style={{color: COLORS.gray_2}}>
-                      Kho: {totalInventoryNumber}
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    borderBottomWidth: 1,
-                    borderColor: COLORS.border_gray,
-                    paddingVertical: '3%',
-                    paddingHorizontal: '4%',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    gap: 10,
-                  }}>
- 
-
-                  <View style={{flexDirection: 'column'}}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                      }}>
-                      {product?.productSellerDetails
-                        .filter((item: {path: string}) =>
-                          item.path.startsWith('/A'),
-                        )
-                        .slice(0, 1)
-                        .map((item: {id: any; price: number; name: string}) => (
-                          <View
-                            key={item.id}
-                            style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              padding: '2%',
-                              borderRadius: 2,
-                              borderWidth:
-                                selectedProductId === item.id ? 1 : 0,
-                              borderColor:
-                                selectedProductId === item.id
-                                  ? COLORS.price_red
-                                  : '',
-                              marginRight: 5,
-                            }}>
-                            <Text
-                              style={{
-                                fontSize: 13,
-                                color: COLORS.black,
-                              }}>
-                              {item.name}
-                            </Text>
-                          </View>
-                        ))}
-                      <Text>-</Text>
-                      {product?.productSellerDetails
-                        .filter((item: {path: string}) =>
-                          item.path.startsWith('/B'),
-                        )
-                        .slice(0, 1)
-                        .map((item: {id: any; price: number; name: string}) => (
-                          <View
-                            key={item.id}
-                            style={{
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              padding: '2%',
-                              borderRadius: 2,
-                              borderWidth:
-                                selectedProductId === item.id ? 1 : 0,
-                              borderColor:
-                                selectedProductId === item.id
-                                  ? COLORS.price_red
-                                  : '',
-                              marginRight: 5,
-                            }}>
-                            <Text
-                              style={{
-                                fontSize: 13,
-                                color: COLORS.black,
-                              }}>
-                              {item.name}
-                            </Text>
-                          </View>
-                        ))}
-                    </View>
-                    <View style={{flexDirection: 'row',flexWrap:'wrap'}}>
-                      {product?.productSellerDetails
-                        .filter((item: {path: string}) =>
-                          item.path.startsWith('/B'),
-                        )
-                        .slice(1)
-                        .map((item: {id: any; price: number; name: string}) => (
-                          <TouchableOpacity
-                            key={item.id}
-                            style={{
-                              backgroundColor:
-                                selectedProductId === item.id
-                                  ? 'white'
-                                  : COLORS.background_list,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              marginVertical:'2%',
-                              marginRight:'2%',
-                              borderRadius: 2,
-                              borderWidth:
-                                selectedProductId === item.id ? 1 : 0,
-                              borderColor:
-                                selectedProductId === item.id
-                                  ? COLORS.price_red
-                                  : '',
-                              marginLeft: 5,
-                            }}
-                            onPress={() => {
-                              setSelectedProductId(item.id);
-                              setSelectedPrice(item.price);
-                              updateSelectedProduct(item.id, 1);
-                            }}>
-                            <Text
-                              style={{
-                              
-                                fontSize: 13,
-                                paddingHorizontal:'3%',
-                                paddingVertical:'2%',
-                                color:
-                                  selectedProductId === item.id
-                                    ? COLORS.price_red
-                                    : COLORS.black,
-                              }}>
-                              {item.name}
-                            </Text>
-                          </TouchableOpacity>
-                        ))}
-                    </View>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    borderBottomWidth: 1,
-                    borderColor: COLORS.border_gray,
-                    paddingVertical: '3%',
-                    paddingHorizontal: '4%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    flexWrap: 'wrap',
-                    gap: 10,
-                  }}>
-                  <Text>Số lượng</Text>
-                  <View style={styles.quantityContainer}>
-                    <TouchableOpacity
-                      style={styles.buttonQuantity}
-                      onPress={() => {
-                        if (selectedProduct) {
-                          updateSelectedProduct(
-                            selectedProduct.id,
-
-                            Math.max(selectedProduct.quantity - 1, 1),
-                          );
-                        }
-                      }}>
-                      <Text>-</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.quantityText}>
-                      {selectedProduct?.quantity || 1}
-                    </Text>
-                    <TouchableOpacity
-                      style={styles.buttonQuantity}
-                      onPress={() => {
-                        if (selectedProduct) {
-                          updateSelectedProduct(
-                            selectedProduct.id,
-
-                            selectedProduct.quantity + 1,
-                          );
-                        }
-                      }}>
-                      <Text>+</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                {/* </View> */}
-              </ScrollView>
-            </BottomSheetView>
-          </BottomSheetModal>
         </View>
-        {isOpen ? (
-          <View
-            style={{
-              position: 'absolute',
-              width: SIZES.width,
-              height: SIZES.height,
-              zIndex: 9990,
-              backgroundColor: 'rgba(0,0,0,0.4)',
-            }}
-            pointerEvents={isOpen ? 'auto' : 'none'}
-            onTouchEnd={closeModal}></View>
-        ) : (
-          ''
-        )}
-      </View>
-    </BottomSheetModalProvider>
+      </Modalize>
+    
+    </View>
   );
 };
 
@@ -469,7 +463,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   containerAddToCart: {
+    flex: 1,
+    paddingTop: '5%',
     width: SIZES.width,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
   },
 
   quantityContainer: {
