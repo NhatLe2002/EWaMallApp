@@ -116,7 +116,7 @@ const OrderScreen: React.FC = () => {
             ]}
             onPress={() => handleTabPress('pendingOrders')}>
             <Text
-              style={[activeTabs === 'pendingOrders' && styles.textActiveTab]}>
+              style={[styles.text,activeTabs === 'pendingOrders' && styles.textActiveTab]}>
               Chờ xác nhận
             </Text>
           </TouchableOpacity>
@@ -127,7 +127,7 @@ const OrderScreen: React.FC = () => {
             ]}
             onPress={() => handleTabPress('waitingOrders')}>
             <Text
-              style={[activeTabs === 'waitingOrders' && styles.textActiveTab]}>
+              style={[styles.text,activeTabs === 'waitingOrders' && styles.textActiveTab]}>
               Chờ lấy hàng
             </Text>
           </TouchableOpacity>
@@ -138,7 +138,7 @@ const OrderScreen: React.FC = () => {
             ]}
             onPress={() => handleTabPress('deliveryOrders')}>
             <Text
-              style={[activeTabs === 'deliveryOrders' && styles.textActiveTab]}>
+              style={[styles.text,activeTabs === 'deliveryOrders' && styles.textActiveTab]}>
               Đang giao
             </Text>
           </TouchableOpacity>
@@ -149,7 +149,7 @@ const OrderScreen: React.FC = () => {
             ]}
             onPress={() => handleTabPress('successOrders')}>
             <Text
-              style={[activeTabs === 'successOrders' && styles.textActiveTab]}>
+              style={[styles.text,activeTabs === 'successOrders' && styles.textActiveTab]}>
               Đã giao
             </Text>
           </TouchableOpacity>
@@ -159,7 +159,7 @@ const OrderScreen: React.FC = () => {
               activeTabs === 'cancelOrd' && styles.activeTab,
             ]}
             onPress={() => handleTabPress('cancelOrd')}>
-            <Text style={[activeTabs === 'cancelOrd' && styles.textActiveTab]}>
+            <Text  style={[styles.text,activeTabs === 'cancelOrd' && styles.textActiveTab]}>
               Đã huỷ
             </Text>
           </TouchableOpacity>
@@ -170,7 +170,7 @@ const OrderScreen: React.FC = () => {
             ]}
             onPress={() => handleTabPress('refundOrders')}>
             <Text
-              style={[activeTabs === 'refundOrders' && styles.textActiveTab]}>
+              style={[styles.text,activeTabs === 'refundOrders' && styles.textActiveTab]}>
               Trả hàng
             </Text>
           </TouchableOpacity>
@@ -215,4 +215,7 @@ const styles = StyleSheet.create({
   textActiveTab: {
     color: COLORS.yellowMain,
   },
+  text:{
+    color:COLORS.gray_2
+  }
 });

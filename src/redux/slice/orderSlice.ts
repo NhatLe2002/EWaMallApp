@@ -14,13 +14,15 @@ const initialState: InterfaceOrderState = {
   orderList: null,
   orderListBySellerId: null,
   orderListBySellerIdRenderRedux: null,
-  info_order: {
-    userId: 0,
-    totalCost: 0,
-    shipCost: 0,
-    shipAddressId: 0,
-    createOrderDetailCommands: [],
-  },
+  info_order: 
+    {
+      userId: 0,
+      totalCost: 0,
+      shipCost: 0,
+      shipAddressId: 0,
+      createOrderDetailCommands: [],
+    },
+  
   orderAllByUser: null,
   pendingOrders: null,
   waitingOrders: null,
@@ -82,7 +84,7 @@ export const createOrder = createAsyncThunk(
         paymentId: 1,
       };
 
- 
+      
       const response = await cartApi.createOrder(requestWithOrderCode);
 
       return response.data;

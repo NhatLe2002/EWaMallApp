@@ -1,47 +1,37 @@
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Button,
   FlatList,
-  Image,
-  Pressable,
-  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {InterfaceOrderState} from '../../constant/interface';
-import {OrderGetBySellerId} from '../../constant/types/orderType';
-import HeightSpacerSeller from '../../reusables/height_spacer/HeightSpacerSeller';
-import {COLORS} from '../../constant/theme';
-import {updateProductDetailWithImages} from '../../features/GetImage';
-import {Product} from '../../constant/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { InterfaceOrderState } from '../../constant/interface';
+import { OrderGetBySellerId } from '../../constant/types/orderType';
+import { COLORS } from '../../constant/theme';
 import {
   getAllOrderBySellerId,
   updateOrderStatus,
 } from '../../redux/slice/orderSlice';
-import {ISellerState} from '../../constant/interface/sellerInterface';
+import { ISellerState } from '../../constant/interface/sellerInterface';
+import Icon from 'react-native-vector-icons/Feather';  // Import the Feather icon library
 
-const OrderListSeller = ({selectedId}: any) => {
+const OrderListSeller = ({ selectedId }: any) => {
   const dispatch = useDispatch<any>();
-  const {orderListBySellerId, orderListBySellerIdRenderRedux} = useSelector(
+  const { orderListBySellerId, orderListBySellerIdRenderRedux } = useSelector(
     (state: InterfaceOrderState) => state.orderReducer,
   );
-  const [isRefreshing, setIsRefreshing] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
-  const {seller} = useSelector((state: ISellerState) => state.sellerReducer);
-  const fetchProductImages = async (product: Product) => {
-    const updatedList = await updateProductDetailWithImages(product);
-    return updatedList.imageUrls;
-  };
+  const { seller } = useSelector((state: ISellerState) => state.sellerReducer);
 
   const handleAcceptOrder = async (orderId: number, statusCode: string) => {
     setIsLoading(true);
     await dispatch(
-      updateOrderStatus({orderId: orderId, statusCode: statusCode}),
+      updateOrderStatus({ orderId: orderId, statusCode: statusCode }),
     );
     dispatch(getAllOrderBySellerId(seller?.seller?.id));
     setIsLoading(false);
@@ -49,10 +39,9 @@ const OrderListSeller = ({selectedId}: any) => {
 
   const confirmAcceptOrder = (orderId: number, statusCode: string) => {
     Alert.alert(
-      "Hi cậu",
-      "Đồng ý làm người yêu tớ nhé?",
+      "Xác nhận",
+      "Bạn có chắc chắn muốn chấp nhận đơn hàng này?",
       [
-        
         {
           text: "Đồng ý",
           onPress: () => handleAcceptOrder(orderId, statusCode)
@@ -65,55 +54,54 @@ const OrderListSeller = ({selectedId}: any) => {
     );
   };
 
-  const renderItem = ({item}: {item: OrderGetBySellerId}) => (
-    <View>
-      <HeightSpacerSeller height={10} color="#b1b1b1" />
-      <View style={styles.itemContainer}>
-        <View style={styles.itemTitleContainner}>
-          <Text style={styles.userNameText}>
-            Mã đơn hàng : <Text style={{color: 'red'}}>{item.orderCode}</Text>
-          </Text>
-          <Text style={styles.statusText}>{item.status.name}</Text>
+  const formatDate = (date: string) => {
+    const [year, month, day] = new Date(date).toISOString().split('T')[0].split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+  };
+
+  const renderItem = ({ item }: { item: OrderGetBySellerId }) => (
+    <View style={styles.itemContainer}>
+      <View style={styles.itemTitleContainer}>
+        <Icon name="package" size={20} color="gray" style={styles.iconStyle} />
+        <Text style={styles.orderCodeText}>
+          Mã đơn hàng: <Text style={{ color: 'red' }}>{item.orderCode}</Text>
+        </Text>
+        <Text style={styles.statusText}>{item.status.name}</Text>
+      </View>
+      <View style={styles.separator} />
+      <View style={styles.itemBodyContainer}>
+        <View style={styles.itemBodyDescription}>
+          <Text style={styles.orderDateText}>Ngày đặt hàng: {formatDate(item.orderDate)}</Text>
+          <Text style={styles.totalCostText}>Tổng hóa đơn: {formatCurrency(item.totalCost)}</Text>
+          <TouchableOpacity style={styles.detailButton}>
+            <Text style={styles.detailButtonText}>Chi tiết đơn hàng</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.itemBodyContainner}>
-          <View style={styles.itemImageContainer}>
-            <Image
-              style={styles.itemImage}
-              // source={uri : {fetchProductImages(item.orderDetails?.productSellDetail?.product)}}
-            />
-          </View>
-          <View style={styles.itemBodyDescription}>
-            <Text style={{color: COLORS.black}}>
-              Ngày đặt hàng : {item.orderDate}
-            </Text>
-            <View style={styles.buttonContainner}>
-              <TouchableOpacity>
-                <Text>Chi tiết đơn hàng</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View style={styles.itemBottomContainner}>
-          <Text style={styles.itemText}></Text>
-          <Text>Tổng hóa đơn: {item.totalCost}</Text>
-        </View>
-        <View style={styles.buttonContainner}>
-          {selectedId === 1 && (
-            <TouchableOpacity
-              onPress={() => confirmAcceptOrder(item.id, 'WAITING')}>
-              <Text>Chấp nhận đơn hàng</Text>
-            </TouchableOpacity>
-          )}
-          {selectedId === 2 && (
-            <TouchableOpacity
-              onPress={() => confirmAcceptOrder(item.id, 'DELIVERY')}>
-              <Text>Giao hàng</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+      </View>
+      <View style={styles.separator} />
+      <View style={styles.buttonContainer}>
+        {selectedId === 1 && (
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => confirmAcceptOrder(item.id, 'WAITING')}>
+            <Text style={styles.actionButtonText}>Chấp nhận đơn hàng</Text>
+          </TouchableOpacity>
+        )}
+        {selectedId === 2 && (
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => confirmAcceptOrder(item.id, 'DELIVERY')}>
+            <Text style={styles.actionButtonText}>Giao hàng</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -130,7 +118,9 @@ export default OrderListSeller;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#f5f5f5',
   },
   loadingIndicator: {
     ...StyleSheet.absoluteFillObject,
@@ -138,65 +128,80 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
   },
-  //Item
   itemContainer: {
-    justifyContent: 'center',
-    flexDirection: 'column',
-    marginHorizontal: 10,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
   },
-  itemTitleContainner: {
-    justifyContent: 'space-between',
+  itemTitleContainer: {
     flexDirection: 'row',
-    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
-  userNameText: {
-    fontSize: 15,
+  iconStyle: {
+    marginRight: 10,
+  },
+  orderCodeText: {
+    fontSize: 16,
+    fontWeight: 'bold',
     color: COLORS.black,
   },
   statusText: {
+    fontSize: 16,
     color: COLORS.red,
-    fontSize: 20,
   },
-  itemBodyContainner: {
-    justifyContent: 'space-between',
+  itemBodyContainer: {
     flexDirection: 'row',
-    marginVertical: 5,
+    marginBottom: 10,
+    justifyContent: 'space-between',
   },
   itemBodyDescription: {
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    flexDirection: 'column',
-  },
-  itemImage: {
     flex: 1,
-  },
-  itemImageContainer: {
-    width: '25%',
-    aspectRatio: 1 / 1,
-    borderColor: COLORS.black,
-    // borderWidth: 0.5,
-  },
-  itemBottomContainner: {
     justifyContent: 'space-between',
-    flexDirection: 'row',
-    marginVertical: 5,
-    paddingVertical: 5,
-    borderBottomColor: COLORS.gray_1,
-    borderBottomWidth: 0.5,
   },
-  itemText: {
+  orderDateText: {
+    fontSize: 14,
     color: COLORS.black,
-    fontSize: 15,
+    marginBottom: 5,
+    alignSelf: 'flex-end',
   },
-  buttonContainner: {
+  totalCostText: {
+    fontSize: 14,
+    color: COLORS.black,
+    marginBottom: 10,
+    alignSelf: 'flex-end',
+  },
+  detailButton: {
+    alignSelf: 'flex-end',
+  },
+  detailButtonText: {
+    fontSize: 14,
+    color: '#FFA500',  // Changed to orange-yellow color
+  },
+  buttonContainer: {
+    flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    flexDirection: 'row',
-    borderBottomColor: COLORS.gray_1,
-    borderBottomWidth: 0.5,
   },
-  bottonContainner: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+  actionButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginLeft: 10,
+  },
+  actionButtonText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  separator: {
+    borderBottomColor: '#e0e0e0',
+    borderBottomWidth: 1,
+    marginVertical: 10,
   },
 });

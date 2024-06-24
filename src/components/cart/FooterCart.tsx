@@ -18,6 +18,7 @@ const FooterCart: React.FC<Props> = ({updateQuantityAPI}) => {
     (state: InterfaceCartState) => state.cartReducer,
   );
   const handlePurchase = () => {
+  
     if (updateQuantityAPI) {
 
       updateQuantityAPI(cartList);
@@ -55,6 +56,7 @@ const FooterCart: React.FC<Props> = ({updateQuantityAPI}) => {
                 fontFamily: FONTS.inter_SemiBold,
               }}>
               {formatPriceToVND(totalCost)}
+           
             </Text>
           </View>
           <TouchableOpacity

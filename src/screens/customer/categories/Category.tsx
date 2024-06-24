@@ -118,7 +118,7 @@ const Category = () => {
           height: SIZES.height * 0.9,
           marginTop: 4,
         }}>
-        <View style={{width: (SIZES.width * 2) / 7}}>
+        <View style={{width: (SIZES.width * 1.7) / 7}}>
           <ScrollView style={{backgroundColor: 'white'}}>
             {industry1.map((item, i) => (
               <TouchableOpacity
@@ -126,7 +126,7 @@ const Category = () => {
                   setIlv1(item.id);
                 }}
                 style={{
-                  height: SIZES.height / 6,
+                  height: SIZES.height / 5,
                   justifyContent: 'center',
                   alignContent: 'center',
                   margin: 2,
@@ -142,10 +142,11 @@ const Category = () => {
                 <Text
                   style={{
                     textAlign: 'center',
-                    fontSize: 17,
+                    fontSize: 15,
                     textAlignVertical: 'center',
                     fontWeight: 'bold',
                     padding: 6,
+                    color: COLORS.black
                   }}>
                   {item.industryName}
                 </Text>
@@ -153,7 +154,7 @@ const Category = () => {
             ))}
           </ScrollView>
         </View>
-        <View style={{width: (SIZES.width * 5) / 7}}>
+        <View style={{width: (SIZES.width * 5.3) / 7}}>
           <ScrollView>
             {industryLv2.map((item, i) => (
               <View
@@ -172,11 +173,12 @@ const Category = () => {
                 <Text
                   style={{
                     width: '100%',
-                    fontSize: 17,
+                    fontSize: 16,
                     paddingLeft: 5,
                     fontWeight: '500',
                     height: SIZES.height / 20,
                     textAlignVertical: 'center',
+                    color: COLORS.black
                   }}>
                   {item.name}
                 </Text>
@@ -185,25 +187,32 @@ const Category = () => {
                     flex: 1,
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    margin: 5,
+                    margin: 3,
                     justifyContent: 'center',
                   }}>
                   {item.child &&
                     item.child.map(child => (
                       <View
                         style={{
-                          marginHorizontal: 5,
-                          marginBottom: 5,
+                          marginHorizontal: 3,
+                          marginBottom: 3,
                           backgroundColor: '#f7f8b9cc',
                           borderRadius: 15,
+                          height: SIZES.height/10,
+                          alignItems: 'center',
+                          justifyContent:"center",
                         }}>
                         <Text
                           style={{
                             width: SIZES.width / 5,
-                            height: SIZES.height / 14,
+                            height: 'auto',
                             textAlign: 'center',
                             textAlignVertical: 'center',
                             padding: 5,
+                            color: COLORS.black,
+                            fontSize:13,
+                            alignSelf:'center',
+                            
                           }}
                           key={child.id}>
                           {child.name}

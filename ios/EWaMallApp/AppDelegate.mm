@@ -2,7 +2,9 @@
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
 #import <React/RCTBundleURLProvider.h>
-
+#import <FirebaseCore/FirebaseCore.h>
+#import <FirebaseFirestore/FirebaseFirestore.h>
+#import <Firebase/Firebase.h>
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -18,7 +20,7 @@
     // Define UNUserNotificationCenter
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
-
+  [FIRApp configure];
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

@@ -17,7 +17,8 @@ import {
   InterfaceOrderState,
 } from '../../../constant/interface';
 import {shipAddressByUserId} from '../../../redux/slice/addressSlice';
-import {setTotalCost, setUserId} from '../../../redux/slice/orderSlice';
+import {setCreateOrderDetailCommands, setShipAddressId, setShipCostt, setTotalCost, setUserId} from '../../../redux/slice/orderSlice';
+import {Item} from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 const PurchaseScreen: React.FC = () => {
   const dispatch = useDispatch<any>();
   const {cartList, product_purchase} = useSelector(
@@ -27,15 +28,16 @@ const PurchaseScreen: React.FC = () => {
   const {userId} = useSelector(
     (state: InterfaceAccountState) => state.accountReducer,
   );
-  const {listShipAddress} = useSelector(
+  const {listShipAddress,feeShip} = useSelector(
     (state: InterfaceAddressState) => state.addressReducer,
   );
   const {info_order} = useSelector(
     (state: InterfaceOrderState) => state.orderReducer,
   );
+
   const filteredCartList = cartList
     .filter((item: {productSellDetailId: any}) => {
-      return product_purchase.includes(item.productSellDetailId);
+      return product_purchase?.includes(item.productSellDetailId);
     })
     .map((item: {sellerName: any}) => {
       return {
@@ -71,10 +73,12 @@ const PurchaseScreen: React.FC = () => {
     }, 0);
     return total + shopTotal;
   }, 0);
+
   const defaultAddress = listShipAddress?.find(
     (address: {isDefault: any}) => address.isDefault,
   );
-
+  // console.log("objectcarlist",filteredCartListByShop)
+  // console.log("object",cartList)
   useEffect(() => {
     dispatch(shipAddressByUserId(userId));
     if (totalCost != null) {
@@ -83,8 +87,8 @@ const PurchaseScreen: React.FC = () => {
     if (userId != null) {
       dispatch(setUserId(userId));
     }
-  }, [dispatch, cartList, info_order]);
-
+  }, [dispatch, cartList]);
+console.log("object",info_order)
   return (
     <View style={styles.container}>
       <HeaderCommon

@@ -4,6 +4,7 @@ import {OrderAllByUserId} from '../../constant/types';
 import {COLORS, FONTS, SIZES} from '../../constant/theme';
 import {formatPriceToVND} from '../../config/FixPrice';
 import HeightSpacer from '../../reusables/height_spacer/HeightSpacer';
+import { color } from 'react-native-elements/dist/helpers';
 interface Props {
   item: OrderAllByUserId;
 }
@@ -15,7 +16,7 @@ const PendingOrder: React.FC<Props> = ({item}) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerShop}>
-        <Text style={{fontFamily: FONTS.inter_SemiBold, fontSize: 16}}>
+        <Text style={{fontFamily: FONTS.inter_SemiBold, fontSize: 16, fontWeight: 700,color:'black'}}>
         {item?.orderDetails[0].productSellDetail.product.seller.shopName}
         </Text>
         <Text style={{fontFamily: FONTS.inter_regular, color: '#dd2504'}}>
@@ -28,10 +29,10 @@ const PendingOrder: React.FC<Props> = ({item}) => {
           style={{
             width: SIZES.width / 7,
             height: SIZES.height / 13,
-            backgroundColor: 'red',
+            backgroundColor: COLORS.yellowMain,
           }}></View>
         <View style={styles.contentProduct}>
-          <Text numberOfLines={1} style={{fontSize: 16}}>
+          <Text numberOfLines={1} style={{fontSize: 16,color:'black' }}>
             {item?.orderDetails[0].productSellDetail.product.productName}
           </Text>
           <View
@@ -40,10 +41,10 @@ const PendingOrder: React.FC<Props> = ({item}) => {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <Text style={{color: COLORS.gray_2, fontSize: 12}}>
+            <Text style={{ fontSize: 12,color:'#848484'}}>
               {item?.orderDetails[0].productSellDetail.name}
             </Text>
-            <Text style={{color: COLORS.black, fontSize: 12}}>
+            <Text style={{color: 'black', fontSize: 12}}>
               x{item?.orderDetails[0].quantity}
             </Text>
           </View>
@@ -71,7 +72,7 @@ const PendingOrder: React.FC<Props> = ({item}) => {
           paddingVertical: '2%',
           marginVertical: '2%',
         }}>
-        <Text style={{color: COLORS.gray_2, fontSize: 12}}>
+        <Text style={{color: '#848484', fontSize: 12}}>
           {totalQuantity} sản phẩm
         </Text>
         <Text>

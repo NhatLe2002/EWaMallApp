@@ -47,7 +47,7 @@ const ProductListSeller = () => {
     const [updatedProductList, setUpdatedProductList] = useState<any[]>([]);
 
     const confirmBox = (productId: number, status: number) => {
-        Alert.alert('Hi cậu', 'Đồng ý làm người yêu tớ nhé?', [
+        Alert.alert('Bạn muốn', 'Xóa sản phẩm ra giỏ hàng?', [
             {
                 text: 'Đồng ý',
                 onPress: () => handleUpdateProduct(productId, status),
@@ -59,19 +59,23 @@ const ProductListSeller = () => {
         ]);
     };
 
-  useEffect(() => {
-    const fetchProductImages = async () => {
-      if (productListRenderRedux) {
-        const filteredList = productListRenderRedux.filter(
-          (product: Product) => product.productStatus === 1,
-        );
-        const updatedList = await updateProductListWithImages(filteredList);
-        setUpdatedProductList(updatedList);
-      }
-    };
+    useEffect(() => {
+        const fetchProductImages = async () => {
+            if (productListRenderRedux) {
+                // const filteredList = productListRenderRedux.filter(
+                //     (product: Product) => product.productStatus === 1,
+                // );
+                const updatedList = await updateProductListWithImages(productListRenderRedux);
+                setUpdatedProductList(updatedList);
+            }
+        };
 
-    fetchProductImages();
-  }, [productListRenderRedux]);
+        fetchProductImages();
+    }, [productListRenderRedux]);
+
+    const formatCurrency = (value: number) => {
+        return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    };
 
     const renderItem = ({ item }: { item: Product }) => (
         <View>
@@ -86,22 +90,26 @@ const ProductListSeller = () => {
                     }}
                     style={styles.productImage}
                 />
+                <View style={styles.separator} />
                 <View style={styles.detailProductList}>
                     <View style={styles.headerProductList}>
                         <View style={styles.productNameContainer}>
-                            <Text style={styles.productName}>{item.productName}</Text>
+                            <Text style={styles.productName} numberOfLines={2} ellipsizeMode="tail">
+                                {item.productName}
+                            </Text>
                         </View>
                         <TouchableOpacity onPress={() => confirmBox(item.id, 5)}>
-                            <Iconions name="trash" color={COLORS.black} size={25} />
+                            <Iconions name="trash" color={COLORS.red} size={25} />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.ratingContainer}>
                         <RattingStart star={3.6} size={15} />
-                        <Text style={{ marginLeft: 5 }}></Text>
                     </View>
                     <View style={styles.botProductList}>
-                        <Text style={styles.prductPridce}>{item.minPrice}đ</Text>
-                        <Text style={{ color: COLORS.gray_2, fontSize: 12 }}>Số lượng: {item.totalQuantity}</Text>
+                        <View style={styles.priceContainer}>
+                            <Text style={styles.productPrice}>{formatCurrency(item.minPrice)}</Text>
+                        </View>
+                        <Text style={styles.productQuantity}>Số lượng: {item.totalQuantity}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -127,26 +135,29 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-start',
         paddingHorizontal: 10,
-
         paddingTop: 20,
         width: '100%',
     },
     detailProductList: {
         flexDirection: 'column',
-        justifyContent: 'space-around',
-        flex: 1
+        justifyContent: 'space-between',
+        flex: 1,
+        paddingVertical: 10,
     },
     productItem: {
         backgroundColor: COLORS.white,
         flexDirection: 'row',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         marginBottom: 10,
         width: '100%',
         borderRadius: 10,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: COLORS.gray_1,
     },
     productImage: {
-        width: '35%',
-        aspectRatio: 10 / 9,
+        width: 80,
+        height: 80,
         marginRight: 10,
         borderRadius: 10,
     },
@@ -154,25 +165,49 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: 5,
-        color: COLORS.black
+        color: COLORS.black,
     },
     headerProductList: {
-        height: 50,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     botProductList: {
-        width: "100%",
-        marginTop: 15,
-        justifyContent: 'space-between',
+        marginTop: 10,
         flexDirection: 'row',
-        alignItems: 'center'
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
-    prductPridce: {
-        color: '#CD0000',
-        fontWeight: 'bold'
+    priceContainer: {
+        position: 'relative',
+        borderRadius: 10,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: COLORS.red,
+        backgroundColor: '#fff',
+    },
+    productPrice: {
+        color: COLORS.red,
+        fontWeight: 'bold',
+        position: 'relative',
+        zIndex: 10,
+    },
+    productPriceBackground: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: -10,
+        right: -10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: COLORS.red,
+        zIndex: 5,
+    },
+    productQuantity: {
+        color: COLORS.gray_2,
+        fontSize: 12,
     },
     loadingIndicator: {
         ...StyleSheet.absoluteFillObject,
@@ -188,4 +223,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-})
+    separator: {
+        width: 1,
+        height: '100%',
+        backgroundColor: COLORS.gray_1,
+        marginHorizontal: 10,
+    },
+});

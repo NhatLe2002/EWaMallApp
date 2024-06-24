@@ -109,7 +109,7 @@ const ProductInfor = () => {
                             <Text style={styles.text}>Giá</Text>
                         </View>
                         <View>
-                            <Text>
+                            <Text style={styles.text}>
                                 {minPrice === maxPrice ? `${minPrice}` : `Giá từ ${minPrice} đến ${maxPrice}`}
                             </Text>
                         </View>

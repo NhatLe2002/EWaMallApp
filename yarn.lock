@@ -2253,6 +2253,11 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-firebase/analytics@^20.1.0":
+  version "20.1.0"
+  resolved "https://registry.npmjs.org/@react-native-firebase/analytics/-/analytics-20.1.0.tgz"
+  integrity sha512-tGwivElKEad0PaAwGxXO8ydNynnxUj/D2rtDG6QBtoU/L77hV6/UL0vh/vZcobWiBUv3sqBEkCg19VhA88j1og==
+
 "@react-native-firebase/app@^20.1.0", "@react-native-firebase/app@20.1.0":
   version "20.1.0"
   resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-20.1.0.tgz"
@@ -7797,6 +7802,11 @@ react-native-linear-gradient@^2.8.3:
   version "2.8.3"
   resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
+
+react-native-modalize@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-modalize/-/react-native-modalize-2.1.1.tgz#dcb67d208f4c5bdc76f45075e727be43fd008561"
+  integrity sha512-4/7EZWsrUqAAkkAVEnOsSdpAPQaEBewX7TvwFuzgvGDzxKpq3O58I9SnSeU8QtG/r91XYHJNaU5dAuDrcLjUaQ==
 
 react-native-paper@^5.12.3:
   version "5.12.3"

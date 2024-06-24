@@ -77,7 +77,7 @@ const ChatBox = () => {
                 <TouchableOpacity
                     onPress={() => navigate.goBack()}
                     style={{ marginLeft: "3%" }}>
-                    <AntDesign name='arrowleft' size={35} color={COLORS.gray_1}></AntDesign>
+                    <AntDesign name='arrowleft' size={35}></AntDesign>
                 </TouchableOpacity>
                 <Image
                     style={styles.image}
@@ -116,6 +116,7 @@ export default ChatBox
 
 const styles = StyleSheet.create({
     header: {
+        backgroundColor: COLORS.yellowMain,
         width: "100%",
         elevation: 5,
         height: SIZES.height / 15,
@@ -131,8 +132,8 @@ const styles = StyleSheet.create({
         borderRadius: 40,
     },
     textname : {
+        color: "black",
         marginLeft: "1%",
         fontSize: 20,
-        fontWeight: "500"
     }
 })

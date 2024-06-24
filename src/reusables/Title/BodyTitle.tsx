@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { COLORS } from '../../constant/theme';
 
 interface BodyTitleProps {
     titleLeft: string;
@@ -23,6 +24,7 @@ export default BodyTitle
 
 const styles = StyleSheet.create({
     title: {
+        color: COLORS.gray_1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems:'center'

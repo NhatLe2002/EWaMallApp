@@ -20,6 +20,13 @@ import {fetchAllCart, updateCartQuantity} from '../../../redux/slice/cartSlice';
 
 const CartScreen: React.FC = () => {
   //khai báo
+  const [sellerCheckboxState, setSellerCheckboxState] =
+    useState<boolean>(false);
+  const [productCheckboxStates, setProductCheckboxStates] = useState<{
+    [key: number]: boolean;
+  }>({});
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+
   const dispatch = useDispatch<any>();
   const {cartList} = useSelector(
     (state: InterfaceCartState) => state.cartReducer,
@@ -54,7 +61,17 @@ const CartScreen: React.FC = () => {
   };
   const renderItem: ListRenderItem<CartProductTypes> = ({item}) => {
     if (activeTab === 'all') {
-      return <ProductInCart item={item} />;
+      return (
+        <ProductInCart
+          item={item}
+          sellerCheckboxState={sellerCheckboxState}
+          productCheckboxStates={productCheckboxStates}
+          selectedProducts={selectedProducts}
+          setSellerCheckboxState={setSellerCheckboxState}
+          setProductCheckboxStates={setProductCheckboxStates}
+          setSelectedProducts={setSelectedProducts}
+        />
+      );
     } else {
       return <Repurchase item={item} />;
     }
@@ -107,7 +124,7 @@ const CartScreen: React.FC = () => {
                   activeTab === 'all' && styles.activeTab,
                 ]}
                 onPress={() => handleTabPress('all')}>
-                <Text style={[activeTab === 'all' && styles.textActiveTab]}>
+                <Text style={[activeTab === 'all' && styles.textActiveTab ]}>
                   Tất cả ( 4 )
                 </Text>
               </TouchableOpacity>
