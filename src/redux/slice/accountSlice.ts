@@ -29,12 +29,12 @@ export const getSellerById = createAsyncThunk(
 );
 export const registerUser = createAsyncThunk(
   'account/register',
-  async (data: RegisterUser, {rejectWithValue}) => {
+  async (data: RegisterUser) => {
     try {
       const response = await accountApi.register(data);
       return response.data; // Trả về dữ liệu từ phản hồi thành công của API
     } catch (error) {
-      return rejectWithValue(error); // Trả về lỗi từ phản hồi không thành công của API
+    console.log(error) // Trả về lỗi từ phản hồi không thành công của API
     }
   },
 );

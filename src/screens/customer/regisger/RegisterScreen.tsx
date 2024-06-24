@@ -32,7 +32,7 @@ const RegisterScreen: React.FC = () => {
     newData.userInformation.address = 'a';
     newData.userInformation.dateOfBirth = formattedDate;
     newData.userInformation.imageId = guiId.toString();
-
+    console.log(data)
     dispatch(registerUser(newData));
   };
   const handleBack = () => {
