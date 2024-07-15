@@ -32,6 +32,7 @@ import ShopHome from '../screens/customer/shop_home/ShopHome';
 import OrderScreen from '../screens/customer/order/OrderScreen';
 import ChatHomeScreen from '../screens/customer/chat/ChatHomeScreen';
 import ChatBox from '../screens/customer/chat/ChatBox';
+import QrScreen from '../components/purchase/QrScreen';
 const Stack = createNativeStackNavigator();
 const AuthNavigator: React.FC = () => {
   return (
@@ -58,7 +59,7 @@ const AuthNavigator: React.FC = () => {
       <Stack.Screen name="ShopHome" component={ShopHome} />
       
       <Stack.Screen name="OrderScreen" component={OrderScreen} />
-
+      <Stack.Screen name="QR" component={QrScreen} />
       <Stack.Screen name="ChatBox" component={ChatBox} />
       
       {/* Seller navigator */}

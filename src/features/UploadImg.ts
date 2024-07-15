@@ -26,7 +26,7 @@ export const pickImage = async (): Promise<string | null> => {
     );
   });
 };
-export const uploadImagesToFirebase = async (
+export const uploadImagToFirebase = async (
   uris: string[],
   coverImageId: string,
 ): Promise<string[]> => {

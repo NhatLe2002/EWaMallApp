@@ -22,9 +22,7 @@ const FooterPurchase: React.FC<{totalCost: number}> = ({totalCost}) => {
   );
   const costOrder = totalCost + feeShip?.total;
   const handlePurchase = (data: CreateOrderRequest) => {
-  
-    dispatch(createOrder(data));
-    navigation.navigate('PaymentSuccesful');
+    navigation.navigate('QR');
 
   };
 

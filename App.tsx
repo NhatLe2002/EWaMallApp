@@ -28,17 +28,17 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const role = await storageService.getRole();
-        // const id = await storageService.getId();
-        // const name = await storageService.getUserName();
-        // if (role) {
-        //   dispatch(setIsLogin(true));
-        //   dispatch(setRole(role));
-        //   dispatch(setUsername(name));
-        //   console.log(name);
-        //   dispatch(setUserId(id));
-        // }
-        storageService.removeInfo()
+        const role = await storageService.getRole();
+        const id = await storageService.getId();
+        const name = await storageService.getUserName();
+        if (role) {
+          dispatch(setIsLogin(true));
+          dispatch(setRole(role));
+          dispatch(setUsername(name));
+          console.log(name);
+          dispatch(setUserId(id));
+        }
+        // storageService.removeInfo()
       } catch (error) {
         console.error('Failed to fetch data from storage', error);
       }

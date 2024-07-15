@@ -17,6 +17,7 @@ const PurchaseSuccessful: React.FC = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
+  
       navigation.navigate('BottomTab');
     }, 10000);
 
@@ -57,7 +58,14 @@ const PurchaseSuccessful: React.FC = () => {
               borderRadius: 5,
             }}
             onPress={() => navigation.navigate('BottomTab')}>
-            <Text style={{fontFamily:FONTS.inter_SemiBold,color:'white',fontSize:20}}>Trang chủ</Text>
+            <Text
+              style={{
+                fontFamily: FONTS.inter_SemiBold,
+                color: 'white',
+                fontSize: 20,
+              }}>
+              Trang chủ
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
